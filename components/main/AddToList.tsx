@@ -8,16 +8,16 @@ require("firebase/firestore");
 import styled from "styled-components";
 
 const RecipeImage = styled.Image`
-  width: 200;
-  height: 200;
-  border-radius: 200;
+  width: 200px;
+  height: 200px;
+  border-radius: 200px;
 `;
 
 const CaptureImage = styled.TouchableHighlight`
-  width: 200;
-  height: 200;
-  border-radius: 200;
-  margin-bottom: 40;
+  width: 200px;
+  height: 200px;
+  border-radius: 200px;
+  margin-bottom: 40px;
 `;
 
 const AddFoodToListScreen = (props) => {
