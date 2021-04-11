@@ -3,8 +3,15 @@ import { StyleSheet } from 'react-native';
 import { Button as PaperButton } from 'react-native-paper';
 import { theme } from '../../core/theme';
 
+// interface ButtonInterface {
+//     mode: any,
+//     style: any,
+//     children: any,
 
-const Button = ({ mode, style, children, ...props }) => (
+// }
+
+
+const Button: any =  ({ mode, style, children, ...props }) => (
     <PaperButton
         style={[
             styles.button,

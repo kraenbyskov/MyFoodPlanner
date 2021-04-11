@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Text, View, StyleSheet, Image, SafeAreaView } from "react-native";
-import TextInput from "../styledComponents/TextInput.jsx";
-import Button from "../styledComponents/Button.jsx";
+import TextInput from "../styledComponents/TextInput";
+import Button from "../styledComponents/Button";
 import firebase from "firebase";
 import MainContainer from "../styledComponents/MainContainer";
 require("firebase/firestore");

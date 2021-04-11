@@ -4,7 +4,6 @@ import Logo from '../styledComponents/Logo';
 import Header from '../styledComponents/Header';
 import Button from '../styledComponents/Button';
 import Paragraph from '../styledComponents/Paragraph';
-import { View } from 'react-native';
 
 const Landing = ({ navigation }) => {
     return (

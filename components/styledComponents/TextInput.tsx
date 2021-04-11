@@ -9,7 +9,7 @@ const TextInput = ({ errorText, ...props }) => (
         <Input
             style={styles.input}
             underlineColor="transparent"
-            theme={{ colors: { primary: theme.colors.primary, underlineColor: 'transparent', } }}
+            theme={{ colors: { primary: theme.colors.primary, } }}
 
             mode="flat"
             {...props}
