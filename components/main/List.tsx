@@ -6,6 +6,8 @@ require("firebase/firestore");
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import styled from "styled-components";
 
+import { Avatar, IconButton } from "react-native-paper";
+
 const Container = styled.View`
   flex: 1;
   flex-wrap: wrap;
@@ -25,7 +27,7 @@ const Content = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  width: 50%;
   border-radius: 20;
 `;
 
@@ -68,6 +70,17 @@ export default function List() {
     setGetData(Food);
   }, [Food]);
 
+  const DeleteFood = (Name) => {
+    console.log(Name);
+    firebase
+      .firestore()
+      .collection("Allrecipes")
+      .doc(firebase.auth().currentUser.uid)
+      .collection("recipes")
+      .doc(Name)
+      .delete();
+  };
+
   console.log(GetData);
 
   return (
@@ -78,11 +91,22 @@ export default function List() {
             <Card style={Shadow} key={data.Name}>
               <Content>
                 <RecipeImage
-                  source={require("../../assets/photo-1512621776951-a57141f2eefd.png")}
+                  source={
+                    data.downloadUrl
+                      ? { uri: data.downloadUrl }
+                      : require("../../assets/photo-1512621776951-a57141f2eefd.png")
+                  }
                 />
                 <View style={{ width: "100%" }}>
                   <Title>{data.Name}</Title>
                 </View>
+
+                <IconButton
+                  color={"#000000"}
+                  size={25}
+                  icon="delete"
+                  onPress={() => DeleteFood(data.Name)}
+                />
               </Content>
             </Card>
           ))}

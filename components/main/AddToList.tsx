@@ -1,30 +1,22 @@
 import * as React from "react";
-import { Text, View, StyleSheet, Image, SafeAreaView } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  SafeAreaView,
+  TouchableHighlight,
+} from "react-native";
 import TextInput from "../styledComponents/TextInput";
 import Button from "../styledComponents/Button";
 import firebase from "firebase";
 import MainContainer from "../styledComponents/MainContainer";
 require("firebase/firestore");
-import styled from "styled-components";
-
-const RecipeImage = styled.Image`
-  width: 200px;
-  height: 200px;
-  border-radius: 200px;
-`;
-
-const CaptureImage = styled.TouchableHighlight`
-  width: 200px;
-  height: 200px;
-  border-radius: 200px;
-  margin-bottom: 40px;
-`;
 
 const AddFoodToListScreen = (props) => {
   const [title, setTitle] = React.useState({ value: "", error: "" });
 
-  //   console.log(props.route.params && props.route.params.image);
-  const AddToList = () => {
+  const AddToList = async () => {
     firebase
       .firestore()
       .collection("Allrecipes")
@@ -37,21 +29,70 @@ const AddFoodToListScreen = (props) => {
       });
     setTitle({ value: "", error: "" });
 
-    console.log("items was added");
+    const uri = props.route.params.image;
+    const childPath = `post/${
+      firebase.auth().currentUser.uid
+    }/${Math.random().toString(36)}`;
+
+    const response = await fetch(uri);
+    const blob = await response.blob();
+
+    const task = firebase.storage().ref().child(childPath).put(blob);
+
+    const taskProgress = (snapshot) => {
+      console.log(`transferred: ${snapshot.bytesTransferred}`);
+    };
+
+    const taskCompleted = () => {
+      task.snapshot.ref.getDownloadURL().then((snapshot) => {
+        savePostData(snapshot);
+      });
+    };
+
+    const taskError = (snapshot) => {
+      console.log(snapshot);
+    };
+
+    task.on("state_changed", taskProgress, taskError, taskCompleted);
   };
 
-  console.log();
+  const savePostData = (downloadUrl) => {
+    firebase
+      .firestore()
+      .collection("Allrecipes")
+      .doc(firebase.auth().currentUser.uid)
+      .collection("recipes")
+      .doc(title.value)
+      .set({
+        Name: title.value,
+        downloadUrl,
+        Date: firebase.firestore.FieldValue.serverTimestamp(),
+      })
+      .then(function () {
+        props.navigation.popToTop();
+      });
+  };
+
   return (
     <MainContainer>
-      <CaptureImage onPress={() => props.navigation.navigate("Add")}>
+      <TouchableHighlight
+        style={styles.CaptureImage}
+        onPress={() => props.navigation.navigate("Add")}
+      >
         <View>
           {props.route.params ? (
-            <RecipeImage source={{ uri: props.route.params.image }} />
+            <Image
+              style={styles.RecipeImage}
+              source={{ uri: props.route.params.image }}
+            />
           ) : (
-            <RecipeImage source={require("../../assets/no_image.jpg")} />
+            <Image
+              style={styles.RecipeImage}
+              source={require("../../assets/no_image.jpg")}
+            />
           )}
         </View>
-      </CaptureImage>
+      </TouchableHighlight>
 
       <Text>Add Food to List</Text>
 
@@ -69,5 +110,19 @@ const AddFoodToListScreen = (props) => {
     </MainContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  CaptureImage: {
+    width: 200,
+    height: 200,
+    borderRadius: 200,
+    marginBottom: 40,
+  },
+  RecipeImage: {
+    width: 200,
+    height: 200,
+    borderRadius: 200,
+  },
+});
 
 export default AddFoodToListScreen;
