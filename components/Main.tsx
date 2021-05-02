@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { Component, useEffect, FC } from "react";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -10,10 +10,15 @@ import { theme } from "../core/theme";
 import DasbhoardScreen from "./main/Dashboard";
 import ListScreen from "./main/List";
 import AddToListScreen from "./main/AddToList";
+import EditFoodScreen from "./main/EditFood";
 
 const Tab = createMaterialBottomTabNavigator();
 
-const EmptyScreen = () => {};
+interface EmptyScreeenInterface {}
+
+const EmptyScreen: FC<EmptyScreeenInterface> = () => {
+  return <></>;
+};
 
 const Main = (props) => {
   useEffect(() => {
@@ -46,15 +51,6 @@ const Main = (props) => {
           ),
         }}
       />
-      {/* <Tab.Screen
-        name="AddtoList"
-        component={AddToListScreen}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
-          ),
-        }}
-      /> */}
 
       <Tab.Screen
         name="AddContainer"

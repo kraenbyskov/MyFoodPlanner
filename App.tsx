@@ -17,6 +17,7 @@ import MainScreen from "./components/Main";
 
 import AddScreen from "./components/AddImage";
 import AddToListScreen from "./components/main/AddToList";
+import EditFoodScreen from "./components/main/EditFood";
 
 const Stack = createStackNavigator();
 const store = createStore(rootReducer, applyMiddleware(thunk));
@@ -101,6 +102,13 @@ export default function App() {
           <Stack.Screen
             name="AddToList"
             component={AddToListScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="EditFood"
+            component={EditFoodScreen}
             options={{
               headerShown: false,
             }}

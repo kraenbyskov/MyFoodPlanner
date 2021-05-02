@@ -55,7 +55,8 @@ const Shadow = {
   elevation: 10,
 };
 
-export default function List() {
+export default function List({ navigation }) {
+  console.log(navigation);
   const [GetData, setGetData]: any = React.useState(null);
 
   const query = firebase
@@ -88,7 +89,11 @@ export default function List() {
       <Container>
         {GetData &&
           GetData.map((data) => (
-            <Card style={Shadow} key={data.Name}>
+            <Card
+              style={Shadow}
+              key={data.Name}
+              onPress={() => navigation.navigate("EditFood", data.Name)}
+            >
               <Content>
                 <RecipeImage
                   source={
