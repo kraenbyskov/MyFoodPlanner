@@ -2,11 +2,11 @@ import React, { memo } from "react";
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import TopAppBar from "../AppBar";
 
-const MainContainer = ({ children, scroll = false }) => {
+const MainContainer = ({ children, scroll = false, fixTop = false }) => {
   if (scroll) {
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <TopAppBar />
+        <TopAppBar  fixTop={fixTop} />
         <ScrollView style={styles.containerScroll}>{children}</ScrollView>
       </SafeAreaView>
     );

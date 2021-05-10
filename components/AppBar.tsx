@@ -7,7 +7,7 @@ import { Platform } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 const MORE_ICON = Platform.OS === "ios" ? "dots-horizontal" : "dots-vertical";
 
-export default function TopAppBar() {
+export default function TopAppBar({fixTop = false}) {
   const navigation = useNavigation();
 
   return (
