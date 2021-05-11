@@ -7,17 +7,17 @@ import { createStackNavigator } from '@react-navigation/stack';
 import firebase from 'firebase';
 
 import { Provider } from 'react-redux';
-import LandingScreen from './components/auth/Landing';
-import RegisterScreen from './components/auth/Register';
-import LoginScreen from './components/auth/Login';
+import LandingScreen from './app/auth/Landing';
+import RegisterScreen from './app/auth/Register';
+import LoginScreen from './app/auth/Login';
 import { createStore, applyMiddleware } from 'redux';
-import rootReducer from './redux/reducers';
+import rootReducer from './app/redux/reducers';
 import thunk from 'redux-thunk';
-import MainScreen from './components/Main';
+import MainScreen from './app/components/Organisms/Main';
 
-import AddScreen from './components/AddImage';
-import AddRecipeScreen from './components/main/AddRecipe/AddRecipe';
-import RecipeDetailsScreen from './components/main/RecipeDetails/RecipeDetails';
+import AddScreen from './app/components/Organisms/AddImage';
+import AddRecipeScreen from './app/screens/AddRecipe/AddRecipe';
+import RecipeDetailsScreen from './app/screens/RecipeDetails/Recipe';
 
 const Stack = createStackNavigator();
 const store = createStore(rootReducer, applyMiddleware(thunk));
