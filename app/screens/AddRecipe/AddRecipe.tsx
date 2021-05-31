@@ -1,66 +1,16 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Image, SafeAreaView, TouchableHighlight } from 'react-native';
+import { Text, View } from 'react-native';
 import { TextInput, Button, MainContainer } from '../../components';
 import firebase from 'firebase';
 import AddRecipeImage from './AddRecipeImage';
 import { DataTable, List } from 'react-native-paper';
+import AddRecipeIngredients from './AddRecipeIngredients';
 require('firebase/firestore');
-
-const AddRecipeIngredients = () => {
-	const [ title, setTitle ] = React.useState({ value: '', error: '' });
-
-	const DataTableArra = [
-		{
-			name: 'Beef Stock',
-			volume: 450,
-			type: 'gram'
-		},
-		{
-			name: 'Ost',
-			volume: 450,
-			type: 'gram'
-		},
-		{
-			name: 'Pasta',
-			volume: 450,
-			type: 'gram'
-		}
-	];
-
-	return (
-		<View style={{ flex: 1, width: '100%' }}>
-			<Text>Ingredients</Text>
-			<View>
-				<DataTable>
-					{DataTableArra.map((data) => (
-						<DataTable.Header>
-							<DataTable.Title>{data.name}</DataTable.Title>
-							<DataTable.Title numeric>{data.volume}</DataTable.Title>
-							<DataTable.Title numeric>{data.type}</DataTable.Title>
-						</DataTable.Header>
-					))}
-				</DataTable>
-			</View>
-		</View>
-	);
-};
 
 const AddFoodToListScreen = (props) => {
 	const [ title, setTitle ] = React.useState({ value: '', error: '' });
 
 	const AddToList = async () => {
-		firebase
-			.firestore()
-			.collection('Allrecipes')
-			.doc(firebase.auth().currentUser.uid)
-			.collection('recipes')
-			.doc(title.value)
-			.set({
-				Name: title.value,
-				Date: new Date()
-			});
-		setTitle({ value: '', error: '' });
-
 		const uri = props.route.params.image;
 		const childPath = `post/${firebase.auth().currentUser.uid}/${Math.random().toString(36)}`;
 
@@ -70,37 +20,34 @@ const AddFoodToListScreen = (props) => {
 		const task = firebase.storage().ref().child(childPath).put(blob);
 
 		const taskProgress = (snapshot) => {
-			console.log(`transferred: ${snapshot.bytesTransferred}`);
+			let percent = snapshot.bytesTransferred / snapshot.totalBytes * 100;
+			console.log(percent + '% done');
 		};
 
 		const taskCompleted = () => {
 			task.snapshot.ref.getDownloadURL().then((snapshot) => {
-				savePostData(snapshot);
+				firebase
+					.firestore()
+					.collection('Allrecipes')
+					.doc(firebase.auth().currentUser.uid)
+					.collection('recipes')
+					.doc(title.value)
+					.set({
+						Name: title.value,
+						downloadUrl: snapshot,
+						Date: firebase.firestore.FieldValue.serverTimestamp()
+					})
+					.then(function() {
+						props.navigation.popToTop();
+					});
+				setTitle({ value: '', error: '' });
 			});
 		};
-
 		const taskError = (snapshot) => {
 			console.log(snapshot);
 		};
 
-		task.on('state_changed', taskProgress, taskError, taskCompleted);
-	};
-
-	const savePostData = (downloadUrl) => {
-		firebase
-			.firestore()
-			.collection('Allrecipes')
-			.doc(firebase.auth().currentUser.uid)
-			.collection('recipes')
-			.doc(title.value)
-			.set({
-				Name: title.value,
-				downloadUrl,
-				Date: firebase.firestore.FieldValue.serverTimestamp()
-			})
-			.then(function() {
-				props.navigation.popToTop();
-			});
+		task.on('state_changed', () => taskProgress, taskError, taskCompleted);
 	};
 
 	return (
@@ -135,19 +82,5 @@ const AddFoodToListScreen = (props) => {
 		</MainContainer>
 	);
 };
-
-const styles = StyleSheet.create({
-	CaptureImage: {
-		width: 200,
-		height: 200,
-		borderRadius: 200,
-		marginBottom: 40
-	},
-	RecipeImage: {
-		width: 200,
-		height: 200,
-		borderRadius: 200
-	}
-});
 
 export default AddFoodToListScreen;

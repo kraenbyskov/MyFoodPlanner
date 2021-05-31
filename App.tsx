@@ -18,6 +18,7 @@ import MainScreen from './app/components/Organisms/Main';
 import AddScreen from './app/components/Organisms/AddImage';
 import AddRecipeScreen from './app/screens/AddRecipe/AddRecipe';
 import RecipeDetailsScreen from './app/screens/RecipeDetails/Recipe';
+import ProfileScreen from './app/screens/Profile/Profile';
 
 const Stack = createStackNavigator();
 const store = createStore(rootReducer, applyMiddleware(thunk));
@@ -86,6 +87,13 @@ export default function App() {
 					<Stack.Screen
 						name="AddRecipe"
 						component={AddRecipeScreen}
+						options={{
+							headerShown: false
+						}}
+					/>
+					<Stack.Screen
+						name="Profile"
+						component={ProfileScreen}
 						options={{
 							headerShown: false
 						}}

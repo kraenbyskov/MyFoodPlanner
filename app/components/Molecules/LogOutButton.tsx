@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from './Button';
+import Button from '../Atoms/Button';
 import firebase from 'firebase';
 
 export default function LogOutButton() {

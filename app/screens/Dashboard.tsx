@@ -6,9 +6,7 @@ import { connect } from 'react-redux';
 const Dashboard = ({ currentUser }) => {
 	return (
 		<MainContainer>
-			<LogOutButton />
-			<Text>{currentUser && currentUser.name}</Text>
-			<Text>{currentUser && currentUser.email}</Text>
+			<Text>Dashboard</Text>
 		</MainContainer>
 	);
 };

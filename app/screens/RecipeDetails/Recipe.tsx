@@ -10,8 +10,11 @@ import RecipeBanner from './RecipeBanner';
 import RecipeIngredients from './RecipeIngredients';
 import RecipeDescription from './RecipeDescription';
 
+import { useSelector, useDispatch } from 'react-redux';
+
 export default function RecipeDetails({ route }) {
 	const [ GetData, setGetData ]: any = React.useState(null);
+	console.log(useSelector, useDispatch);
 
 	React.useEffect(() => {
 		firebase

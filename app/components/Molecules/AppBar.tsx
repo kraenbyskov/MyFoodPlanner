@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Appbar } from 'react-native-paper';
-import { theme } from '../../core/theme';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 const MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical';
 
-export default function TopAppBar({ fixTop = false }) {
+export default function TopAppBar() {
 	const navigation = useNavigation();
 
 	return (
@@ -19,7 +18,7 @@ export default function TopAppBar({ fixTop = false }) {
 			<Appbar.Content title="" />
 			<Appbar.Action
 				icon={({ color }) => <MaterialCommunityIcons name="account" color={color} size={26} />}
-				onPress={() => console.log('Pressed archive')}
+				onPress={() => navigation.navigate('Profile')}
 			/>
 			<Appbar.Action icon={MORE_ICON} onPress={() => {}} />
 		</Appbar>
