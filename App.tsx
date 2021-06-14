@@ -11,14 +11,16 @@ import LandingScreen from './app/auth/Landing';
 import RegisterScreen from './app/auth/Register';
 import LoginScreen from './app/auth/Login';
 import { createStore, applyMiddleware } from 'redux';
-import rootReducer from './app/redux/reducers';
+import rootReducer from './app/Redux/reducers/index';
 import thunk from 'redux-thunk';
-import MainScreen from './app/components/Organisms/Main';
+import MainScreen from './app/screens/Main';
 
 import AddScreen from './app/components/Organisms/AddImage';
 import AddRecipeScreen from './app/screens/AddRecipe/AddRecipe';
 import RecipeDetailsScreen from './app/screens/RecipeDetails/Recipe';
 import ProfileScreen from './app/screens/Profile/Profile';
+
+import { SnackBar } from './app/components';
 
 const Stack = createStackNavigator();
 const store = createStore(rootReducer, applyMiddleware(thunk));
@@ -39,7 +41,7 @@ if (firebase.apps.length === 0) {
 export default function App() {
 	const [ LoggedIn, setLoggedIn ] = React.useState(false);
 	const [ Loaded, setLoaded ] = React.useState(false);
-
+	const [ visible, setVisible ] = React.useState(true);
 	React.useEffect(() => {
 		firebase.auth().onAuthStateChanged((user) => {
 			if (!user) {
@@ -107,6 +109,7 @@ export default function App() {
 					/>
 				</Stack.Navigator>
 			</NavigationContainer>
+			<SnackBar visible={visible} setVisible={setVisible} />
 		</Provider>
 	);
 }

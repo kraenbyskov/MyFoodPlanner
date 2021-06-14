@@ -23,7 +23,6 @@ const Register = ({ navigation }) => {
 			setPassword({ ...password, error: passwordError });
 			return;
 		}
-		console.log("i'm running");
 
 		firebase
 			.auth()

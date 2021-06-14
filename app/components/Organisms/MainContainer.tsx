@@ -1,42 +1,32 @@
 import React, { memo } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import TopAppBar from '../Molecules/AppBar';
-
-const MainContainer = ({ children, scroll = false, fixTop = false }) => {
-	if (scroll) {
-		return (
-			<SafeAreaView style={{ flex: 1 }}>
-				<TopAppBar fixTop={fixTop} />
-				<ScrollView style={styles.containerScroll}>{children}</ScrollView>
-			</SafeAreaView>
-		);
-	}
-
-	return (
-		<SafeAreaView style={{ flex: 1 }}>
-			<TopAppBar />
-			<View style={styles.container}>{children}</View>
-		</SafeAreaView>
-	);
-};
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 10,
+		padding: 20,
 		width: '100%',
-		maxWidth: 340,
-		alignSelf: 'center',
+		// maxWidth: 340,
+		alignSelf: 'center'
+	},
+	NonScroll: {
 		alignItems: 'center',
 		justifyContent: 'center'
-	},
-	containerScroll: {
-		flex: 1,
-		padding: 10,
-		width: '100%',
-		maxWidth: 340,
-		alignSelf: 'center'
 	}
 });
+
+const MainContainer = ({ children, scroll = false }) => {
+	return (
+		<SafeAreaView style={{ flex: 1 }}>
+			<TopAppBar />
+			{scroll ? (
+				<ScrollView style={styles.container}>{children}</ScrollView>
+			) : (
+				<View style={[ styles.container, styles.NonScroll ]}>{children}</View>
+			)}
+		</SafeAreaView>
+	);
+};
 
 export default memo(MainContainer);

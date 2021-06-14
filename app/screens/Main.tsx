@@ -1,14 +1,15 @@
-import React, { Component, useEffect, FC } from 'react';
+import React, { useEffect, FC } from 'react';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchUser, clearData } from '../../redux/actions/index';
+import { fetchUser, clearData } from '../Redux/actions/index';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { theme } from '../../core/theme';
+import { theme } from '../core/theme';
 
-import DasbhoardScreen from '../../screens/Dashboard';
-import RecipesScreen from '../../screens/Recipes/Recipes';
+import DasbhoardScreen from './Dashboard';
+import RecipesScreen from './Recipes/Recipes';
+import CustomListScreen from './CustomList/CustomList';
 import { View } from 'react-native';
 
 const Tab = createMaterialBottomTabNavigator();
@@ -40,10 +41,20 @@ const Main = (props) => {
 				}}
 			/>
 			<Tab.Screen
+				name="CustomList"
+				component={CustomListScreen}
+				options={{
+					tabBarIcon: ({ color }) => <MaterialCommunityIcons name="playlist-check" color={color} size={26} />
+				}}
+			/>
+
+			<Tab.Screen
 				name="Recipes"
 				component={RecipesScreen}
 				options={{
-					tabBarIcon: ({ color }) => <MaterialCommunityIcons name="home" color={color} size={26} />
+					tabBarIcon: ({ color }) => (
+						<MaterialCommunityIcons name="format-list-checkbox" color={color} size={26} />
+					)
 				}}
 			/>
 

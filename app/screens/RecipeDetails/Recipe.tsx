@@ -14,7 +14,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 export default function RecipeDetails({ route }) {
 	const [ GetData, setGetData ]: any = React.useState(null);
-	console.log(useSelector, useDispatch);
 
 	React.useEffect(() => {
 		firebase
@@ -32,7 +31,7 @@ export default function RecipeDetails({ route }) {
 	if (GetData) {
 		const { Name, downloadUrl, Ingredienser } = GetData;
 		return (
-			<MainContainer fixTop={true} scroll={true}>
+			<MainContainer scroll={true}>
 				<RecipeBanner title={Name} image={downloadUrl} />
 				<View
 					style={{
@@ -40,10 +39,10 @@ export default function RecipeDetails({ route }) {
 						marginTop: 0
 					}}
 				>
-					<RecipeOwner />
-					<RecipeDescription />
+					{/* <RecipeOwner />
+					<RecipeDescription /> */}
 
-					<RecipeIngredients data={{ Ingredienser, GetData, route }} />
+					{/* <RecipeIngredients data={{ Ingredienser, GetData, route }} /> */}
 				</View>
 			</MainContainer>
 		);

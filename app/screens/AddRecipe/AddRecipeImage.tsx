@@ -4,13 +4,10 @@ import { Image, StyleSheet, View, TouchableHighlight } from 'react-native';
 const AddRecipeImage = ({ route, navigation }) => {
 	return (
 		<TouchableHighlight style={styles.CaptureImage} onPress={() => navigation.navigate('Add')}>
-			<View>
-				{route.params ? (
-					<Image style={styles.RecipeImage} source={{ uri: route.params.image }} />
-				) : (
-					<Image style={styles.RecipeImage} source={require('images/no_image.jpg')} />
-				)}
-			</View>
+			<Image
+				style={styles.RecipeImage}
+				source={route.params ? { uri: route.params.image } : require('images/no_image.jpg')}
+			/>
 		</TouchableHighlight>
 	);
 };

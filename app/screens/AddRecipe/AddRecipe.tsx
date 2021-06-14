@@ -1,11 +1,21 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { TextInput, Button, MainContainer } from '../../components';
 import firebase from 'firebase';
 import AddRecipeImage from './AddRecipeImage';
-import { DataTable, List } from 'react-native-paper';
+import { List } from 'react-native-paper';
 import AddRecipeIngredients from './AddRecipeIngredients';
 require('firebase/firestore');
+
+const style = StyleSheet.create({
+	Content: {
+		flex: 1,
+		width: '100%',
+		borderColor: 'orange',
+		justifyContent: 'space-between',
+		alignItems: 'center'
+	}
+});
 
 const AddFoodToListScreen = (props) => {
 	const [ title, setTitle ] = React.useState({ value: '', error: '' });
@@ -21,7 +31,6 @@ const AddFoodToListScreen = (props) => {
 
 		const taskProgress = (snapshot) => {
 			let percent = snapshot.bytesTransferred / snapshot.totalBytes * 100;
-			console.log(percent + '% done');
 		};
 
 		const taskCompleted = () => {
@@ -52,19 +61,20 @@ const AddFoodToListScreen = (props) => {
 
 	return (
 		<MainContainer scroll={true}>
-			<AddRecipeImage route={props.route} navigation={props.navigation} />
+			<View style={style.Content}>
+				<AddRecipeImage route={props.route} navigation={props.navigation} />
 
-			<Text>Add Recipe</Text>
+				<Text>Tilføj ny Opskrift</Text>
 
-			<TextInput
-				label="Title"
-				returnKeyType="next"
-				value={title.value}
-				onChangeText={(text) => setTitle({ value: text, error: '' })}
-				error={!!title.error}
-				errorText={title.error}
-			/>
-			<View style={{ flex: 1, width: '100%' }}>
+				<TextInput
+					label="Navn"
+					returnKeyType="next"
+					value={title.value}
+					onChangeText={(text) => setTitle({ value: text, error: '' })}
+					error={!!title.error}
+					errorText={title.error}
+				/>
+				{/* <View style={{ flex: 1, width: '100%' }}>
 				<List.AccordionGroup>
 					<List.Accordion title="Difficulty" id="1">
 						<List.Item title="Item 1" />
@@ -74,11 +84,12 @@ const AddFoodToListScreen = (props) => {
 					</List.Accordion>
 				</List.AccordionGroup>
 			</View>
-			<AddRecipeIngredients />
+			<AddRecipeIngredients /> */}
 
-			<Button mode="contained" onPress={AddToList}>
-				Tilføj
-			</Button>
+				<Button mode="contained" onPress={AddToList}>
+					Tilføj
+				</Button>
+			</View>
 		</MainContainer>
 	);
 };

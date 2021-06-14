@@ -1,19 +1,18 @@
 import React from 'react';
-import MainContainer from '../../components/Organisms/MainContainer';
+import { Text } from 'react-native';
+import { Button, MainContainer } from '../../components';
+import { View, StyleSheet, TouchableHighlight, Image } from 'react-native';
+
 import firebase from 'firebase';
-require('firebase/firestore');
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { View, StyleSheet, TouchableHighlight, Image, Text } from 'react-native';
-
 import { IconButton } from 'react-native-paper';
-import { addToCustomList, deleteFood } from '../../functions';
+import { clearFoodList, deleteFood } from '../../functions';
 
-export default function List({ navigation }) {
+function CustomList({ navigation }) {
 	const [ GetData, setGetData ]: any = React.useState(null);
-
 	const query = firebase
 		.firestore()
-		.collection('Allrecipes')
+		.collection('AddToCustomList')
 		.doc(firebase.auth().currentUser.uid)
 		.collection('recipes')
 		.orderBy('Name');
@@ -28,12 +27,13 @@ export default function List({ navigation }) {
 
 	return (
 		<MainContainer scroll={true}>
+			<Button onPress={() => clearFoodList()}>Clear List</Button>
 			<View style={styles.Container}>
 				{GetData &&
-					GetData.map((data) => (
+					GetData.map((data, index) => (
 						<TouchableHighlight
 							style={styles.Card}
-							key={data.Name}
+							key={index}
 							onPress={() => navigation.navigate('RecipeDetails', data.Name)}
 						>
 							<View style={styles.Content}>
@@ -50,18 +50,11 @@ export default function List({ navigation }) {
 								<View style={{ width: '100%' }}>
 									<Text style={styles.Title}>{data.Name}</Text>
 								</View>
-
 								<IconButton
 									color={'#000000'}
 									size={25}
 									icon="delete"
-									onPress={() => deleteFood(data.Name, 'Allrecipes')}
-								/>
-								<IconButton
-									color={'#000000'}
-									size={25}
-									icon="folder"
-									onPress={() => addToCustomList(data)}
+									onPress={() => deleteFood(data.Name, 'AddToCustomList')}
 								/>
 							</View>
 						</TouchableHighlight>
@@ -70,6 +63,8 @@ export default function List({ navigation }) {
 		</MainContainer>
 	);
 }
+
+export default CustomList;
 
 const styles = StyleSheet.create({
 	Container: {

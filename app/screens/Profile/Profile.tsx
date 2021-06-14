@@ -4,7 +4,6 @@ import { LogOutButton, MainContainer } from '../../components';
 import { connect } from 'react-redux';
 
 const Profile = ({ currentUser }) => {
-	console.log(currentUser);
 	return (
 		<MainContainer>
 			<LogOutButton />

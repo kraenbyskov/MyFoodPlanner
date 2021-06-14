@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, View, SafeAreaView, StyleSheet } from 'react-native';
-import { LogOutButton, MainContainer } from '../components';
+import { Text } from 'react-native';
+import { MainContainer } from '../components';
 import { connect } from 'react-redux';
 
 const Dashboard = ({ currentUser }) => {
