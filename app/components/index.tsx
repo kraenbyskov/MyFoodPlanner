@@ -1,4 +1,4 @@
-import { SnackBar, TextInput, Paragraph, Logo, BackButton, Background, Button } from './Atoms';
+import { SnackBar, RecipeCard, TextInput, Paragraph, Logo, BackButton, Background, Button } from './Atoms';
 // Atoms
 
 // Molecules
@@ -15,6 +15,7 @@ export {
 	LogOutButton,
 	TextInput,
 	Paragraph,
+	RecipeCard,
 	MainContainer,
 	Logo,
 	BackButton,

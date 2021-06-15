@@ -9,14 +9,16 @@ interface ButtonInterface {
 	children: any;
 	props?: any;
 	onPress?: any;
+	icon?: string;
 }
 
-const Button: FC<ButtonInterface> = ({ mode = 'contained', style, children, ...props }) => (
+const Button: FC<ButtonInterface> = ({ icon, mode = 'contained', style, children, ...props }) => (
 	<PaperButton
 		style={[ styles.button, mode === 'outlined' && { backgroundColor: theme.colors.surface }, style ]}
 		color={mode === 'outlined' && '#135d4b'}
 		labelStyle={styles.text}
 		mode={mode}
+		icon={icon}
 		{...props}
 	>
 		{children}

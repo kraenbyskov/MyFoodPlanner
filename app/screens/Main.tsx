@@ -7,7 +7,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { theme } from '../core/theme';
 
-import DasbhoardScreen from './Dashboard';
+import DasbhoardScreen from './Dashboard/Dashboard';
 import RecipesScreen from './Recipes/Recipes';
 import CustomListScreen from './CustomList/CustomList';
 import { View } from 'react-native';

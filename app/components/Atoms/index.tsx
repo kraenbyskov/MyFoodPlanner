@@ -5,5 +5,6 @@ import Logo from './Logo';
 import Paragraph from './Paragraph';
 import TextInput from './TextInput';
 import SnackBar from './SnackBar';
+import RecipeCard from './RecipeCard';
 
-export { SnackBar, TextInput, Paragraph, Logo, BackButton, Background, Button };
+export { SnackBar, RecipeCard, TextInput, Paragraph, Logo, BackButton, Background, Button };

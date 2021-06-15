@@ -19,9 +19,9 @@ export default function RecipeDetails({ route }) {
 		firebase
 			.firestore()
 			.collection('Allrecipes')
-			.doc(firebase.auth().currentUser.uid)
+			.doc(route.params[1])
 			.collection('recipes')
-			.doc(route.params)
+			.doc(route.params[0])
 			.get()
 			.then((snapshot) => {
 				setGetData(snapshot.data());

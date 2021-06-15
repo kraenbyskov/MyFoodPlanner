@@ -44,7 +44,8 @@ const AddFoodToListScreen = (props) => {
 					.set({
 						Name: title.value,
 						downloadUrl: snapshot,
-						Date: firebase.firestore.FieldValue.serverTimestamp()
+						Date: firebase.firestore.FieldValue.serverTimestamp(),
+						Owner: firebase.auth().currentUser.uid
 					})
 					.then(function() {
 						props.navigation.popToTop();
