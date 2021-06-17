@@ -16,14 +16,12 @@ const Dashboard = ({ currentUser, navigation }) => {
 		.collection('recipes')
 		.orderBy('Name');
 	const [ Food ]: any = useCollectionData(query, { idField: 'id' });
-
 	React.useEffect(
 		() => {
 			setGetData(Food);
 		},
 		[ Food ]
 	);
-	console.log(currentUser);
 	return (
 		<MainContainer scroll={true}>
 			<Text>Velkommen {currentUser && currentUser.name}</Text>

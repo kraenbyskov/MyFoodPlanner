@@ -1,53 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import { LogOutButton, MainContainer } from '../../components';
+import { Button, LogOutButton, MainContainer, TextInput } from '../../components';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-
-const getUsers = (setState) => {
-	const ref = firebase.firestore().collection('users');
-	const onCollection = (querySnapshot) => {
-		const Data = [];
-		querySnapshot.forEach((doc) => {
-			const { name } = doc.data();
-			Data.push({
-				id: doc.id,
-				name
-			});
-			setState({ Data });
-		});
-	};
-	ref.onSnapshot(onCollection);
-};
 
 const Profile = ({ currentUser }) => {
-	const [ GetData, setGetData ]: any = useState([]);
+	const [ userValue, setuserValue ] = useState({ value: '', error: '' });
 
-	useEffect(() => {
-		getUsers(setGetData);
-	}, []);
-	// const query = firebase.firestore().collection('users');
-	// const [ Food ]: any = useCollectionData(query);
-
-	// useEffect(
-	// 	() => {
-	// 		setGetData(Food);
-	// 	},
-	// 	[ Food ]
-	// );
-
-	// firebase.firestore().collection('users').onSnapshot((snapshot) => {
-	// 	setGetData(snapshot);
-	// });
-
-	const shareListWith = (id) => {
-		firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).update({
-			sharing: id
+	const shareListWith = (text) => {
+		console.log(text);
+		const searchUser = firebase.firestore().collection('users').where('name', '==', text);
+		searchUser.get().then((snapshot) => {
+			snapshot.forEach((data) => {
+				const user = data.data();
+				firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).update({
+					sharing: data.id
+				});
+			});
 		});
 	};
 
-	console.log(GetData);
 	return (
 		<MainContainer>
 			<LogOutButton />
@@ -56,9 +28,21 @@ const Profile = ({ currentUser }) => {
 			<Text>{currentUser && currentUser.name}</Text>
 			<Text>{currentUser && currentUser.email}</Text>
 
-			<Text>share profile</Text>
-			{GetData.Data &&
-				GetData.Data.map((users) => <Text onPress={() => shareListWith(users.id)}>{users.name}</Text>)}
+			<View style={{ flex: 1, width: '100%' }}>
+				<TextInput
+					label="Email"
+					returnKeyType="next"
+					value={userValue.value}
+					onChangeText={(text) => setuserValue({ value: text, error: '' })}
+					error={!!userValue.error}
+					errorText={userValue.error}
+					autoCapitalize="none"
+					autoCompleteType="email"
+					textContentType="emailAddress"
+					keyboardType="email-address"
+				/>
+				<Button onPress={() => shareListWith(userValue.value)}>Share With</Button>
+			</View>
 		</MainContainer>
 	);
 };

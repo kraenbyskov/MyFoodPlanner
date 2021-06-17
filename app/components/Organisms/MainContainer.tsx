@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const MainContainer = ({ children, scroll = false }) => {
+const MainContainer = ({ children, scroll = false, refresh = false }) => {
 	return (
 		<SafeAreaView style={{ flex: 1 }}>
 			<TopAppBar />

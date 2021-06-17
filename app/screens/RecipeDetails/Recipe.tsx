@@ -14,7 +14,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 export default function RecipeDetails({ route }) {
 	const [ GetData, setGetData ]: any = React.useState(null);
-
+	console.log(route.params[0], route.params[1]);
 	React.useEffect(() => {
 		firebase
 			.firestore()

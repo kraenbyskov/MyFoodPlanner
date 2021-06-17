@@ -2,29 +2,29 @@ import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { Button, MainContainer, RecipeCard } from '../../components';
 import { View, StyleSheet, TouchableHighlight, Image } from 'react-native';
+import { connect } from 'react-redux';
 
 import firebase from 'firebase';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { IconButton } from 'react-native-paper';
-import { clearFoodList, deleteFood } from '../../functions';
+import { clearFoodList, collectRecipe, deleteFood } from '../../functions';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 function CustomList({ navigation }) {
-	const [ GetData, setGetData ]: any = useState([]);
-
-	const query = firebase
-		.firestore()
-		.collection('AddToCustomList')
-		.doc(firebase.auth().currentUser.uid)
-		.collection('recipes');
-	const [ Food ]: any = useCollectionData(query, { idField: 'id' });
-
-	useEffect(
-		() => {
-			setGetData(Food);
-		},
-		[ Food ]
-	);
-
+	const [ GetData, setGetData ]: any = React.useState(null);
+		const query = firebase
+			.firestore()
+			.collection('AddToCustomList')
+			.doc(firebase.auth().currentUser.uid)
+			.collection('recipes')
+			.orderBy('Name');
+		const [ Food ]: any = useCollectionData(query, { idField: 'id' });
+	
+		React.useEffect(
+			() => {
+				setGetData(Food);
+			},
+			[ Food ]
+		);
 	return (
 		<MainContainer scroll={true}>
 			<View style={styles.ButtonView}>
@@ -37,22 +37,30 @@ function CustomList({ navigation }) {
 			</View>
 			<View style={styles.Container}>
 				{GetData &&
-					GetData.map((data, index) => (
-						<RecipeCard key={index} navigation={navigation} data={data}>
-							<IconButton
-								color={'#000000'}
-								size={25}
-								icon="delete"
-								onPress={() => deleteFood(data.Name, 'AddToCustomList')}
-							/>
-						</RecipeCard>
-					))}
+					GetData.map((data, index) => {
+						{
+							console.log(data);
+						}
+						return (
+							<RecipeCard key={index} navigation={navigation} data={data}>
+								<IconButton
+									color={'#000000'}
+									size={25}
+									icon="delete"
+									onPress={() => deleteFood(data.Name, 'AddToCustomList')}
+								/>
+							</RecipeCard>
+						);
+					})}
 			</View>
 		</MainContainer>
 	);
 }
 
-export default CustomList;
+const mapStateToProps = (store) => ({
+	currentUser: store.userState.currentUser
+});
+export default connect(mapStateToProps, null)(CustomList);
 
 const styles = StyleSheet.create({
 	Container: {
