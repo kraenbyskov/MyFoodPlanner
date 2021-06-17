@@ -28,6 +28,7 @@ const List = ({ navigation, currentUser }) => {
 	);
 };
 
+
 const mapStateToProps = (store) => ({
 	currentUser: store.userState.currentUser
 });

@@ -9,7 +9,8 @@ const addToCustomList = (data) => {
 		.doc(data.Name)
 		.set({
 			Name: data.Name,
-			downloadUrl: data.downloadUrl
+			downloadUrl: data.downloadUrl,
+			Owner: data.Owner,
 		});
 };
 

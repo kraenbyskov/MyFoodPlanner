@@ -17,7 +17,7 @@ function CustomList({ navigation }) {
 			.doc(firebase.auth().currentUser.uid)
 			.collection('recipes')
 			.orderBy('Name');
-		const [ Food ]: any = useCollectionData(query, { idField: 'id' });
+		const [ Food ]: any = useCollectionData(query);
 	
 		React.useEffect(
 			() => {
@@ -25,6 +25,7 @@ function CustomList({ navigation }) {
 			},
 			[ Food ]
 		);
+		console.log(GetData)
 	return (
 		<MainContainer scroll={true}>
 			<View style={styles.ButtonView}>
@@ -38,9 +39,6 @@ function CustomList({ navigation }) {
 			<View style={styles.Container}>
 				{GetData &&
 					GetData.map((data, index) => {
-						{
-							console.log(data);
-						}
 						return (
 							<RecipeCard key={index} navigation={navigation} data={data}>
 								<IconButton

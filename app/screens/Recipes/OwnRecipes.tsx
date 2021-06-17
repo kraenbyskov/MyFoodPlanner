@@ -16,7 +16,6 @@ interface OwnRecipesInterface {
 
 const OwnRecipes: React.FC<OwnRecipesInterface> =({ navigation, sharing })  =>{
 	const [ GetData, setGetData ]: any = React.useState(null);
-console.log(sharing)
 	const query = firebase
 		.firestore()
 		.collection('Allrecipes')
@@ -43,7 +42,7 @@ console.log(sharing)
 							icon="delete"
 							onPress={() => deleteFood(data.Name, 'Allrecipes')}
 						/>
-						<IconButton color={'#000000'} size={25} icon="folder" onPress={() => addToCustomList(data)} />
+						<IconButton color={'#000000'} size={25} icon="check" onPress={() => addToCustomList(data)} />
 					</RecipeCard>
 				))}
 		</View>
