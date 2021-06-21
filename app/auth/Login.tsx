@@ -9,6 +9,7 @@ import firebase from 'firebase';
 const Login = ({ navigation }) => {
 	const [ email, setEmail ] = useState({ value: '', error: '' });
 	const [ password, setPassword ] = useState({ value: '', error: '' });
+	const [ loginError, setloginError ] = useState('');
 
 	const _onLoginPressed = () => {
 		const emailError = emailValidator(email.value);
@@ -27,7 +28,7 @@ const Login = ({ navigation }) => {
 				console.log(result);
 			})
 			.catch((error) => {
-				console.log(error);
+				setloginError(error.code);
 			});
 	};
 
@@ -61,16 +62,29 @@ const Login = ({ navigation }) => {
 				errorText={password.error}
 				secureTextEntry
 			/>
+			{loginError ? (
+				<Text>
+					{loginError === 'auth/user-not-found' ? (
+						'Forkert Email'
+					) : loginError === 'auth/wrong-password' ? (
+						'Forkert Password'
+					) : loginError === 'auth/too-many-requests' ? (
+						'Glemt dit password ? '
+					) : (
+						loginError
+					)}
+				</Text>
+			) : null}
 			<Button mode="contained" onPress={_onLoginPressed}>
 				Login
 			</Button>
 
-			{/* <View style={styles.row}>
+			<View style={styles.row}>
 				<Text style={styles.label}>Har du ikke en bruger? </Text>
 				<TouchableOpacity onPress={() => navigation.navigate('Register')}>
 					<Text style={styles.link}>Register</Text>
 				</TouchableOpacity>
-			</View> */}
+			</View>
 		</Background>
 	);
 };

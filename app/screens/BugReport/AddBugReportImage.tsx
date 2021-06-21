@@ -16,11 +16,11 @@ const AddBugReportImage = ({ route, navigation }) => {
 const styles = StyleSheet.create({
 	CaptureImage: {
 		width: 200,
-		height: 300
+		height: 200
 	},
 	RecipeImage: {
 		width: 200,
-		height: 300
+		height: 200
 	}
 });
 
