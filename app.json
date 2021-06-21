@@ -18,13 +18,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "ios"
+      "bundleIdentifier": "com.kraenbyskov.MyFoodPlanner"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./app/assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.kraenbyskov.MyFoodPlanner"
     },
     "web": {
       "favicon": "./app/assets/favicon.png"

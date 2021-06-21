@@ -4,7 +4,7 @@ import { Button, LogOutButton, MainContainer, TextInput } from '../../components
 import { connect } from 'react-redux';
 import firebase from 'firebase';
 
-const Profile = ({ currentUser }) => {
+const Profile = ({ currentUser, navigation}) => {
 	const [ userValue, setuserValue ] = useState({ value: '', error: '' });
 
 	const shareListWith = (text) => {
@@ -42,6 +42,7 @@ const Profile = ({ currentUser }) => {
 					keyboardType="email-address"
 				/>
 				<Button onPress={() => shareListWith(userValue.value)}>Share With</Button>
+				<Button onPress={() => navigation.navigate('BugReport')}>Bug reporting</Button>
 			</View>
 		</MainContainer>
 	);

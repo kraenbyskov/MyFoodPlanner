@@ -14,8 +14,8 @@ const Dashboard = ({ currentUser, navigation }) => {
 		.collection('Allrecipes')
 		.doc(firebase.auth().currentUser.uid)
 		.collection('recipes')
-		.orderBy('Name');
-	const [ Food ]: any = useCollectionData(query, { idField: 'id' });
+		.orderBy('Date', "desc").limit(3);
+	const [ Food ]: any = useCollectionData(query);
 	React.useEffect(
 		() => {
 			setGetData(Food);
@@ -28,7 +28,7 @@ const Dashboard = ({ currentUser, navigation }) => {
 			<Text>Nye Opskrifter</Text>
 			<View style={styles.Container}>
 				{GetData &&
-					GetData.slice(0, 3).map((data, index) => (
+					GetData.map((data, index) => (
 						<RecipeCard key={index} navigation={navigation} data={data}>
 							<IconButton
 								color={'#000000'}

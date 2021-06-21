@@ -65,12 +65,12 @@ const Login = ({ navigation }) => {
 				Login
 			</Button>
 
-			<View style={styles.row}>
+			{/* <View style={styles.row}>
 				<Text style={styles.label}>Har du ikke en bruger? </Text>
 				<TouchableOpacity onPress={() => navigation.navigate('Register')}>
 					<Text style={styles.link}>Register</Text>
 				</TouchableOpacity>
-			</View>
+			</View> */}
 		</Background>
 	);
 };

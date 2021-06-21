@@ -1,13 +1,9 @@
-import React, { useEffect } from 'react';
-import { MainContainer, RecipeCard } from '../../components';
+import React from 'react';
+import { MainContainer } from '../../components';
 require('firebase/firestore');
-import { Text, View, StyleSheet, RefreshControl, SafeAreaView, ScrollView } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import firebase from 'firebase';
 
-import { IconButton } from 'react-native-paper';
-import { addToCustomList, collectRecipe, deleteFood } from '../../functions';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
 import OwnRecipes from './OwnRecipes';
 
 const List = ({ navigation, currentUser }) => {

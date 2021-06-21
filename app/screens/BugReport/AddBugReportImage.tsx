@@ -1,9 +1,8 @@
 import React from 'react';
 import { Image, StyleSheet, View, TouchableHighlight } from 'react-native';
 
-const AddRecipeImage = ({ route, navigation }) => {
-	const destination = 'AddRecipe';
-
+const AddBugReportImage = ({ route, navigation }) => {
+	const destination = 'BugReport';
 	return (
 		<TouchableHighlight style={styles.CaptureImage} onPress={() => navigation.navigate('Add', { destination })}>
 			<Image
@@ -17,15 +16,12 @@ const AddRecipeImage = ({ route, navigation }) => {
 const styles = StyleSheet.create({
 	CaptureImage: {
 		width: 200,
-		height: 200,
-		borderRadius: 200,
-		marginBottom: 40
+		height: 300
 	},
 	RecipeImage: {
 		width: 200,
-		height: 200,
-		borderRadius: 200
+		height: 300
 	}
 });
 
-export default AddRecipeImage;
+export default AddBugReportImage;

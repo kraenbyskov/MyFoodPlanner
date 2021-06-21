@@ -19,6 +19,7 @@ import AddScreen from './app/components/Organisms/AddImage';
 import AddRecipeScreen from './app/screens/AddRecipe/AddRecipe';
 import RecipeDetailsScreen from './app/screens/RecipeDetails/Recipe';
 import ProfileScreen from './app/screens/Profile/Profile';
+import BugReportScreen from './app/screens/BugReport/BugReport';
 
 import { SnackBar } from './app/components';
 
@@ -96,6 +97,13 @@ export default function App() {
 					<Stack.Screen
 						name="Profile"
 						component={ProfileScreen}
+						options={{
+							headerShown: false
+						}}
+					/>
+					<Stack.Screen
+						name="BugReport"
+						component={BugReportScreen}
 						options={{
 							headerShown: false
 						}}

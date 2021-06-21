@@ -17,13 +17,13 @@ const CameraActions = ({ Icon, PressFunction, disabled = false }) => {
 	);
 };
 
-export default function AddImage({ navigation }) {
+export default function AddImage(props) {
 	const [ hasGalleryPermission, setHasGalleryPermission ] = useState(null);
 	const [ hasCameraPermission, setHasCameraPermission ] = useState(null);
 	const [ camera, setCamera ] = useState(null);
 	const [ image, setImage ] = useState(null);
 	const [ type, setType ] = useState(Camera.Constants.Type.back);
-
+	console.log(props);
 	useEffect(() => {
 		(async () => {
 			const cameraStatus = await Camera.requestPermissionsAsync();
@@ -50,7 +50,7 @@ export default function AddImage({ navigation }) {
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
 			allowsEditing: true,
 			aspect: [ 1, 1 ],
-			quality: 1
+			quality: 0
 		});
 
 		if (!result.cancelled) {
@@ -70,7 +70,7 @@ export default function AddImage({ navigation }) {
 			<Appbar style={styles.Appbar}>
 				<Appbar.Action
 					icon={() => <MaterialCommunityIcons name={'arrow-left-thick'} color={'white'} size={26} />}
-					onPress={() => navigation.goBack()}
+					onPress={() => props.navigation.goBack()}
 				/>
 				<CameraActions
 					Icon={'camera-retake'}
@@ -87,7 +87,7 @@ export default function AddImage({ navigation }) {
 				<CameraActions
 					disabled={image ? false : true}
 					Icon={'plus-box'}
-					PressFunction={() => navigation.navigate('AddRecipe', { image })}
+					PressFunction={() => props.navigation.navigate(props.route.params.destination, { image })}
 				/>
 			</Appbar>
 			{!image ? (
