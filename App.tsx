@@ -15,6 +15,20 @@ import rootReducer from './app/Redux/reducers/index';
 import thunk from 'redux-thunk';
 import MainScreen from './app/screens/Main';
 
+import {
+	useFonts,
+	Lato_100Thin,
+	Lato_100Thin_Italic,
+	Lato_300Light,
+	Lato_300Light_Italic,
+	Lato_400Regular,
+	Lato_400Regular_Italic,
+	Lato_700Bold,
+	Lato_700Bold_Italic,
+	Lato_900Black,
+	Lato_900Black_Italic
+} from '@expo-google-fonts/lato';
+
 import AddScreen from './app/components/Organisms/AddImage';
 import AddRecipeScreen from './app/screens/AddRecipe/AddRecipe';
 import RecipeDetailsScreen from './app/screens/RecipeDetails/Recipe';
@@ -40,6 +54,19 @@ if (firebase.apps.length === 0) {
 }
 
 export default function App() {
+	let [ fontsLoaded ] = useFonts({
+		Lato_100Thin,
+		Lato_100Thin_Italic,
+		Lato_300Light,
+		Lato_300Light_Italic,
+		Lato_400Regular,
+		Lato_400Regular_Italic,
+		Lato_700Bold,
+		Lato_700Bold_Italic,
+		Lato_900Black,
+		Lato_900Black_Italic
+	});
+
 	const [ LoggedIn, setLoggedIn ] = React.useState(false);
 	const [ Loaded, setLoaded ] = React.useState(false);
 	const [ visible, setVisible ] = React.useState(true);
@@ -54,6 +81,14 @@ export default function App() {
 			}
 		});
 	}, []);
+
+	if (!fontsLoaded) {
+		return (
+			<View style={{ flex: 1, justifyContent: 'center' }}>
+				<Text>Loading</Text>
+			</View>
+		);
+	}
 
 	if (!Loaded) {
 		return (

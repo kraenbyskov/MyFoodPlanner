@@ -18,52 +18,35 @@ import { Button } from '../../components';
 
 export default function RecipeDetails({ route, navigation }) {
 	const [ GetData, setGetData ]: any = React.useState(null);
-	console.log(route.params[0], route.params[1]);
+
+	const db = firebase.firestore().collection('Allrecipes');
+
 	React.useEffect(() => {
-		firebase
-			.firestore()
-			.collection('Allrecipes')
-			.doc(route.params[1])
-			.collection('recipes')
-			.doc(route.params[0])
-			.get()
-			.then((snapshot) => {
-				setGetData(snapshot.data());
-			});
+		db.doc(route.params.Owner + route.params.Name).get().then((snapshot) => {
+			setGetData(snapshot.data());
+		});
 	}, []);
-
 	const addToOwnList = () => {
-		firebase
-		.firestore()
-		.collection('Allrecipes')
-		.doc(firebase.auth().currentUser.uid)
-		.collection('recipes')
-		.doc(route.params[0])
-		.set(GetData)
-	}
+		db.doc(firebase.auth().currentUser.uid).collection('recipes').doc(route.params[0]).set(GetData);
+	};
 
-
-
-	const deleteAndNavigateBack = (name) => {
-		deleteFood(name, 'Allrecipes')
-		navigation.goBack()
-
-	}
-
-
+	const deleteAndNavigateBack = (Owner, name) => {
+		deleteFood(Owner + name, 'Allrecipes');
+		navigation.goBack();
+	};
 
 	if (GetData) {
-		const { Name, downloadUrl, Ingredienser } = GetData;
+		const { Owner, Name, downloadUrl, Ingredienser } = GetData;
 		return (
 			<MainContainer scroll={true}>
 				<View>
-				<IconButton
-							color={'#000000'}
-							size={25}
-							icon="delete"
-							onPress={() => deleteAndNavigateBack(Name)}
-						/>
-						<IconButton color={'#000000'} size={25} icon="check" onPress={() => addToCustomList(GetData)} />
+					<IconButton
+						color={'#000000'}
+						size={25}
+						icon="delete"
+						onPress={() => deleteAndNavigateBack(Owner, Name)}
+					/>
+					<IconButton color={'#000000'} size={25} icon="check" onPress={() => addToCustomList(GetData)} />
 				</View>
 				<Button onPress={() => addToOwnList()}>Add to my own</Button>
 				<RecipeBanner title={Name} image={downloadUrl} />

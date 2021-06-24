@@ -6,21 +6,23 @@ import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 const MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical';
 
-export default function TopAppBar() {
+export default function TopAppBar({ mainColor = 'black' }) {
 	const navigation = useNavigation();
-
+	console.log(navigation.canGoBack());
 	return (
 		<Appbar style={styles.Appbar}>
-			<Appbar.Action
-				icon={() => <MaterialCommunityIcons name={'arrow-left-thick'} size={26} />}
-				onPress={() => navigation.goBack()}
-			/>
+			{navigation.canGoBack() ? (
+				<Appbar.Action
+					icon={() => <MaterialCommunityIcons color={mainColor} name={'arrow-left-thick'} size={26} />}
+					onPress={() => navigation.goBack()}
+				/>
+			) : null}
 			<Appbar.Content title="" />
 			<Appbar.Action
-				icon={({ color }) => <MaterialCommunityIcons name="account" color={color} size={26} />}
+				icon={({ color }) => <MaterialCommunityIcons name="account" color={mainColor} size={26} />}
 				onPress={() => navigation.navigate('Profile')}
 			/>
-			<Appbar.Action icon={MORE_ICON} onPress={() => {}} />
+			<Appbar.Action color={mainColor} icon={MORE_ICON} onPress={() => {}} />
 		</Appbar>
 	);
 }

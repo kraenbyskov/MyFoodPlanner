@@ -11,21 +11,21 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 function CustomList({ navigation }) {
 	const [ GetData, setGetData ]: any = React.useState(null);
-		const query = firebase
-			.firestore()
-			.collection('AddToCustomList')
-			.doc(firebase.auth().currentUser.uid)
-			.collection('recipes')
-			.orderBy('Name');
-		const [ Food ]: any = useCollectionData(query);
-	
-		React.useEffect(
-			() => {
-				setGetData(Food);
-			},
-			[ Food ]
-		);
-		console.log(GetData)
+	const query = firebase
+		.firestore()
+		.collection('AddToCustomList')
+		.doc(firebase.auth().currentUser.uid)
+		.collection('recipes')
+		.orderBy('Name');
+	const [ Food ]: any = useCollectionData(query);
+
+	React.useEffect(
+		() => {
+			setGetData(Food);
+		},
+		[ Food ]
+	);
+	console.log(GetData);
 	return (
 		<MainContainer scroll={true}>
 			<View style={styles.ButtonView}>
@@ -45,7 +45,7 @@ function CustomList({ navigation }) {
 									color={'#000000'}
 									size={25}
 									icon="delete"
-									onPress={() => deleteFood(data.Name, 'AddToCustomList')}
+									onPress={() => deleteFood(data.Owner + data.Name, 'AddToCustomList')}
 								/>
 							</RecipeCard>
 						);

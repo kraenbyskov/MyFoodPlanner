@@ -38,9 +38,7 @@ const AddFoodToListScreen = (props) => {
 				firebase
 					.firestore()
 					.collection('Allrecipes')
-					.doc(firebase.auth().currentUser.uid)
-					.collection('recipes')
-					.doc(title.value)
+					.doc(firebase.auth().currentUser.uid + title.value)
 					.set({
 						Name: title.value,
 						downloadUrl: snapshot,

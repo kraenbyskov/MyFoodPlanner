@@ -3,10 +3,7 @@ import { View, StyleSheet, TouchableHighlight, Image, Text } from 'react-native'
 
 function RecipeCard({ navigation, data, children }) {
 	return (
-		<TouchableHighlight
-			style={styles.Card}
-			onPress={() => navigation.navigate('RecipeDetails', [ data.Name, data.Owner ])}
-		>
+		<TouchableHighlight style={styles.Card} onPress={() => navigation.navigate('RecipeDetails', data)}>
 			<View style={styles.Content}>
 				<Image
 					style={styles.RecipeImage}

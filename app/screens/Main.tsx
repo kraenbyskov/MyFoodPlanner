@@ -27,7 +27,30 @@ const Main = (props) => {
 	}, []);
 
 	return (
-		<Tab.Navigator>
+		<Tab.Navigator
+			tabBarOptions={{
+				showLabel: false,
+				style: {
+					position: 'absolute',
+					bottom: 25,
+					left: 20,
+					right: 20,
+					paddingTop: 20,
+					elevation: 4,
+					backgroundColor: '#FFFFFF',
+					borderRadius: 15,
+					height: 75,
+					borderTopWidth: 0,
+					shadowColor: '#000',
+					shadowOffset: {
+						width: 0,
+						height: 3
+					},
+					shadowOpacity: 0.06,
+					shadowRadius: 3.68
+				}
+			}}
+		>
 			<Tab.Screen
 				name="Dasbhoard"
 				component={DasbhoardScreen}
@@ -40,6 +63,50 @@ const Main = (props) => {
 				component={CustomListScreen}
 				options={{
 					tabBarIcon: ({ color }) => <MaterialCommunityIcons name="playlist-check" color={color} size={26} />
+				}}
+			/>
+
+			<Tab.Screen
+				name="AddContainerdsads"
+				component={EmptyScreen}
+				listeners={({ navigation }) => ({
+					tabPress: (event) => {
+						event.preventDefault();
+						navigation.navigate('AddRecipe');
+					}
+				})}
+				options={{
+					tabBarIcon: ({ color }) => (
+						<View
+							style={{
+								flex: 1,
+								position: 'absolute',
+								shadowColor: '#000',
+								shadowOffset: {
+									width: 1,
+									height: 3
+								},
+								shadowOpacity: 0.16,
+								shadowRadius: 3.68,
+								justifyContent: 'center',
+								alignItems: 'center',
+								width: 70,
+								height: 70,
+								top: -50,
+								borderRadius: 100,
+								backgroundColor: theme.colors.secondary
+							}}
+						>
+							<MaterialCommunityIcons
+								style={{
+									color: 'white'
+								}}
+								name="plus"
+								color={color}
+								size={50}
+							/>
+						</View>
+					)
 				}}
 			/>
 

@@ -6,23 +6,18 @@ import { IconButton } from 'react-native-paper';
 import { addToCustomList, collectRecipe, deleteFood } from '../../functions';
 import { View } from 'react-native';
 
-
 interface OwnRecipesInterface {
-	navigation: any,
-	sharing?: string
+	navigation: any;
+	sharing?: string;
 }
 
-
-
-const OwnRecipes: React.FC<OwnRecipesInterface> =({ navigation, sharing })  =>{
+const OwnRecipes: React.FC<OwnRecipesInterface> = ({ navigation, sharing }) => {
 	const [ GetData, setGetData ]: any = React.useState(null);
 	const query = firebase
 		.firestore()
 		.collection('Allrecipes')
-		.doc(sharing ? sharing : firebase.auth().currentUser.uid)
-		.collection('recipes')
-		.orderBy('Name');
-	const [ Food ]: any = useCollectionData(query, { idField: 'id' });
+		.where('Owner', '==', sharing ? sharing : firebase.auth().currentUser.uid);
+	const [ Food ]: any = useCollectionData(query);
 
 	React.useEffect(
 		() => {
@@ -40,13 +35,13 @@ const OwnRecipes: React.FC<OwnRecipesInterface> =({ navigation, sharing })  =>{
 							color={'#000000'}
 							size={25}
 							icon="delete"
-							onPress={() => deleteFood(data.Name, 'Allrecipes')}
+							onPress={() => deleteFood(data.Owner + data.Name, 'Allrecipes')}
 						/>
 						<IconButton color={'#000000'} size={25} icon="check" onPress={() => addToCustomList(data)} />
 					</RecipeCard>
 				))}
 		</View>
 	);
-}
+};
 
 export default OwnRecipes;

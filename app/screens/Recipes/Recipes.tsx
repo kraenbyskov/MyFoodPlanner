@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import OwnRecipes from './OwnRecipes';
 
 const List = ({ navigation, currentUser }) => {
-	console.log(currentUser.sharing)
 	return (
 		<MainContainer scroll={true}>
 			<View style={styles.Container}>
