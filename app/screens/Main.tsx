@@ -3,7 +3,7 @@ import React, { useEffect, FC } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchUser, clearData } from '../Redux/actions/index';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { theme } from '../core/theme';
 
@@ -12,7 +12,7 @@ import RecipesScreen from './Recipes/Recipes';
 import CustomListScreen from './CustomList/CustomList';
 import { View } from 'react-native';
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 interface EmptyScreeenInterface {}
 
@@ -27,12 +27,7 @@ const Main = (props) => {
 	}, []);
 
 	return (
-		<Tab.Navigator
-			activeColor="white"
-			barStyle={{ backgroundColor: theme.colors.primary }}
-			initialRouteName="Dasbhoard"
-			labeled={false}
-		>
+		<Tab.Navigator>
 			<Tab.Screen
 				name="Dasbhoard"
 				component={DasbhoardScreen}
