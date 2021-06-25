@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, ImageBackground } from 'react-native';
 import { MainContainer, RecipeCard, AppBar } from '../../components';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
@@ -26,17 +26,22 @@ const Dashboard = ({ currentUser, navigation }) => {
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
 			<View style={styles.TopDashboard}>
-				<AppBar mainColor="white" />
-				<Text
-					style={{
-						fontSize: 30,
-						fontFamily: 'Lato_900Black',
-						color: 'white',
-						padding: 30
-					}}
+				<ImageBackground
+					source={require('../../assets/background.jpg')}
+					style={{ width: '100%', height: 330, top: -50, paddingTop: 100 }}
 				>
-					Velkommen {currentUser && currentUser.name}
-				</Text>
+					<AppBar mainColor="white" />
+					<Text
+						style={{
+							fontSize: 30,
+							fontFamily: 'Lato_900Black',
+							color: 'white',
+							padding: 30
+						}}
+					>
+						Velkommen {currentUser && currentUser.name}
+					</Text>
+				</ImageBackground>
 			</View>
 			<ScrollView
 				style={{
@@ -81,8 +86,7 @@ const styles = StyleSheet.create({
 	TopDashboard: {
 		top: -50,
 		backgroundColor: theme.colors.primary,
-		height: 300,
-		paddingTop: 50
+		height: 300
 	},
 	container: {
 		flex: 1,

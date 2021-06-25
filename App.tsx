@@ -1,11 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import AppLoading from 'expo-app-loading';
 
 import firebase from 'firebase';
 
+import { Asset } from 'expo-asset';
 import { Provider } from 'react-redux';
 import LandingScreen from './app/auth/Landing';
 import RegisterScreen from './app/auth/Register';
@@ -70,6 +72,7 @@ export default function App() {
 	const [ LoggedIn, setLoggedIn ] = React.useState(false);
 	const [ Loaded, setLoaded ] = React.useState(false);
 	const [ visible, setVisible ] = React.useState(true);
+	const [ state, setState ] = React.useState({ isReady: false });
 	React.useEffect(() => {
 		firebase.auth().onAuthStateChanged((user) => {
 			if (!user) {
@@ -82,10 +85,29 @@ export default function App() {
 		});
 	}, []);
 
+	const _cacheResourcesAsync: any = async () => {
+		const images = [ require('./app/assets/background.png') ];
+
+		const cacheImages = images.map((image) => {
+			return Asset.fromModule(image).downloadAsync();
+		});
+		return Promise.all(cacheImages);
+	};
+
+	if (!state.isReady) {
+		return (
+			<AppLoading
+				startAsync={_cacheResourcesAsync}
+				onFinish={() => setState({ isReady: true })}
+				onError={console.warn}
+			/>
+		);
+	}
+
 	if (!fontsLoaded) {
 		return (
 			<View style={{ flex: 1, justifyContent: 'center' }}>
-				<Text>Loading</Text>
+				<ActivityIndicator size="large" color="#00ff00" />
 			</View>
 		);
 	}
@@ -93,7 +115,7 @@ export default function App() {
 	if (!Loaded) {
 		return (
 			<View style={{ flex: 1, justifyContent: 'center' }}>
-				<Text>Loading</Text>
+				<ActivityIndicator size="large" color="#00ff00" />
 			</View>
 		);
 	}
@@ -152,7 +174,7 @@ export default function App() {
 					/>
 				</Stack.Navigator>
 			</NavigationContainer>
-			<SnackBar visible={visible} setVisible={setVisible} />
+			{/* <SnackBar visible={visible} setVisible={setVisible} /> */}
 		</Provider>
 	);
 }
