@@ -1,14 +1,12 @@
-import React from 'react'
+import React from 'react';
 import { View, Text } from 'react-native';
 
-const RecipeOwner = () => {
+const RecipeOwner = ({ User }) => {
 	return (
 		<View>
-			<Text>Amanda Lockwood</Text>
-			<Text>746 recipes</Text>
+			<Text>{User}</Text>
 		</View>
 	);
 };
 
-
-export default RecipeOwner
+export default RecipeOwner;

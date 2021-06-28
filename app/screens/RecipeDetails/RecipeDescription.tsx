@@ -1,19 +1,34 @@
+import React from 'react';
+import { View, Text } from 'react-native';
+import { Title, Subheading } from 'react-native-paper';
 
-import React from 'react'
-import {  View,Text } from 'react-native';
-import { Title } from 'react-native-paper';
+const RecipeDescription = ({ Data }) => {
+	const { Name, description, Owner } = Data;
+	return (
+		<View
+			style={{
+				backgroundColor: 'white',
+				marginLeft: 10,
+				marginRight: 10,
+				marginBottom: 10,
+				height: 'auto',
+				padding: 20,
+				borderRadius: 5,
+				shadowColor: '#000',
+				shadowOffset: {
+					width: 0,
+					height: 3
+				},
+				shadowOpacity: 0.06,
+				shadowRadius: 3.68,
+				elevation: 10
+			}}
+		>
+			<Title>{Name}</Title>
+			<Subheading>{Owner.User}</Subheading>
+			{description ? <Text>{description}</Text> : null}
+		</View>
+	);
+};
 
-
-const RecipeDescription = () => {
-    return( 
-      <View style={{flex: 1}}>
-              <Title>Description</Title>
-  
-      <Text>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam aspernatur cupiditate quia perspiciatis asperiores error doloremque nulla, veniam dolorem pariatur fugit placeat illum vitae aliquam fugiat deserunt neque nesciunt? Molestias!
-      </Text>
-      </View>
-    )
-  }
-
-  export default RecipeDescription
+export default RecipeDescription;

@@ -1,19 +1,15 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, SafeAreaView, ScrollView, StatusBar, RefreshControl } from 'react-native';
 import MainContainer from '../../components/Organisms/MainContainer';
 import firebase from 'firebase';
 require('firebase/firestore');
-import { Title } from 'react-native-paper';
-import { IconButton } from 'react-native-paper';
-
-import { addToCustomList, collectRecipe, deleteFood } from '../../functions';
+import { Title, IconButton } from 'react-native-paper';
 
 import RecipeOwner from './RecipeOwner';
 import RecipeBanner from './RecipeBanner';
 import RecipeIngredients from './RecipeIngredients';
 import RecipeDescription from './RecipeDescription';
 
-import { useSelector, useDispatch } from 'react-redux';
 import { Button } from '../../components';
 
 export default function RecipeDetails({ route, navigation }) {
@@ -21,47 +17,51 @@ export default function RecipeDetails({ route, navigation }) {
 
 	const db = firebase.firestore().collection('Allrecipes');
 
+	const [ refreshing, setRefreshing ] = React.useState(false);
+
+	const onRefresh = React.useCallback(() => {
+		setRefreshing(true);
+		db.doc(route.params.Id).get().then((snapshot) => {
+			setGetData(snapshot.data());
+		});
+		setRefreshing(false);
+	}, []);
+
 	React.useEffect(() => {
-		db.doc(route.params.Owner + route.params.Name).get().then((snapshot) => {
+		db.doc(route.params.Id).get().then((snapshot) => {
 			setGetData(snapshot.data());
 		});
 	}, []);
-	const addToOwnList = () => {
-		db.doc(firebase.auth().currentUser.uid).collection('recipes').doc(route.params[0]).set(GetData);
-	};
 
-	const deleteAndNavigateBack = (Owner, name) => {
-		deleteFood(Owner + name, 'Allrecipes');
-		navigation.goBack();
+	const addToOwnList = () => {
+		db
+			.doc(`${firebase.auth().currentUser.uid}_${GetData.Name}`)
+			.collection('recipes')
+			.doc(route.params[0])
+			.set(GetData);
 	};
 
 	if (GetData) {
-		const { Owner, Name, downloadUrl, Ingredienser } = GetData;
 		return (
-			<MainContainer scroll={true}>
-				<View>
-					<IconButton
-						color={'#000000'}
-						size={25}
-						icon="delete"
-						onPress={() => deleteAndNavigateBack(Owner, Name)}
-					/>
-					<IconButton color={'#000000'} size={25} icon="check" onPress={() => addToCustomList(GetData)} />
-				</View>
-				<Button onPress={() => addToOwnList()}>Add to my own</Button>
-				<RecipeBanner title={Name} image={downloadUrl} />
-				<View
+			<SafeAreaView style={{ flex: 1 }}>
+				<StatusBar barStyle={'light-content'} />
+
+				<RecipeBanner Data={GetData} />
+
+				{!firebase.auth().currentUser.uid === GetData.Owner.UserID ? (
+					<Button onPress={() => addToOwnList()}>Add to my own</Button>
+				) : null}
+				<ScrollView
 					style={{
 						flex: 1,
-						marginTop: 0
+						top: -40
 					}}
+					refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
 				>
-					<RecipeOwner />
-					<RecipeDescription />
-
-					{/* <RecipeIngredients data={{ Ingredienser, GetData, route }} /> */}
-				</View>
-			</MainContainer>
+					<RecipeDescription Data={GetData} />
+					<RecipeIngredients data={GetData} />
+				</ScrollView>
+			</SafeAreaView>
 		);
 	} else {
 		return <Title>No data</Title>;

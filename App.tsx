@@ -1,9 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, Image } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AppLoading from 'expo-app-loading';
+import { Provider as PaperProvider } from 'react-native-paper';
 
 import firebase from 'firebase';
 
@@ -16,6 +17,8 @@ import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './app/Redux/reducers/index';
 import thunk from 'redux-thunk';
 import MainScreen from './app/screens/Main';
+import {MessageComponent} from "./app/components"
+
 
 import {
 	useFonts,
@@ -36,8 +39,7 @@ import AddRecipeScreen from './app/screens/AddRecipe/AddRecipe';
 import RecipeDetailsScreen from './app/screens/RecipeDetails/Recipe';
 import ProfileScreen from './app/screens/Profile/Profile';
 import BugReportScreen from './app/screens/BugReport/BugReport';
-
-import { SnackBar } from './app/components';
+import { theme } from './app/core/theme';
 
 const Stack = createStackNavigator();
 const store = createStore(rootReducer, applyMiddleware(thunk));
@@ -55,7 +57,7 @@ if (firebase.apps.length === 0) {
 	firebase.initializeApp(firebaseConfig);
 }
 
-export default function App() {
+const App = () => {
 	let [ fontsLoaded ] = useFonts({
 		Lato_100Thin,
 		Lato_100Thin_Italic,
@@ -68,6 +70,11 @@ export default function App() {
 		Lato_900Black,
 		Lato_900Black_Italic
 	});
+
+	const navTheme = DefaultTheme;
+	navTheme.colors.background = theme.colors.background;
+
+	const onDismissSnackBar = () => setVisible(false);
 
 	const [ LoggedIn, setLoggedIn ] = React.useState(false);
 	const [ Loaded, setLoaded ] = React.useState(false);
@@ -134,47 +141,51 @@ export default function App() {
 
 	return (
 		<Provider store={store}>
-			<NavigationContainer>
-				<Stack.Navigator initialRouteName="Main">
-					<Stack.Screen name="Main" component={MainScreen} options={{ headerShown: false }} />
-					<Stack.Screen
-						name="Add"
-						component={AddScreen}
-						options={{
-							headerShown: false
-						}}
-					/>
-					<Stack.Screen
-						name="AddRecipe"
-						component={AddRecipeScreen}
-						options={{
-							headerShown: false
-						}}
-					/>
-					<Stack.Screen
-						name="Profile"
-						component={ProfileScreen}
-						options={{
-							headerShown: false
-						}}
-					/>
-					<Stack.Screen
-						name="BugReport"
-						component={BugReportScreen}
-						options={{
-							headerShown: false
-						}}
-					/>
-					<Stack.Screen
-						name="RecipeDetails"
-						component={RecipeDetailsScreen}
-						options={{
-							headerShown: false
-						}}
-					/>
-				</Stack.Navigator>
-			</NavigationContainer>
-			{/* <SnackBar visible={visible} setVisible={setVisible} /> */}
+			<PaperProvider>
+				<NavigationContainer theme={DefaultTheme}>
+					<Stack.Navigator initialRouteName="Main">
+						<Stack.Screen name="Main" component={MainScreen} options={{ headerShown: false }} />
+						<Stack.Screen
+							name="Add"
+							component={AddScreen}
+							options={{
+								headerShown: false
+							}}
+						/>
+						<Stack.Screen
+							name="AddRecipe"
+							component={AddRecipeScreen}
+							options={{
+								headerShown: false
+							}}
+						/>
+						<Stack.Screen
+							name="Profile"
+							component={ProfileScreen}
+							options={{
+								headerShown: false
+							}}
+						/>
+						<Stack.Screen
+							name="BugReport"
+							component={BugReportScreen}
+							options={{
+								headerShown: false
+							}}
+						/>
+						<Stack.Screen
+							name="RecipeDetails"
+							component={RecipeDetailsScreen}
+							options={{
+								headerShown: false
+							}}
+						/>
+					</Stack.Navigator>
+				</NavigationContainer>
+				<MessageComponent />
+			</PaperProvider>
 		</Provider>
 	);
-}
+};
+
+export default App;

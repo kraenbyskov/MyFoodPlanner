@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-function SnackBar({ visible, setVisible }) {
+function SnackBar({ visible, setVisible, data }) {
 	const onDismissSnackBar = () => setVisible(false);
 
 	return (
@@ -18,15 +18,15 @@ function SnackBar({ visible, setVisible }) {
 			style={styles.barStyle}
 			visible={visible}
 			onDismiss={onDismissSnackBar}
-			duration={700}
+			duration={7000}
 			action={{
 				label: 'Undo',
 				onPress: () => {
-					// Do something
+					setVisible(true);
 				}
 			}}
 		>
-			Hey there! I'm a Snackbar.
+			{data}
 		</Snackbar>
 	);
 }

@@ -5,8 +5,11 @@ import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
 import OwnRecipes from './OwnRecipes';
+import { Snackbar } from 'react-native-paper';
 
-const List = ({ navigation, currentUser }) => {
+
+const List = ({ navigation, currentUser, Message }) => {
+
 	return (
 		<MainContainer scroll={true}>
 			<View style={styles.Container}>
@@ -19,13 +22,19 @@ const List = ({ navigation, currentUser }) => {
 				</>
 				 : null}
 			</View>
+
+			<Text>{Message}</Text>
+
+			<View style={{ bottom: 0,width:"100%", flex:1, position: "absolute", }}>
+	
+			</View>
 		</MainContainer>
 	);
 };
 
 
 const mapStateToProps = (store) => ({
-	currentUser: store.userState.currentUser
+	currentUser: store.userState.currentUser,
 });
 export default connect(mapStateToProps, null)(List);
 

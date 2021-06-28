@@ -8,6 +8,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { theme } from '../core/theme';
 
 import DasbhoardScreen from './Dashboard/Dashboard';
+import ProfileScreen from './Profile/Profile';
 import RecipesScreen from './Recipes/Recipes';
 import CustomListScreen from './CustomList/CustomList';
 import { View } from 'react-native';
@@ -121,16 +122,10 @@ const Main = (props) => {
 			/>
 
 			<Tab.Screen
-				name="AddContainer"
-				component={EmptyScreen}
-				listeners={({ navigation }) => ({
-					tabPress: (event) => {
-						event.preventDefault();
-						navigation.navigate('AddRecipe');
-					}
-				})}
+				name="Profile"
+				component={ProfileScreen}
 				options={{
-					tabBarIcon: ({ color }) => <MaterialCommunityIcons name="camera" color={color} size={26} />
+					tabBarIcon: ({ color }) => <MaterialCommunityIcons name="account" color={color} size={26} />
 				}}
 			/>
 		</Tab.Navigator>

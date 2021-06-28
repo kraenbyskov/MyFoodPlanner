@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { Button, MainContainer, RecipeCard } from '../../components';
-import { View, StyleSheet, TouchableHighlight, Image } from 'react-native';
+import { View, StyleSheet, TouchableHighlight, Image, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 
 import firebase from 'firebase';
@@ -45,7 +45,7 @@ function CustomList({ navigation }) {
 									color={'#000000'}
 									size={25}
 									icon="delete"
-									onPress={() => deleteFood(data.Owner + data.Name, 'AddToCustomList')}
+									onPress={() => deleteFood({ id: data.Id, collection: 'AddToCustomList' })}
 								/>
 							</RecipeCard>
 						);

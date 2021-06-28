@@ -6,5 +6,6 @@ import Paragraph from './Paragraph';
 import TextInput from './TextInput';
 import SnackBar from './SnackBar';
 import RecipeCard from './RecipeCard';
+import MessageComponent from './MessageComponent';
 
-export { SnackBar, RecipeCard, TextInput, Paragraph, Logo, BackButton, Background, Button };
+export { SnackBar, RecipeCard, TextInput, Paragraph, Logo, BackButton, Background, Button, MessageComponent };

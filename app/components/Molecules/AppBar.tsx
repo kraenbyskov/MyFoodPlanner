@@ -18,11 +18,11 @@ export default function TopAppBar({ mainColor = 'black' }) {
 				/>
 			) : null}
 			<Appbar.Content title="" />
-			<Appbar.Action
+			{/* <Appbar.Action
 				icon={({ color }) => <MaterialCommunityIcons name="account" color={mainColor} size={26} />}
 				onPress={() => navigation.navigate('Profile')}
 			/>
-			<Appbar.Action color={mainColor} icon={MORE_ICON} onPress={() => {}} />
+			<Appbar.Action color={mainColor} icon={MORE_ICON} onPress={() => {}} /> */}
 		</Appbar>
 	);
 }

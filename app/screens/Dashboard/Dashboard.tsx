@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, ScrollView, ImageBackground } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, ImageBackground, StatusBar } from 'react-native';
 import { MainContainer, RecipeCard, AppBar } from '../../components';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
@@ -14,7 +14,7 @@ const Dashboard = ({ currentUser, navigation }) => {
 	const query = firebase
 		.firestore()
 		.collection('Allrecipes')
-		.where('Owner', '==', firebase.auth().currentUser.uid)
+		.where('Owner.UserID', '==', firebase.auth().currentUser.uid)
 		.limit(3);
 	const [ Food ]: any = useCollectionData(query);
 	React.useEffect(
@@ -24,7 +24,7 @@ const Dashboard = ({ currentUser, navigation }) => {
 		[ Food ]
 	);
 	return (
-		<SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+		<SafeAreaView style={{ flex: 1 }}>
 			<View style={styles.TopDashboard}>
 				<ImageBackground
 					source={require('../../assets/background.jpg')}
@@ -33,14 +33,16 @@ const Dashboard = ({ currentUser, navigation }) => {
 					<AppBar mainColor="white" />
 					<Text
 						style={{
-							fontSize: 30,
+							fontSize: 40,
 							fontFamily: 'Lato_900Black',
 							color: 'white',
-							padding: 30
+							textAlign:"center"
 						}}
 					>
-						Velkommen {currentUser && currentUser.name}
+						Hej  {currentUser && currentUser.name}!
 					</Text>
+		
+			
 				</ImageBackground>
 			</View>
 			<ScrollView
@@ -48,7 +50,7 @@ const Dashboard = ({ currentUser, navigation }) => {
 					borderTopLeftRadius: 30,
 					borderTopRightRadius: 30,
 					top: -100,
-					backgroundColor: 'white',
+					backgroundColor: theme.colors.background,
 					padding: 20
 				}}
 			>
@@ -65,7 +67,7 @@ const Dashboard = ({ currentUser, navigation }) => {
 					GetData.map((data, index) => (
 						<RecipeCard key={index} navigation={navigation} data={data}>
 							<IconButton
-								color={'#000000'}
+								color={theme.colors.secondary}
 								size={25}
 								icon="folder"
 								onPress={() => addToCustomList(data)}

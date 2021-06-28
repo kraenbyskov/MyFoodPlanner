@@ -3,20 +3,28 @@ import firebase from 'firebase';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { MainContainer, RecipeCard } from '../../components';
 import { IconButton } from 'react-native-paper';
-import { addToCustomList, collectRecipe, deleteFood } from '../../functions';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
+import { theme } from '../../core/theme';
+import { deleteFood, addToCustomList} from "../../Redux/actions"
+
+
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 interface OwnRecipesInterface {
 	navigation: any;
 	sharing?: string;
+	deleteFood: ({id, collection}) => void
+	addToCustomList: (data) => void
 }
 
-const OwnRecipes: React.FC<OwnRecipesInterface> = ({ navigation, sharing }) => {
+const OwnRecipes: React.FC<OwnRecipesInterface> = ({ navigation, sharing, deleteFood, addToCustomList }) => {
 	const [ GetData, setGetData ]: any = React.useState(null);
+
 	const query = firebase
 		.firestore()
 		.collection('Allrecipes')
-		.where('Owner', '==', sharing ? sharing : firebase.auth().currentUser.uid);
+		.where('Owner.UserID', '==', sharing ? sharing : firebase.auth().currentUser.uid);
 	const [ Food ]: any = useCollectionData(query);
 
 	React.useEffect(
@@ -32,16 +40,24 @@ const OwnRecipes: React.FC<OwnRecipesInterface> = ({ navigation, sharing }) => {
 				GetData.map((data, index) => (
 					<RecipeCard key={index} navigation={navigation} data={data}>
 						<IconButton
-							color={'#000000'}
+							color={theme.colors.secondary}
 							size={25}
 							icon="delete"
-							onPress={() => deleteFood(data.Owner + data.Name, 'Allrecipes')}
+							onPress={() => deleteFood({ id: data.Id, collection: 'Allrecipes' })}
 						/>
-						<IconButton color={'#000000'} size={25} icon="check" onPress={() => addToCustomList(data)} />
+						<IconButton
+							color={theme.colors.secondary}
+							size={25}
+							icon="check"
+							onPress={() => addToCustomList(data)}
+						/>
 					</RecipeCard>
 				))}
 		</View>
 	);
 };
 
-export default OwnRecipes;
+
+const mapDispatchProps = (dispatch) => bindActionCreators({ deleteFood, addToCustomList }, dispatch)
+
+export default connect(null, mapDispatchProps)(OwnRecipes)

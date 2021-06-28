@@ -1,4 +1,4 @@
-import { SnackBar, RecipeCard, TextInput, Paragraph, Logo, BackButton, Background, Button } from './Atoms';
+import { SnackBar, RecipeCard, TextInput, Paragraph, Logo, BackButton, Background, Button, MessageComponent } from './Atoms';
 // Atoms
 
 // Molecules
@@ -9,6 +9,7 @@ import { LogOutButton, Header, AppBar } from './Molecules';
 import { AddImage, MainContainer } from './Organisms';
 
 export {
+	MessageComponent,
 	SnackBar,
 	AddImage,
 	AppBar,

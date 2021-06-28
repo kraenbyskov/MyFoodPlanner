@@ -1,9 +1,14 @@
 import React from 'react';
 import { View, StyleSheet, TouchableHighlight, Image, Text } from 'react-native';
+import { theme } from '../../core/theme';
 
 function RecipeCard({ navigation, data, children }) {
 	return (
-		<TouchableHighlight style={styles.Card} onPress={() => navigation.navigate('RecipeDetails', data)}>
+		<TouchableHighlight
+			style={styles.Card}
+			underlayColor={theme.colors.primary}
+			onPress={() => navigation.navigate('RecipeDetails', data)}
+		>
 			<View style={styles.Content}>
 				<Image
 					style={styles.RecipeImage}

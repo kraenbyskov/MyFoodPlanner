@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, View, StatusBar } from 'react-native';
 import TopAppBar from '../Molecules/AppBar';
 
 const styles = StyleSheet.create({
@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
 const MainContainer = ({ children, scroll = false, refresh = false }) => {
 	return (
 		<SafeAreaView style={{ flex: 1 }}>
+			<StatusBar barStyle={'dark-content'} />
 			<TopAppBar />
 			{scroll ? (
 				<ScrollView style={styles.container}>{children}</ScrollView>
