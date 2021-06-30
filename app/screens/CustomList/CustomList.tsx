@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
-import { Button, MainContainer, RecipeCard } from '../../components';
-import { View, StyleSheet, TouchableHighlight, Image, StatusBar } from 'react-native';
+import { Button, AppBar, RecipeCard } from '../../components';
+import { View, StyleSheet, SafeAreaView, Image, StatusBar, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 
 import firebase from 'firebase';
 import { IconButton } from 'react-native-paper';
-import { clearFoodList, collectRecipe, deleteFood } from '../../functions';
+import { clearFoodList } from '../../functions';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { bindActionCreators } from 'redux';
+import { deleteFromstCustomList } from '../../Redux/actions';
 
-function CustomList({ navigation }) {
+function CustomList({ navigation, deleteFromstCustomList }) {
 	const [ GetData, setGetData ]: any = React.useState(null);
+
 	const query = firebase
 		.firestore()
 		.collection('AddToCustomList')
 		.doc(firebase.auth().currentUser.uid)
-		.collection('recipes')
+		.collection('CustomList')
 		.orderBy('Name');
 	const [ Food ]: any = useCollectionData(query);
 
@@ -25,9 +28,10 @@ function CustomList({ navigation }) {
 		},
 		[ Food ]
 	);
-	console.log(GetData);
+
 	return (
-		<MainContainer scroll={true}>
+		<SafeAreaView style={{ flex: 1 }}>
+			<AppBar />
 			<View style={styles.ButtonView}>
 				<Button icon="delete" style={{ width: '40%' }} onPress={() => clearFoodList()}>
 					Clear List
@@ -36,38 +40,78 @@ function CustomList({ navigation }) {
 					Tilføj flere
 				</Button>
 			</View>
-			<View style={styles.Container}>
-				{GetData &&
-					GetData.map((data, index) => {
-						return (
-							<RecipeCard key={index} navigation={navigation} data={data}>
-								<IconButton
-									color={'#000000'}
-									size={25}
-									icon="delete"
-									onPress={() => deleteFood({ id: data.Id, collection: 'AddToCustomList' })}
-								/>
-							</RecipeCard>
-						);
-					})}
-			</View>
-		</MainContainer>
+			<ScrollView style={styles.container}>
+				<View style={styles.content}>
+					<Text>7 Dags Plan</Text>
+					{GetData &&
+						GetData.slice(0, 7).map((data, index) => {
+							console.log(data);
+							return (
+								<View key={index}>
+									<Text>{data.day}</Text>
+									<RecipeCard navigation={navigation} data={data}>
+										<IconButton
+											color={'#000000'}
+											size={25}
+											icon="delete"
+											onPress={() =>
+												deleteFromstCustomList({
+													id: data.Id,
+													collection: 'AddToCustomList',
+													recipe: data.Name
+												})}
+										/>
+									</RecipeCard>
+								</View>
+							);
+						})}
+
+					<Text>ekstra</Text>
+					{GetData &&
+						GetData.slice(7, 100).map((data, index) => {
+							return (
+								<RecipeCard key={index} navigation={navigation} data={data}>
+									<IconButton
+										color={'#000000'}
+										size={25}
+										icon="delete"
+										onPress={() =>
+											deleteFromstCustomList({
+												id: data.Id,
+												collection: 'AddToCustomList',
+												recipe: data.Name
+											})}
+									/>
+								</RecipeCard>
+							);
+						})}
+				</View>
+			</ScrollView>
+		</SafeAreaView>
 	);
 }
 
 const mapStateToProps = (store) => ({
 	currentUser: store.userState.currentUser
 });
-export default connect(mapStateToProps, null)(CustomList);
+
+const mapDispatchProps = (dispatch) => bindActionCreators({ deleteFromstCustomList }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchProps)(CustomList);
 
 const styles = StyleSheet.create({
-	Container: {
+	container: {
 		flex: 1,
-		flexWrap: 'wrap',
-		marginTop: 0
+		width: '100%',
+		alignSelf: 'center',
+		marginBottom: 50
 	},
+	content: {
+		padding: 20,
+		paddingBottom: 40
+	},
+
 	ButtonView: {
-		flex: 1,
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		justifyContent: 'space-around'

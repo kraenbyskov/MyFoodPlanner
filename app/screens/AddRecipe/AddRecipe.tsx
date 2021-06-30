@@ -4,10 +4,11 @@ import { TextInput, Button, MainContainer } from '../../components';
 import firebase from 'firebase';
 import AddRecipeImage from './AddRecipeImage';
 import { List } from 'react-native-paper';
-import AddRecipeIngredients from './AddRecipeIngredients';
 require('firebase/firestore');
 import { connect } from 'react-redux';
 import { Snackbar } from 'react-native-paper';
+import { bindActionCreators } from 'redux';
+import { AddToListMessage } from '../../Redux/actions';
 
 const style = StyleSheet.create({
 	Content: {
@@ -25,10 +26,6 @@ const style = StyleSheet.create({
 });
 
 const AddFoodToListScreen = (props) => {
-	const [ visible, setVisible ] = React.useState(false);
-	const [ loading, setLoading ] = React.useState(0);
-	const onDismissSnackBar = () => setVisible(false);
-
 	const [ title, setTitle ] = React.useState({ value: '', error: '' });
 	const AddToList = async () => {
 		const uri = props.route.params.image;
@@ -41,8 +38,6 @@ const AddFoodToListScreen = (props) => {
 
 		const taskProgress = (snapshot) => {
 			let percent = snapshot.bytesTransferred / snapshot.totalBytes * 100;
-			setVisible(true);
-			setLoading(percent);
 		};
 
 		const taskCompleted = () => {
@@ -66,10 +61,11 @@ const AddFoodToListScreen = (props) => {
 						props.navigation.popToTop();
 					});
 				setTitle({ value: '', error: '' });
+				props.AddToListMessage({ title: title.value });
 			});
 		};
 		const taskError = (snapshot) => {
-			console.log(snapshot);
+			props.AddToListMessage({ title: snapshot });
 		};
 
 		task.on('state_changed', () => taskProgress, taskError, taskCompleted);
@@ -96,20 +92,6 @@ const AddFoodToListScreen = (props) => {
 					</Button>
 				</View>
 			</View>
-			<Snackbar
-				style={style.barStyle}
-				visible={visible}
-				onDismiss={onDismissSnackBar}
-				duration={700}
-				action={{
-					label: 'Undo',
-					onPress: () => {
-						setVisible(false);
-					}
-				}}
-			>
-				{loading}
-			</Snackbar>
 		</MainContainer>
 	);
 };
@@ -117,4 +99,7 @@ const AddFoodToListScreen = (props) => {
 const mapStateToProps = (store) => ({
 	currentUser: store.userState.currentUser
 });
-export default connect(mapStateToProps, null)(AddFoodToListScreen);
+
+const mapDispatchProps = (dispatch) => bindActionCreators({ AddToListMessage }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchProps)(AddFoodToListScreen);

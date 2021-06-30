@@ -23,7 +23,6 @@ export default function AddImage(props) {
 	const [ camera, setCamera ] = useState(null);
 	const [ image, setImage ] = useState(null);
 	const [ type, setType ] = useState(Camera.Constants.Type.back);
-	console.log(props);
 	useEffect(() => {
 		(async () => {
 			const cameraStatus = await Camera.requestPermissionsAsync();

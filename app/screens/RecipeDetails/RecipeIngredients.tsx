@@ -1,13 +1,11 @@
 import React from 'react';
-import { Image, View, Text, StyleSheet } from 'react-native';
-import { Title } from 'react-native-paper';
+import { View, StyleSheet } from 'react-native';
 import firebase from 'firebase';
 import { Picker } from '@react-native-picker/picker';
-import { Paragraph, Dialog, Portal, TextInput as Input, List } from 'react-native-paper';
+import { Dialog, Portal, TextInput as Input, List } from 'react-native-paper';
 import { Button } from '../../components';
 import { theme } from '../../core/theme';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { TextInput } from 'react-native-paper';
 
 const label = [ '', 'g', 'kg', 'dl', 'spsk', 'l' ];
 
@@ -23,7 +21,6 @@ const RecipeIngredients = ({ data }) => {
 	);
 
 	const [ ingredients, setingredients ] = React.useState([]);
-	console.log(ingredients);
 	const [ title, setTitle ] = React.useState({ value: '', error: '' });
 	const [ amount, setamount ] = React.useState({ value: '', error: '' });
 	const [ selectedValue, setSelectedValue ] = React.useState('');

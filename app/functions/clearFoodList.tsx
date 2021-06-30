@@ -5,7 +5,7 @@ const clearFoodList = () => {
 		.firestore()
 		.collection('AddToCustomList')
 		.doc(firebase.auth().currentUser.uid)
-		.collection('recipes')
+		.collection('CustomList')
 		.get()
 		.then((res) => {
 			res.forEach((element) => {

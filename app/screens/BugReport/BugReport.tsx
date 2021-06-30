@@ -21,14 +21,10 @@ const BugReport = (props) => {
 
 		const taskProgress = (snapshot) => {
 			let percent = snapshot.bytesTransferred / snapshot.totalBytes * 100;
-			console.log(percent);
 		};
 
 		const taskCompleted = () => {
-			console.log('hey');
 			task.snapshot.ref.getDownloadURL().then((snapshot) => {
-				console.log('hey');
-
 				firebase
 					.firestore()
 					.collection('Bugs')

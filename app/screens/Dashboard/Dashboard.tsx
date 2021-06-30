@@ -5,11 +5,12 @@ import { connect } from 'react-redux';
 import firebase from 'firebase';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { IconButton } from 'react-native-paper';
-import { addToCustomList } from '../../functions';
 import { SafeAreaView } from 'react-native';
 import { theme } from '../../core/theme';
+import { addToCustomList } from '../../Redux/actions';
+import { bindActionCreators } from 'redux';
 
-const Dashboard = ({ currentUser, navigation }) => {
+const Dashboard = ({ currentUser, navigation, addToCustomList }) => {
 	const [ GetData, setGetData ]: any = React.useState(null);
 	const query = firebase
 		.firestore()
@@ -36,13 +37,11 @@ const Dashboard = ({ currentUser, navigation }) => {
 							fontSize: 40,
 							fontFamily: 'Lato_900Black',
 							color: 'white',
-							textAlign:"center"
+							textAlign: 'center'
 						}}
 					>
-						Hej  {currentUser && currentUser.name}!
+						Hej {currentUser && currentUser.name}!
 					</Text>
-		
-			
 				</ImageBackground>
 			</View>
 			<ScrollView
@@ -82,7 +81,10 @@ const Dashboard = ({ currentUser, navigation }) => {
 const mapStateToProps = (store) => ({
 	currentUser: store.userState.currentUser
 });
-export default connect(mapStateToProps, null)(Dashboard);
+
+const mapDispatchProps = (dispatch) => bindActionCreators({ addToCustomList }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchProps)(Dashboard);
 
 const styles = StyleSheet.create({
 	TopDashboard: {

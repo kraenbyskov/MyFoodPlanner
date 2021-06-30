@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 
 
 const MessageComponent: any =({Message}) => {
-    console.log(Message)
     const onDismissSnackBar = () => setVisible(false);
 	const [ visible, setVisible ] = useState(false);
 

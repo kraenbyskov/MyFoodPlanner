@@ -1,6 +1,15 @@
-import { USER_STATE_CHANGE, CLEAR_DATA, DELETE_RECIPE, ADD_TO_CUSTOM_LIST, EDIT_RECIPE } from '../constants/index';
+import {
+	USER_STATE_CHANGE,
+	CLEAR_DATA,
+	DELETE_RECIPE,
+	ADD_TO_CUSTOM_LIST,
+	EDIT_RECIPE,
+	ADD_RECIPE_MESSAGE,
+	DELETE_CUSTOM_LIST_ITEM
+} from '../constants/index';
 import firebase from 'firebase';
 require('firebase/firestore');
+import { useState } from 'react';
 
 export function clearData() {
 	return (dispatch) => {
@@ -13,33 +22,50 @@ export function fetchUser() {
 			if (snapshot.exists) {
 				dispatch({ type: USER_STATE_CHANGE, currentUser: snapshot.data() });
 			} else {
-				console.log('does not exist');
+				dispatch({ type: USER_STATE_CHANGE, currentUser: 'does not exist' });
 			}
 		});
 	};
 }
 
-export const deleteFood = ({ id, collection }) => {
+export const deleteFood = ({ id, collection, recipe }) => {
 	return (dispatch) => {
 		firebase.firestore().collection(collection).doc(id).delete();
-		dispatch({ type: DELETE_RECIPE, Message: 'Opskrift slettet' });
+		dispatch({ type: DELETE_RECIPE, Message: recipe ? `${recipe} slettet.` : 'Opskrift slettet.' });
+	};
+};
+export const deleteFromstCustomList = ({ id, collection, recipe }) => {
+	return (dispatch) => {
+		firebase
+			.firestore()
+			.collection(collection)
+			.doc(firebase.auth().currentUser.uid)
+			.collection('CustomList')
+			.doc(id)
+			.delete();
+		dispatch({
+			type: DELETE_CUSTOM_LIST_ITEM,
+			Message: recipe ? `${recipe} slettet fra din List.` : 'Opskrift slettet fra din List.'
+		});
 	};
 };
 
-export const addToCustomList = (data) => {
+export const addToCustomList = (data, day) => {
 	return (dispatch) => {
 		firebase
 			.firestore()
 			.collection('AddToCustomList')
 			.doc(firebase.auth().currentUser.uid)
-			.collection('recipes')
-			.doc(data.Name)
+			.collection('CustomList')
+			.doc(day)
 			.set({
+				Id: data.Id,
+				day: day,
 				Name: data.Name,
 				downloadUrl: data.downloadUrl,
 				Owner: data.Owner
 			});
-		dispatch({ type: ADD_TO_CUSTOM_LIST, Message: `${data.Name} tilføjet til liste` });
+		dispatch({ type: ADD_TO_CUSTOM_LIST, Message: `${data.Name} tilføjet til ${day}` });
 	};
 };
 
@@ -52,5 +78,11 @@ export const EditRecipe = ({ id, Name, description }) => {
 			description: description
 		});
 		dispatch({ type: EDIT_RECIPE, Message: `${Name} Er blevet ændret` });
+	};
+};
+
+export const AddToListMessage = ({ title }) => {
+	return (dispatch) => {
+		dispatch({ type: ADD_RECIPE_MESSAGE, Message: `${title} blev tilføjet` });
 	};
 };

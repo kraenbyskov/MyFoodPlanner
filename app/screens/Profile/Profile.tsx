@@ -4,11 +4,10 @@ import { Button, LogOutButton, MainContainer, TextInput } from '../../components
 import { connect } from 'react-redux';
 import firebase from 'firebase';
 
-const Profile = ({ currentUser, navigation}) => {
+const Profile = ({ currentUser, navigation }) => {
 	const [ userValue, setuserValue ] = useState({ value: '', error: '' });
 
 	const shareListWith = (text) => {
-		console.log(text);
 		const searchUser = firebase.firestore().collection('users').where('name', '==', text);
 		searchUser.get().then((snapshot) => {
 			snapshot.forEach((data) => {
