@@ -13,20 +13,24 @@ import { deleteFromstCustomList } from '../../Redux/actions';
 
 function CustomList({ navigation, deleteFromstCustomList }) {
 	const [ GetData, setGetData ]: any = React.useState(null);
-
-	const query = firebase
+	const [ GetEkstra, setGetEkstra ]: any = React.useState(null);
+	const db = firebase
 		.firestore()
 		.collection('AddToCustomList')
 		.doc(firebase.auth().currentUser.uid)
-		.collection('CustomList')
-		.orderBy('Name');
-	const [ Food ]: any = useCollectionData(query);
+		.collection('CustomList');
+
+	const sevenDays = db.where('day', '!=', 'ekstra');
+	const esktraRecipes = db.where('day', '==', 'ekstra');
+	const [ weekPlan ]: any = useCollectionData(sevenDays);
+	const [ ekstraPlan ]: any = useCollectionData(esktraRecipes);
 
 	React.useEffect(
 		() => {
-			setGetData(Food);
+			setGetData(weekPlan);
+			setGetEkstra(ekstraPlan);
 		},
-		[ Food ]
+		[ weekPlan, ekstraPlan ]
 	);
 
 	return (
@@ -44,45 +48,22 @@ function CustomList({ navigation, deleteFromstCustomList }) {
 				<View style={styles.content}>
 					<Text>7 Dags Plan</Text>
 					{GetData &&
-						GetData.slice(0, 7).map((data, index) => {
-							console.log(data);
+						GetData.map((data, index) => {
 							return (
 								<View key={index}>
 									<Text>{data.day}</Text>
-									<RecipeCard navigation={navigation} data={data}>
-										<IconButton
-											color={'#000000'}
-											size={25}
-											icon="delete"
-											onPress={() =>
-												deleteFromstCustomList({
-													id: data.Id,
-													collection: 'AddToCustomList',
-													recipe: data.Name
-												})}
-										/>
-									</RecipeCard>
+									<RecipeCard navigation={navigation} data={data} />
 								</View>
 							);
 						})}
 
 					<Text>ekstra</Text>
-					{GetData &&
-						GetData.slice(7, 100).map((data, index) => {
+					{GetEkstra &&
+						GetEkstra.map((data, index) => {
 							return (
-								<RecipeCard key={index} navigation={navigation} data={data}>
-									<IconButton
-										color={'#000000'}
-										size={25}
-										icon="delete"
-										onPress={() =>
-											deleteFromstCustomList({
-												id: data.Id,
-												collection: 'AddToCustomList',
-												recipe: data.Name
-											})}
-									/>
-								</RecipeCard>
+								<View key={index}>
+									<RecipeCard navigation={navigation} data={data} />
+								</View>
 							);
 						})}
 				</View>

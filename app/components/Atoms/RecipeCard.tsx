@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { View, StyleSheet, TouchableHighlight, Image, Text } from 'react-native';
 import { theme } from '../../core/theme';
 
-function RecipeCard({ navigation, data, children }) {
+interface RecipeCardInterface {
+	navigation: any;
+	data: any;
+	children?: any;
+}
+
+const RecipeCard: FC<RecipeCardInterface> = ({ navigation, data, children }) => {
 	return (
 		<TouchableHighlight
 			style={styles.Card}
@@ -25,7 +31,7 @@ function RecipeCard({ navigation, data, children }) {
 			</View>
 		</TouchableHighlight>
 	);
-}
+};
 
 export default RecipeCard;
 
@@ -33,10 +39,10 @@ const styles = StyleSheet.create({
 	Card: {
 		flex: 1,
 		width: '100%',
-		height: 60,
+		height: 40,
 		backgroundColor: 'white',
 		borderRadius: 10,
-		marginBottom: 20,
+		marginBottom: 10,
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
@@ -48,8 +54,8 @@ const styles = StyleSheet.create({
 	},
 	RecipeImage: {
 		marginLeft: 5,
-		width: 50,
-		height: 50,
+		width: 30,
+		height: 30,
 		borderRadius: 10
 	},
 	Content: {
@@ -60,7 +66,7 @@ const styles = StyleSheet.create({
 		borderRadius: 20
 	},
 	Title: {
-		marginLeft: 20,
+		marginLeft: 10,
 		fontSize: 18
 	},
 	Icons: {

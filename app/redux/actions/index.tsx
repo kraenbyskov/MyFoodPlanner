@@ -57,7 +57,7 @@ export const addToCustomList = (data, day) => {
 			.collection('AddToCustomList')
 			.doc(firebase.auth().currentUser.uid)
 			.collection('CustomList')
-			.doc(day)
+			.doc(day !== 'ekstra' ? day : data.Id)
 			.set({
 				Id: data.Id,
 				day: day,

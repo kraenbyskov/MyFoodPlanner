@@ -3,17 +3,17 @@ import firebase from 'firebase';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { MainContainer, RecipeCard } from '../../components';
 import { IconButton } from 'react-native-paper';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { theme } from '../../core/theme';
 import { deleteFood, addToCustomList } from '../../Redux/actions';
 import { Button } from '../../components';
-import { Picker } from '@react-native-picker/picker';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Dialog, Portal, TextInput as Input, List } from 'react-native-paper';
+import { PickerComponent as Picker } from './PickerComponent';
 
-const label = [ 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag' ];
+const label = [ 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag', 'ekstra' ];
 
 interface OwnRecipesInterface {
 	navigation: any;
@@ -62,12 +62,6 @@ const OwnRecipes: React.FC<OwnRecipesInterface> = ({ navigation, sharing, delete
 						<IconButton
 							color={theme.colors.secondary}
 							size={25}
-							icon="delete"
-							onPress={() => deleteFood({ id: data.Id, collection: 'Allrecipes', recipe: data.Name })}
-						/>
-						<IconButton
-							color={theme.colors.secondary}
-							size={25}
 							icon="check"
 							onPress={() => addToCustomListDialog(data)}
 						/>
@@ -79,15 +73,7 @@ const OwnRecipes: React.FC<OwnRecipesInterface> = ({ navigation, sharing, delete
 					<Dialog.Title>Alert</Dialog.Title>
 					<Dialog.Content>
 						<View style={styles.inputfields}>
-							<Picker
-								style={{ width: '100%', height: 60, top: -70 }}
-								selectedValue={selectedValue}
-								onValueChange={(itemValue: any, itemIndex) => setSelectedValue(itemValue)}
-							>
-								{label.map((labels, index) => (
-									<Picker.Item key={index} label={labels} value={labels} />
-								))}
-							</Picker>
+							<Picker setState={setSelectedValue} state={selectedValue} />
 						</View>
 					</Dialog.Content>
 					<Dialog.Actions>
