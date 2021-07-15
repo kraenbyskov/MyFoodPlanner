@@ -7,7 +7,7 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { IconButton } from 'react-native-paper';
 import { SafeAreaView } from 'react-native';
 import { theme } from '../../core/theme';
-import { addToCustomList } from '../../Redux/actions';
+import { addToCustomList } from '../../redux/actions';
 import { bindActionCreators } from 'redux';
 
 const Dashboard = ({ currentUser, navigation, addToCustomList }) => {

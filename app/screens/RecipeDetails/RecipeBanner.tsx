@@ -7,7 +7,7 @@ import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import firebase from 'firebase';
-import { deleteFood, addToCustomList, EditRecipe } from '../../Redux/actions';
+import { deleteFood, addToCustomList, EditRecipe } from '../../redux/actions';
 import { Button } from '../../components';
 import { LinearGradient } from 'expo-linear-gradient';
 

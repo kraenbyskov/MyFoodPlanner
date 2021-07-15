@@ -5,7 +5,7 @@ import { MainContainer, RecipeCard } from '../../components';
 import { IconButton } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
 import { theme } from '../../core/theme';
-import { deleteFood, addToCustomList } from '../../Redux/actions';
+import { deleteFood, addToCustomList } from '../../redux/actions';
 import { Button } from '../../components';
 
 import { connect } from 'react-redux';

@@ -8,7 +8,7 @@ require('firebase/firestore');
 import { connect } from 'react-redux';
 import { Snackbar } from 'react-native-paper';
 import { bindActionCreators } from 'redux';
-import { AddToListMessage } from '../../Redux/actions';
+import { AddToListMessage } from '../../redux/actions';
 
 const style = StyleSheet.create({
 	Content: {
