@@ -6,9 +6,14 @@ import {
   EDIT_RECIPE,
   ADD_RECIPE_MESSAGE,
   DELETE_CUSTOM_LIST_ITEM,
+  GET_ALL_RECIPES,
 } from "../constants/index";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import firebase from "firebase";
 require("firebase/firestore");
+
+export { connect, bindActionCreators };
 
 export function clearData() {
   return (dispatch) => {
@@ -31,6 +36,20 @@ export function fetchUser() {
       });
   };
 }
+
+export const GetAllRecipes = () => {
+  return (dispatch) => {
+    const query = firebase
+      .firestore()
+      .collection("Allrecipes")
+      .where("Owner.UserID", "==", firebase.auth().currentUser.uid);
+
+    dispatch({
+      type: GET_ALL_RECIPES,
+      AllRecipes: query,
+    });
+  };
+};
 
 export const deleteFood = ({ id, collection, recipe }) => {
   return (dispatch) => {

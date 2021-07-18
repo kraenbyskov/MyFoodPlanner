@@ -8,20 +8,35 @@ import {
 } from "react-native";
 import { theme } from "../../core/theme";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import {
+  connect,
+  bindActionCreators,
+  GetAllRecipes,
+} from "../../redux/actions";
 
 interface RecipeCardInterface {
   navigation: any;
-  data: { downloadUrl?: string; Name?: string; empty?: boolean };
+  data: { downloadUrl?: string; Name?: string; empty?: boolean; day: string };
   children?: any;
-  //   setVisible: (boolean: boolean) => void;
+  setVisible?: (boolean: boolean) => void;
+  setToDay?: any;
+  GetAllRecipes?: any;
 }
 
 const RecipeCard: FC<RecipeCardInterface> = ({
   navigation,
   data,
   children,
-  //   setVisible,
+  setVisible,
+  setToDay,
+  GetAllRecipes,
 }) => {
+  const getAllRecipesPopUp = () => {
+    GetAllRecipes();
+    setVisible(true);
+    setToDay(data.day);
+  };
+
   return !data.empty ? (
     <TouchableHighlight
       style={styles.Card}
@@ -45,7 +60,7 @@ const RecipeCard: FC<RecipeCardInterface> = ({
     <TouchableHighlight
       style={[styles.Card, styles.CardEmpty]}
       underlayColor={theme.colors.primary}
-      //   onPress={() => setVisible(true)}
+      onPress={() => getAllRecipesPopUp()}
     >
       <View style={[styles.Content, styles.ContentEmpty]}>
         <MaterialCommunityIcons
@@ -58,7 +73,14 @@ const RecipeCard: FC<RecipeCardInterface> = ({
   );
 };
 
-export default RecipeCard;
+const mapStateToProps = (store) => ({
+  AllRecipes: store.recepiesState.AllRecipes,
+});
+
+const mapDispatchProps = (dispatch) =>
+  bindActionCreators({ GetAllRecipes }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchProps)(RecipeCard);
 
 const styles = StyleSheet.create({
   Card: {

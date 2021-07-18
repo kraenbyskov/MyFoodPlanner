@@ -1,8 +1,11 @@
 import React, { useEffect, FC } from "react";
 
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { fetchUser, clearData } from "../redux/actions/index";
+import {
+  connect,
+  bindActionCreators,
+  fetchUser,
+  clearData,
+} from "../redux/actions/index";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { theme } from "../core/theme";

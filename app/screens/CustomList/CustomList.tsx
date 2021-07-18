@@ -1,23 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Text } from "react-native";
-import { Button, AppBar, RecipeCard } from "../../components";
-import {
-  View,
-  StyleSheet,
-  SafeAreaView,
-  Image,
-  StatusBar,
-  ScrollView,
-} from "react-native";
-import { connect } from "react-redux";
-import { Dialog, Portal, TextInput as Input, List } from "react-native-paper";
+import { AppBar, RecipeCard } from "../../components";
+import { View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 
 import firebase from "firebase";
-import { IconButton } from "react-native-paper";
 import { clearFoodList } from "../../functions";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { bindActionCreators } from "redux";
-import { deleteFromstCustomList } from "../../redux/actions";
+
+import {
+  connect,
+  bindActionCreators,
+  deleteFromstCustomList,
+} from "../../redux/actions";
+
+import Portal from "./CustomListPortal";
+import TopButtons from "./CustomListTopButtons";
 
 let sevenDaysPlan = [
   { day: "Mandag", empty: true },
@@ -52,6 +49,7 @@ function CustomList({ navigation, deleteFromstCustomList }) {
   const [ekstraPlan]: any = useCollectionData(esktraRecipes);
   const [weekPlan]: any = useCollectionData(sevenDays);
   const [visible, setVisible] = React.useState(false);
+  const [toDay, setToDay] = React.useState("");
   const hideDialog = () => setVisible(false);
 
   React.useEffect(() => {
@@ -73,33 +71,25 @@ function CustomList({ navigation, deleteFromstCustomList }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <AppBar />
-      <View style={styles.ButtonView}>
-        <Button
-          icon="delete"
-          style={{ width: "40%" }}
-          onPress={() => {
-            clearFoodList();
-            sevenDaysPlan = resetDays;
-          }}
-        >
-          Clear List
-        </Button>
-        <Button
-          icon="plus"
-          style={{ width: "50%" }}
-          onPress={() => navigation.navigate("Recipes")}
-        >
-          Tilføj flere
-        </Button>
-      </View>
-      {/* <ScrollView style={styles.container}>
+      <TopButtons
+        navigation={navigation}
+        clearFoodList={clearFoodList}
+        resetDays={resetDays}
+        sevenDaysPlan={sevenDaysPlan}
+      />
+      <ScrollView style={styles.container}>
         <View style={styles.content}>
           <Text>7 Dags Plan</Text>
           {sevenDaysPlan.map((data, index) => {
             return (
               <View key={index}>
                 <Text style={{ marginBottom: 5 }}>{data.day}</Text>
-                <RecipeCard navigation={navigation} data={data} />
+                <RecipeCard
+                  setVisible={setVisible}
+                  setToDay={setToDay}
+                  navigation={navigation}
+                  data={data}
+                />
               </View>
             );
           })}
@@ -109,23 +99,17 @@ function CustomList({ navigation, deleteFromstCustomList }) {
             GetEkstra.map((data, index) => {
               return (
                 <View key={index}>
-                  <RecipeCard navigation={navigation} data={data} />
+                  <RecipeCard
+                    setVisible={setVisible}
+                    navigation={navigation}
+                    data={data}
+                  />
                 </View>
               );
             })}
         </View>
       </ScrollView>
-      <Portal>
-        <Dialog visible={visible} onDismiss={hideDialog}>
-          <Dialog.Title>Alert</Dialog.Title>
-          <Dialog.Content>
-            <Text>hello</Text>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Text>hello</Text>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal> */}
+      <Portal visible={visible} toDay={toDay} hideDialog={hideDialog} />
     </SafeAreaView>
   );
 }
