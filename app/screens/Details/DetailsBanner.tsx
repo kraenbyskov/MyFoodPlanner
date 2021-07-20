@@ -2,20 +2,16 @@ import React from "react";
 import { Image, View, StyleSheet, ImageBackground, Text } from "react-native";
 import { IconButton } from "react-native-paper";
 import { theme } from "../../core/theme";
-import {
-  Appbar,
-  Paragraph,
-  Dialog,
-  Portal,
-  TextInput as Input,
-  List,
-} from "react-native-paper";
-import { Platform } from "react-native";
+import { Appbar, Paragraph, Dialog, List } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import firebase from "firebase";
 import { deleteFood, addToCustomList, EditRecipe } from "../../redux/actions";
-import { Button } from "../../components";
+import {
+  AddToCustomList,
+  Button,
+  CustomInput as Input,
+  CustomPortal as Portal,
+} from "../../components";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { connect } from "react-redux";
@@ -25,6 +21,10 @@ const RecipeBanner = ({ Data, deleteFood, addToCustomList, EditRecipe }) => {
   const { Name, downloadUrl, description, Id } = Data;
 
   const [visible, setVisible] = React.useState(false);
+  const [addRecipePortal, setAddRecipePortal] = React.useState(false);
+  const [addToCustomListState, setAddToCustomListState]: any =
+    React.useState(null);
+  const [selectedValue, setSelectedValue] = React.useState("");
 
   const showDialog = () => setVisible(true);
 
@@ -46,6 +46,11 @@ const RecipeBanner = ({ Data, deleteFood, addToCustomList, EditRecipe }) => {
   const EditRecipeButton = ({ id, Name, description }) => {
     EditRecipe({ id, Name, description });
     hideDialog();
+  };
+
+  const addToCustomListDialog = (data) => {
+    setAddRecipePortal(true);
+    setAddToCustomListState(data);
   };
 
   return (
@@ -78,7 +83,7 @@ const RecipeBanner = ({ Data, deleteFood, addToCustomList, EditRecipe }) => {
             color={"#FFFFFF"}
             size={25}
             icon="check"
-            onPress={() => addToCustomList(Data)}
+            onPress={() => addToCustomListDialog(Data)}
           />
           <IconButton
             color={"#FFFFFF"}
@@ -87,53 +92,43 @@ const RecipeBanner = ({ Data, deleteFood, addToCustomList, EditRecipe }) => {
             onPress={() => showDialog()}
           />
         </Appbar>
-        <Portal>
-          <Dialog visible={visible} onDismiss={hideDialog}>
-            <Dialog.Title>Rediger indhold</Dialog.Title>
-            <Dialog.ScrollArea>
-              <Dialog.Content>
-                <Input
-                  style={{ backgroundColor: theme.colors.surface }}
-                  underlineColor="transparent"
-                  theme={{ colors: { primary: theme.colors.primary } }}
-                  mode="flat"
-                  label="Title"
-                  returnKeyType="next"
-                  value={title.value}
-                  onChangeText={(text) => setTitle({ value: text, error: "" })}
-                  error={!!title.error}
-                />
-                <Input
-                  style={{ backgroundColor: theme.colors.surface }}
-                  underlineColor="transparent"
-                  theme={{ colors: { primary: theme.colors.primary } }}
-                  mode="flat"
-                  label="Title"
-                  returnKeyType="next"
-                  value={stateDescription.value}
-                  onChangeText={(text) =>
-                    setStateDescription({ value: text, error: "" })
-                  }
-                  error={!!stateDescription.error}
-                />
-              </Dialog.Content>
-            </Dialog.ScrollArea>
-            <Dialog.Actions>
-              <Button
-                mode="contained"
-                onPress={() =>
-                  EditRecipeButton({
-                    id: Id,
-                    Name: title.value,
-                    description: stateDescription.value,
-                  })
-                }
-              >
-                Rediger
-              </Button>
-            </Dialog.Actions>
-          </Dialog>
+        <Portal
+          visible={visible}
+          onDismiss={hideDialog}
+          title={"Rediger indhold"}
+          Actions={() => (
+            <Button
+              mode="contained"
+              onPress={() =>
+                EditRecipeButton({
+                  id: Id,
+                  Name: title.value,
+                  description: stateDescription.value,
+                })
+              }
+            >
+              Rediger
+            </Button>
+          )}
+        >
+          <Input
+            value={title.value}
+            setValue={setTitle}
+            error={!!title.error}
+          />
+          <Input
+            value={stateDescription.value}
+            setValue={setStateDescription}
+            error={!!stateDescription.error}
+          />
         </Portal>
+        <AddToCustomList
+          visible={addRecipePortal}
+          setVisible={setAddRecipePortal}
+          addToCustomListState={addToCustomListState}
+          setState={setSelectedValue}
+          state={selectedValue}
+        />
       </LinearGradient>
     </ImageBackground>
   );

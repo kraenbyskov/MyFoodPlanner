@@ -1,30 +1,19 @@
 import React from "react";
-import {
-  View,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  RefreshControl,
-  Text,
-} from "react-native";
-import MainContainer from "../../components/Organisms/MainContainer";
+import { SafeAreaView, StatusBar, RefreshControl } from "react-native";
 import firebase from "firebase";
 require("firebase/firestore");
-import { Title, IconButton } from "react-native-paper";
+import { Title } from "react-native-paper";
 
-import RecipeOwner from "./RecipeOwner";
-import RecipeBanner from "./RecipeBanner";
-import RecipeIngredients from "./RecipeIngredients";
-import RecipeDescription from "./RecipeDescription";
+import Banner from "./DetailsBanner";
+import Ingredients from "./DetailsIngredients";
+import Description from "./DetailsDescription";
 
-import { Button } from "../../components";
-import RecipeEkstraImages from "./RecipeEkstraImages";
+import EkstraImages from "./DetailsEkstraImages";
 import ParallaxScrollView from "react-native-parallax-scroll-view";
 import { theme } from "../../core/theme";
 
-export default function RecipeDetails({ route, navigation }) {
+export default function Details({ route, navigation }) {
   const [GetData, setGetData]: any = React.useState(null);
-  const [GetScrollY, setGetScrollY]: any = React.useState(0);
 
   const db = firebase.firestore().collection("Allrecipes");
 
@@ -48,27 +37,30 @@ export default function RecipeDetails({ route, navigation }) {
       });
   }, []);
 
-  const addToOwnList = () => {
-    db.doc(`${firebase.auth().currentUser.uid}_${GetData.Name}`)
-      .collection("recipes")
-      .doc(route.params[0])
-      .set(GetData);
-  };
+  // const addToOwnList = () => {
+  //   db.doc(`${firebase.auth().currentUser.uid}_${GetData.Name}`)
+  //     .collection("recipes")
+  //     .doc(route.params[0])
+  //     .set(GetData);
+  // };
 
   if (GetData) {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <StatusBar barStyle={"light-content"} />
         <ParallaxScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
           style={{ top: -50 }}
           backgroundColor={theme.colors.background}
           contentBackgroundColor={theme.colors.background}
           parallaxHeaderHeight={350}
-          renderForeground={() => <RecipeBanner Data={GetData} />}
+          renderForeground={() => <Banner Data={GetData} />}
         >
-          <RecipeDescription Data={GetData} />
-          <RecipeEkstraImages Data={GetData} />
-          <RecipeIngredients data={GetData} />
+          <Description Data={GetData} />
+          <EkstraImages Data={GetData} />
+          <Ingredients data={GetData} />
         </ParallaxScrollView>
       </SafeAreaView>
     );

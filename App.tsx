@@ -35,7 +35,7 @@ import {
 
 import AddScreen from "./app/components/Organisms/AddImage";
 import AddRecipeScreen from "./app/screens/AddRecipe/AddRecipe";
-import RecipeDetailsScreen from "./app/screens/RecipeDetails/Recipe";
+import RecipeDetailsScreen from "./app/screens/Details/Details";
 import ProfileScreen from "./app/screens/Profile/Profile";
 import BugReportScreen from "./app/screens/BugReport/BugReport";
 import { theme } from "./app/core/theme";
