@@ -1,5 +1,11 @@
 import React from "react";
-import { SafeAreaView, StatusBar, RefreshControl } from "react-native";
+import {
+  SafeAreaView,
+  StatusBar,
+  RefreshControl,
+  View,
+  Animated,
+} from "react-native";
 import firebase from "firebase";
 require("firebase/firestore");
 import { Title } from "react-native-paper";
@@ -9,8 +15,27 @@ import Ingredients from "./DetailsIngredients";
 import Description from "./DetailsDescription";
 
 import EkstraImages from "./DetailsEkstraImages";
-import ParallaxScrollView from "react-native-parallax-scroll-view";
+import { ParallaxScrollView } from "../../components";
 import { theme } from "../../core/theme";
+import TopNav from "./DetailsTopNav";
+
+const RenderStickyHeader = (value) => {
+  const opacity = value.interpolate({
+    inputRange: [0, 0, 1],
+    outputRange: [0, 150, 200],
+    extrapolate: "clamp",
+  });
+  return (
+    <View style={{ height: 50, width: "100%" }}>
+      <Animated.View
+        style={[
+          { position: "absolute", top: 0, left: 0, bottom: 0, right: 0 },
+          { opacity },
+        ]}
+      />
+    </View>
+  );
+};
 
 export default function Details({ route, navigation }) {
   const [GetData, setGetData]: any = React.useState(null);
@@ -37,13 +62,6 @@ export default function Details({ route, navigation }) {
       });
   }, []);
 
-  // const addToOwnList = () => {
-  //   db.doc(`${firebase.auth().currentUser.uid}_${GetData.Name}`)
-  //     .collection("recipes")
-  //     .doc(route.params[0])
-  //     .set(GetData);
-  // };
-
   if (GetData) {
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -52,15 +70,20 @@ export default function Details({ route, navigation }) {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-          style={{ top: -50 }}
-          backgroundColor={theme.colors.background}
-          contentBackgroundColor={theme.colors.background}
+          style={{ marginTop: -50, marginBottom: -30 }}
           parallaxHeaderHeight={350}
-          renderForeground={() => <Banner Data={GetData} />}
+          stickyHeaderHeight={50}
+          stickyHeader={RenderStickyHeader}
+          parallaxHeader={() => <Banner Data={GetData} />}
+          fixedHeader={() => <TopNav Data={GetData} />}
         >
-          <Description Data={GetData} />
-          <EkstraImages Data={GetData} />
-          <Ingredients data={GetData} />
+          <View
+            style={{ width: "100%", backgroundColor: theme.colors.background }}
+          >
+            <Description Data={GetData} />
+            <EkstraImages Data={GetData} />
+            <Ingredients data={GetData} />
+          </View>
         </ParallaxScrollView>
       </SafeAreaView>
     );

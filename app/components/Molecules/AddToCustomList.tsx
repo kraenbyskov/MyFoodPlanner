@@ -3,7 +3,7 @@ import {
   CustomPortal as Portal,
   PickerComponent as Picker,
   Button,
-} from "../../components";
+} from "../Atoms";
 import { View, StyleSheet } from "react-native";
 import {
   addToCustomList,

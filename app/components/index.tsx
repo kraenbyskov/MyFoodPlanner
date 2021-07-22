@@ -12,6 +12,7 @@ import {
   CustomPortal,
   CustomInput,
   PickerComponent,
+  ParallaxScrollView,
 } from "./Atoms";
 // Atoms
 
@@ -42,4 +43,5 @@ export {
   CustomInput,
   PickerComponent,
   AddToCustomList,
+  ParallaxScrollView,
 };

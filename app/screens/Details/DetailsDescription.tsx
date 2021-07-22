@@ -8,7 +8,7 @@ import { CustomCard as Card } from "../../components";
 const RecipeDescription = ({ Data }) => {
   const { Name, description, Owner } = Data;
   return (
-    <View>
+    <View style={{ marginTop: -50 }}>
       <Card title={Name} subtitle={Owner.User}>
         <View
           style={{

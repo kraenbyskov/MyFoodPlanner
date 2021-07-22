@@ -11,6 +11,7 @@ import CustomCard from "./CustomCard";
 import CustomPortal from "./CustomPortal";
 import CustomInput from "./Input";
 import PickerComponent from "./PickerComponent";
+import ParallaxScrollView from "./ParallaxScrollView";
 
 export {
   SnackBar,
@@ -26,4 +27,5 @@ export {
   CustomPortal,
   CustomInput,
   PickerComponent,
+  ParallaxScrollView,
 };
