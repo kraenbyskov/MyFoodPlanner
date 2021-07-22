@@ -5,25 +5,18 @@ import { View, StyleSheet } from "react-native";
 interface CustomListTopButtonsInterface {
   clearFoodList: any;
   navigation: any;
-  sevenDaysPlan: any;
-  resetDays: any;
 }
 
 const CustomListTopButtons: FC<CustomListTopButtonsInterface> = ({
   clearFoodList,
   navigation,
-  sevenDaysPlan,
-  resetDays,
 }) => {
   return (
     <View style={styles.ButtonView}>
       <Button
         icon="delete"
         style={{ width: "40%" }}
-        onPress={() => {
-          clearFoodList();
-          sevenDaysPlan = resetDays;
-        }}
+        onPress={() => clearFoodList()}
       >
         Clear List
       </Button>

@@ -1,100 +1,65 @@
 import React from "react";
-import { Text } from "react-native";
+import { RefreshControl, Text } from "react-native";
 import { AppBar, RecipeCard } from "../../components";
 import { View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 
-import firebase from "firebase";
 import { clearFoodList } from "../../functions";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 
 import {
   connect,
   bindActionCreators,
   deleteFromstCustomList,
+  GetCustomList,
 } from "../../redux/actions";
 
 import Portal from "./CustomListPortal";
 import TopButtons from "./CustomListTopButtons";
 
-let sevenDaysPlan = [
-  { day: "Mandag", empty: true },
-  { day: "Tirsdag", empty: true },
-  { day: "Onsdag", empty: true },
-  { day: "Torsdag", empty: true },
-  { day: "Fredag", empty: true },
-  { day: "Lørdag", empty: true },
-  { day: "Søndag", empty: true },
-];
-const resetDays = [
-  { day: "Mandag", empty: true },
-  { day: "Tirsdag", empty: true },
-  { day: "Onsdag", empty: true },
-  { day: "Torsdag", empty: true },
-  { day: "Fredag", empty: true },
-  { day: "Lørdag", empty: true },
-  { day: "Søndag", empty: true },
-];
-
-function CustomList({ navigation, deleteFromstCustomList }) {
-  const [GetData, setGetData]: any = React.useState(null);
-  const [GetEkstra, setGetEkstra]: any = React.useState(null);
-  const db = firebase
-    .firestore()
-    .collection("AddToCustomList")
-    .doc(firebase.auth().currentUser.uid)
-    .collection("CustomList");
-
-  const esktraRecipes = db.where("day", "==", "ekstra");
-  const sevenDays = db.where("day", "!=", "ekstra");
-  const [ekstraPlan]: any = useCollectionData(esktraRecipes);
-  const [weekPlan]: any = useCollectionData(sevenDays);
+function CustomList({ navigation, CustomRecipesList, GetCustomList }) {
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    GetCustomList();
+    setRefreshing(false);
+  }, []);
+  console.log(CustomRecipesList);
   const [visible, setVisible] = React.useState(false);
   const [toDay, setToDay] = React.useState("");
   const hideDialog = () => setVisible(false);
 
   React.useEffect(() => {
-    setGetData(weekPlan);
-    setGetEkstra(ekstraPlan);
-  }, [weekPlan, ekstraPlan]);
-
-  if (GetData) {
-    weekPlan.map((element) => {
-      sevenDaysPlan.map((Weekdays, index) => {
-        if (Weekdays.day === element.day) {
-          Weekdays.empty = false;
-          sevenDaysPlan.splice(index, 1, { ...Weekdays, ...element });
-        }
-      });
-    });
-  }
+    GetCustomList();
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <AppBar />
-      <TopButtons
-        navigation={navigation}
-        clearFoodList={clearFoodList}
-        resetDays={resetDays}
-        sevenDaysPlan={sevenDaysPlan}
-      />
-      <ScrollView style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <TopButtons navigation={navigation} clearFoodList={clearFoodList} />
         <View style={styles.content}>
           <Text>7 Dags Plan</Text>
-          {sevenDaysPlan.map((data, index) => {
-            return (
-              <View key={index}>
-                <Text style={{ marginBottom: 5 }}>{data.day}</Text>
-                <RecipeCard
-                  setVisible={setVisible}
-                  setToDay={setToDay}
-                  navigation={navigation}
-                  data={data}
-                />
-              </View>
-            );
-          })}
+          {CustomRecipesList
+            ? CustomRecipesList.map((data, index) => {
+                return (
+                  <View key={index}>
+                    <Text style={{ marginBottom: 5 }}>{data.day}</Text>
+                    <RecipeCard
+                      setVisible={setVisible}
+                      setToDay={setToDay}
+                      navigation={navigation}
+                      data={data}
+                    />
+                  </View>
+                );
+              })
+            : null}
 
-          <Text>ekstra</Text>
+          {/* <Text>ekstra</Text>
           {GetEkstra &&
             GetEkstra.map((data, index) => {
               return (
@@ -106,7 +71,7 @@ function CustomList({ navigation, deleteFromstCustomList }) {
                   />
                 </View>
               );
-            })}
+            })} */}
         </View>
       </ScrollView>
       <Portal visible={visible} toDay={toDay} hideDialog={hideDialog} />
@@ -116,10 +81,11 @@ function CustomList({ navigation, deleteFromstCustomList }) {
 
 const mapStateToProps = (store) => ({
   currentUser: store.userState.currentUser,
+  CustomRecipesList: store.recepiesState.CustomRecipesList,
 });
 
 const mapDispatchProps = (dispatch) =>
-  bindActionCreators({ deleteFromstCustomList }, dispatch);
+  bindActionCreators({ deleteFromstCustomList, GetCustomList }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchProps)(CustomList);
 

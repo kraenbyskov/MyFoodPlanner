@@ -36,7 +36,7 @@ function AddToCustomList({
           mode="contained"
           onPress={() => addToCustomListButton(addToCustomListState, state)}
         >
-          Tilføj Ingrediens
+          Tilføj til listen
         </Button>
       )}
     >

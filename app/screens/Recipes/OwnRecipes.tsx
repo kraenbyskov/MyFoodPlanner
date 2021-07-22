@@ -26,7 +26,7 @@ const OwnRecipes: React.FC<OwnRecipesInterface> = ({ navigation, sharing }) => {
   const [addToCustomListState, setAddToCustomListState]: any =
     React.useState(null);
 
-  const [selectedValue, setSelectedValue] = React.useState("");
+  const [selectedValue, setSelectedValue] = React.useState("Mandag");
   const [visible, setVisible] = React.useState(false);
 
   const addToCustomListDialog = (data) => {

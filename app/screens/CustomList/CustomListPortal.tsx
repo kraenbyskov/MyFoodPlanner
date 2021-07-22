@@ -37,7 +37,6 @@ const CustomListPortal: FC<CustomListPortalInterface> = ({
 }) => {
   const [GetData, setGetData]: any = React.useState(null);
   const [Recipes]: any = useCollectionData(AllRecipes);
-  console.log(AllRecipes);
 
   React.useEffect(() => {
     setGetData(Recipes);

@@ -22,7 +22,7 @@ const DetailsTopNav = ({ Data, deleteFood, EditRecipe }) => {
   const [addRecipePortal, setAddRecipePortal] = React.useState(false);
   const [addToCustomListState, setAddToCustomListState]: any =
     React.useState(null);
-  const [selectedValue, setSelectedValue] = React.useState("");
+  const [selectedValue, setSelectedValue] = React.useState("Mandag");
 
   const showDialog = () => setVisible(true);
 

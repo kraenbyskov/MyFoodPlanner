@@ -15,7 +15,6 @@ const Profile = ({ currentUser, navigation, route }) => {
   const [userValue, setuserValue] = useState({ value: "", error: "" });
   const destination = "Profile";
 
-  console.log(route);
   const shareListWith = (text) => {
     const searchUser = firebase
       .firestore()

@@ -78,7 +78,12 @@ export default function Details({ route, navigation }) {
           fixedHeader={() => <TopNav Data={GetData} />}
         >
           <View
-            style={{ width: "100%", backgroundColor: theme.colors.background }}
+            style={{
+              width: "100%",
+              backgroundColor: theme.colors.background,
+              borderTopLeftRadius: 2,
+              borderTopRightRadius: 2,
+            }}
           >
             <Description Data={GetData} />
             <EkstraImages Data={GetData} />

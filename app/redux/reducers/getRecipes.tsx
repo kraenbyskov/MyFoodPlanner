@@ -1,7 +1,8 @@
-import { GET_ALL_RECIPES } from "../constants";
+import { GET_ALL_RECIPES, GET_CUSTOM_LIST } from "../constants";
 
 const initialState = {
   AllRecipes: null,
+  CustomRecipesList: [],
 };
 
 export const getRecipes = (state = initialState, action) => {
@@ -10,6 +11,11 @@ export const getRecipes = (state = initialState, action) => {
       return {
         ...state,
         AllRecipes: action.AllRecipes,
+      };
+    case GET_CUSTOM_LIST:
+      return {
+        ...state,
+        CustomRecipesList: action.CustomRecipesList,
       };
 
     default:
