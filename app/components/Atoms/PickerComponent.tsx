@@ -1,6 +1,6 @@
 import React from "react";
+import { Platform, StyleSheet } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import firebase from "firebase";
 
 const label = [
   "Mandag",
@@ -16,7 +16,7 @@ const label = [
 function PickerComponent({ state, setState }) {
   return (
     <Picker
-      style={{ width: "100%", height: 60, top: -70 }}
+      style={styles.picker}
       selectedValue={state}
       onValueChange={(itemValue: any, itemIndex) => setState(itemValue)}
     >
@@ -28,3 +28,11 @@ function PickerComponent({ state, setState }) {
 }
 
 export default PickerComponent;
+
+const styles = StyleSheet.create({
+  picker: {
+    width: "100%",
+    height: Platform.OS === "ios" ? 60 : 20,
+    top: Platform.OS === "ios" ? -70 : 0,
+  },
+});

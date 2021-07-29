@@ -83,6 +83,7 @@ export default function Details({ route, navigation }) {
               backgroundColor: theme.colors.background,
               borderTopLeftRadius: 2,
               borderTopRightRadius: 2,
+              marginBottom: 100,
             }}
           >
             <Description Data={GetData} />

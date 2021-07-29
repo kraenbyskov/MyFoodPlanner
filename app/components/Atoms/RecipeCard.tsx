@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.06,
     shadowRadius: 3.68,
-    elevation: 10,
   },
   CardEmpty: {
     borderWidth: 2,
