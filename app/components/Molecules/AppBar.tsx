@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { FC } from "react";
 import { StyleSheet } from "react-native";
 import { Appbar } from "react-native-paper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -6,7 +6,15 @@ import { Platform } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 const MORE_ICON = Platform.OS === "ios" ? "dots-horizontal" : "dots-vertical";
 
-export default function TopAppBar({ mainColor = "black" }) {
+interface AppBarInterface {
+  mainColor?: string;
+  RightSideButtons?: any;
+}
+
+const TopAppBar: FC<AppBarInterface> = ({
+  mainColor = "black",
+  RightSideButtons,
+}) => {
   const navigation = useNavigation();
   return (
     <Appbar style={styles.Appbar}>
@@ -23,14 +31,12 @@ export default function TopAppBar({ mainColor = "black" }) {
         />
       ) : null}
       <Appbar.Content title="" />
-      {/* <Appbar.Action
-				icon={({ color }) => <MaterialCommunityIcons name="account" color={mainColor} size={26} />}
-				onPress={() => navigation.navigate('Profile')}
-			/>
-			<Appbar.Action color={mainColor} icon={MORE_ICON} onPress={() => {}} /> */}
+      {RightSideButtons}
     </Appbar>
   );
-}
+};
+
+export default TopAppBar;
 
 const styles = StyleSheet.create({
   Appbar: {

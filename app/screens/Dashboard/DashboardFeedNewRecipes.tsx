@@ -9,18 +9,21 @@ import {
   ScrollView,
 } from "react-native";
 import firebase from "firebase";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { connect } from "../../redux/actions";
 
-import { theme } from "../../core/theme";
 import { useNavigation } from "@react-navigation/native";
+import { theme } from "../../core/theme";
 
 interface NewRecipesInterface {
   navigation?: any;
+  currentUser?: any;
 }
 
-const NewRecipes: FC<NewRecipesInterface> = () => {
+const NewRecipes: FC<NewRecipesInterface> = ({ currentUser }) => {
   const navigation = useNavigation();
-
   const [GetData, setGetData]: any = React.useState(null);
+  console.log(GetData);
   const query = firebase
     .firestore()
     .collection("Allrecipes")
@@ -37,11 +40,12 @@ const NewRecipes: FC<NewRecipesInterface> = () => {
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
+          marginBottom: 10,
+          padding: 20,
         }}
       >
         <Text
           style={{
-            marginBottom: 10,
             fontSize: 20,
             fontFamily: "Lato_400Regular",
           }}
@@ -50,33 +54,96 @@ const NewRecipes: FC<NewRecipesInterface> = () => {
         </Text>
         <Text
           style={{
-            marginBottom: 10,
             fontSize: 20,
             fontFamily: "Lato_400Regular",
+            color: theme.colors.secondary,
           }}
         >
           See all {">"}
         </Text>
       </View>
-      <ScrollView horizontal={true}>
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         {GetData &&
           GetData.map((data, index) => (
             <TouchableHighlight
               key={index}
-              style={styles.Card}
-              underlayColor={theme.colors.primary}
+              style={[styles.Card, { marginLeft: index == 0 ? 20 : 0 }]}
+              underlayColor={"white"}
               onPress={() => navigation.navigate("RecipeDetails", data)}
             >
               <View style={styles.Content}>
-                <Image
-                  style={styles.RecipeImage}
-                  source={
-                    data.downloadUrl
-                      ? { uri: data.downloadUrl }
-                      : require("../../assets/photo-1512621776951-a57141f2eefd.png")
-                  }
-                />
-                <Text style={styles.Title}>{data.Name}</Text>
+                <View>
+                  <Image
+                    style={styles.RecipeImage}
+                    source={
+                      data.downloadUrl
+                        ? { uri: data.downloadUrl }
+                        : require("../../assets/photo-1512621776951-a57141f2eefd.png")
+                    }
+                  />
+                  <View
+                    style={{
+                      paddingHorizontal: 10,
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginTop: -30,
+                    }}
+                  >
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                      }}
+                    >
+                      <MaterialCommunityIcons
+                        name="heart-outline"
+                        color={"white"}
+                        size={26}
+                      />
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          color: "white",
+                          paddingLeft: 5,
+                        }}
+                      >
+                        100
+                      </Text>
+                    </View>
+                    <Text style={{ color: "white", fontSize: 16 }}>
+                      55 min.
+                    </Text>
+                  </View>
+                </View>
+                <View style={{ marginTop: 15 }}>
+                  <Text style={styles.Title}>{data.Name}</Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <Image
+                    source={require("images/Profile.jpg")}
+                    style={{
+                      aspectRatio: 1 / 1,
+                      borderRadius: 5,
+                      width: 40,
+                      height: 40,
+                    }}
+                  />
+                  <View style={{ paddingLeft: 5 }}>
+                    <Text style={styles.Title}>{data.Owner.User}</Text>
+                    <Text
+                      style={[styles.Title, { color: theme.colors.secondary }]}
+                    >
+                      {"Rock and roller"}
+                    </Text>
+                  </View>
+                </View>
               </View>
             </TouchableHighlight>
           ))}
@@ -85,12 +152,15 @@ const NewRecipes: FC<NewRecipesInterface> = () => {
   );
 };
 
-export default NewRecipes;
+const mapStateToProps = (store) => ({
+  currentUser: store.userState.currentUser,
+});
+
+export default connect(mapStateToProps, null)(NewRecipes);
 
 const styles = StyleSheet.create({
   Title: {
     fontSize: 18,
-    bottom: 20,
   },
   RecipeImage: {
     width: "100%",
@@ -100,12 +170,12 @@ const styles = StyleSheet.create({
   Card: {
     width: 250,
     height: 400,
-    backgroundColor: "white",
     borderRadius: 10,
     marginRight: 10,
   },
   Content: {
     flex: 1,
-    justifyContent: "space-between",
+    height: 400,
+    width: 250,
   },
 });

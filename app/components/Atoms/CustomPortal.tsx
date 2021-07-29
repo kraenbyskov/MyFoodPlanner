@@ -5,7 +5,7 @@ import { Dialog, Portal } from "react-native-paper";
 interface CustomPortalInterface {
   visible: boolean;
   onDismiss: () => void;
-  Actions: any;
+  Actions?: any;
   title: string;
 }
 
@@ -21,7 +21,7 @@ const CustomPortal: FC<CustomPortalInterface> = ({
       <Dialog visible={visible} onDismiss={onDismiss}>
         <Dialog.Title>{title}</Dialog.Title>
         <Dialog.Content>{children}</Dialog.Content>
-        <Dialog.Actions>{Actions()}</Dialog.Actions>
+        {Actions && <Dialog.Actions>{Actions()}</Dialog.Actions>}
       </Dialog>
     </Portal>
   );

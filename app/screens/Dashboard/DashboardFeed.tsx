@@ -12,7 +12,6 @@ const Feed = () => {
         borderTopRightRadius: 30,
         top: -50,
         backgroundColor: theme.colors.background,
-        padding: 20,
       }}
     >
       <NewRecipes />
