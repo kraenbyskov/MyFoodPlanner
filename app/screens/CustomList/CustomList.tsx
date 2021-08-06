@@ -22,7 +22,6 @@ function CustomList({ navigation, CustomRecipesList, GetCustomList }) {
     GetCustomList();
     setRefreshing(false);
   }, []);
-  console.log(CustomRecipesList);
   const [visible, setVisible] = React.useState(false);
   const [toDay, setToDay] = React.useState("");
   const hideDialog = () => setVisible(false);
@@ -34,29 +33,29 @@ function CustomList({ navigation, CustomRecipesList, GetCustomList }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <AppBar />
+      <TopButtons navigation={navigation} clearFoodList={clearFoodList} />
       <ScrollView
         style={styles.container}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <TopButtons navigation={navigation} clearFoodList={clearFoodList} />
         <View style={styles.content}>
           <Text>7 Dags Plan</Text>
           {CustomRecipesList
             ? CustomRecipesList.map((data, index) => {
-                return (
-                  <View key={index}>
-                    <Text style={{ marginBottom: 5 }}>{data.day}</Text>
-                    <RecipeCard
-                      setVisible={setVisible}
-                      setToDay={setToDay}
-                      navigation={navigation}
-                      data={data}
-                    />
-                  </View>
-                );
-              })
+              return (
+                <View key={index}>
+                  <Text style={{ marginBottom: 5 }}>{data.day}</Text>
+                  <RecipeCard
+                    setVisible={setVisible}
+                    setToDay={setToDay}
+                    navigation={navigation}
+                    data={data}
+                  />
+                </View>
+              );
+            })
             : null}
 
           {/* <Text>ekstra</Text>

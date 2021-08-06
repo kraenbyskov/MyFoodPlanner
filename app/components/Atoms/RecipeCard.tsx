@@ -32,11 +32,10 @@ const RecipeCard: FC<RecipeCardInterface> = ({
   GetAllRecipes,
 }) => {
   const getAllRecipesPopUp = () => {
-    GetAllRecipes();
+    GetAllRecipes()
     setVisible(true);
     setToDay(data.day);
   };
-
   return !data.empty ? (
     <TouchableHighlight
       style={styles.Card}

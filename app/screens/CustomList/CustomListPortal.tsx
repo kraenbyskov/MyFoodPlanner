@@ -14,7 +14,7 @@ import {
 import {
   bindActionCreators,
   connect,
-  GetAllRecipes,
+
   addToCustomList,
 } from "../../redux/actions";
 
@@ -25,7 +25,6 @@ interface CustomListPortalInterface {
   addToCustomList?: any;
   toDay: string;
   AllRecipes: any;
-  GetAllRecipes?: any;
 }
 
 const CustomListPortal: FC<CustomListPortalInterface> = ({
@@ -92,7 +91,7 @@ const mapStateToProps = (store) => ({
 });
 
 const mapDispatchProps = (dispatch) =>
-  bindActionCreators({ GetAllRecipes, addToCustomList }, dispatch);
+  bindActionCreators({ addToCustomList }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchProps)(CustomListPortal);
 

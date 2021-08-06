@@ -23,7 +23,6 @@ interface NewRecipesInterface {
 const NewRecipes: FC<NewRecipesInterface> = ({ currentUser }) => {
   const navigation = useNavigation();
   const [GetData, setGetData]: any = React.useState(null);
-  console.log(GetData);
   const query = firebase
     .firestore()
     .collection("Allrecipes")

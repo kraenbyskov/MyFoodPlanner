@@ -13,6 +13,7 @@ import {
   CustomInput,
   PickerComponent,
   ParallaxScrollView,
+  FeedCard
 } from "./Atoms";
 // Atoms
 
@@ -43,5 +44,6 @@ export {
   CustomInput,
   PickerComponent,
   AddToCustomList,
+  FeedCard,
   ParallaxScrollView,
 };

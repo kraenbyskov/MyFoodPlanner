@@ -36,7 +36,6 @@ const Dashboard = ({ navigation }) => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    console.log("hey");
     setRefreshing(false);
   }, []);
 

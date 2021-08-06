@@ -48,6 +48,8 @@ import RecipeDetailsScreen from "./app/screens/Details/Details";
 import ProfileScreen from "./app/screens/Profile/Profile";
 import BugReportScreen from "./app/screens/BugReport/BugReport";
 import { theme } from "./app/core/theme";
+import EditProfileScreen from "./app/screens/EditProfile/EditProfile";
+import SettingsScreen from "./app/screens/Settings/Settings";
 
 const Stack = createStackNavigator();
 const store = createStore(rootReducer, applyMiddleware(thunk));
@@ -179,6 +181,20 @@ const App = () => {
             <Stack.Screen
               name="AddRecipe"
               component={AddRecipeScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="EditProfile"
+              component={EditProfileScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="Settings"
+              component={SettingsScreen}
               options={{
                 headerShown: false,
               }}

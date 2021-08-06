@@ -23,29 +23,13 @@ import { MaterialBottomTabView } from "@react-navigation/material-bottom-tabs";
 const MORE_ICON = Platform.OS === "ios" ? "dots-horizontal" : "dots-vertical";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Feed from "./ProfileFeed";
 
 const Profile = ({ currentUser, navigation, route }) => {
   const [userValue, setuserValue] = useState({ value: "", error: "" });
+  const [active, setActive] = React.useState('');
+
   const destination = "ProfileImage";
-
-  // const shareListWith = (text) => {
-  //   const searchUser = firebase
-  //     .firestore()
-  //     .collection("users")
-  //     .where("name", "==", text);
-  //   searchUser.get().then((snapshot) => {
-  //     snapshot.forEach((data) => {
-  //       firebase
-  //         .firestore()
-  //         .collection("users")
-  //         .doc(firebase.auth().currentUser.uid)
-  //         .update({
-  //           sharing: data.id,
-  //         });
-  //     });
-  //   });
-  // };
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar barStyle={"dark-content"} />
@@ -68,6 +52,7 @@ const Profile = ({ currentUser, navigation, route }) => {
                   color={"black"}
                   name={MORE_ICON}
                   size={26}
+                  onPress={() => navigation.navigate("Settings")}
                 />
               )}
             />
@@ -94,36 +79,12 @@ const Profile = ({ currentUser, navigation, route }) => {
           <View style={{ paddingLeft: 20 }}>
             <Text>{currentUser && currentUser.name}</Text>
             <Text>{currentUser && currentUser.email}</Text>
+            <Button size={"small"} mode={"outlined"} onPress={() => navigation.navigate("EditProfile")}>Edit Profile</Button>
           </View>
         </View>
-        <View style={{ flex: 1, width: "100%" }}>
-          <TextInput
-            label="Email"
-            returnKeyType="next"
-            value={userValue.value}
-            onChangeText={(text) => setuserValue({ value: text, error: "" })}
-            error={!!userValue.error}
-            errorText={userValue.error}
-            autoCapitalize="none"
-            autoCompleteType="email"
-            textContentType="emailAddress"
-            keyboardType="email-address"
-          />
-          <View
-            style={{
-              marginTop: 30,
-              flexDirection: "row",
-              justifyContent: "space-around",
-            }}
-          >
-            {/* <View>
-              <Button onPress={() => shareListWith(userValue.value)}>
-                Share With
-              </Button>
-            </View> */}
-          </View>
-          <LogOutButton />
-        </View>
+
+        <Feed navigation={navigation} />
+
       </ScrollView>
     </SafeAreaView>
   );
