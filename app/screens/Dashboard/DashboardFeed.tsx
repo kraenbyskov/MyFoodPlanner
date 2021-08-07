@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 
 import { theme } from "../../core/theme";
-import NewRecipes from "./DashboardFeedNewRecipes";
+import NewRecipes from "./Feed/Recipes";
 
 const Feed = () => {
   return (

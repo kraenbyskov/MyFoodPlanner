@@ -6,7 +6,6 @@ import {
   EDIT_RECIPE,
   ADD_RECIPE_MESSAGE,
   DELETE_CUSTOM_LIST_ITEM,
-  GET_ALL_RECIPES,
   GET_CUSTOM_LIST,
 } from "../constants/index";
 import { connect } from "react-redux";
@@ -41,76 +40,10 @@ export function fetchUser() {
   };
 }
 
-// Get all Recipes by user ID
-
-export const GetAllRecipes = () => {
-  return (dispatch) => {
-    const query = firebase
-      .firestore()
-      .collection("Allrecipes")
-      .where("Owner.UserID", "==", firebase.auth().currentUser.uid);
-
-    dispatch({
-      type: GET_ALL_RECIPES,
-      AllRecipes: query,
-    });
-  };
-};
-
-
-
-
 //  Get Custom list from User ID
 
 export const GetCustomList = () => {
-  return (dispatch) => {
-    const query = firebase
-      .firestore()
-      .collection("AddToCustomList")
-      .doc(firebase.auth().currentUser.uid)
-      .collection("CustomList");
-
-    const onCollection = async (querySnapshot) => {
-      const collectAndSort = new Promise((resolve, reject) => {
-        const Data = [
-          { day: "Mandag", empty: true },
-          { day: "Tirsdag", empty: true },
-          { day: "Onsdag", empty: true },
-          { day: "Torsdag", empty: true },
-          { day: "Fredag", empty: true },
-          { day: "Lørdag", empty: true },
-          { day: "Søndag", empty: true },
-        ];
-        querySnapshot.forEach((doc) => {
-          const { day } = doc.data();
-
-          Data.map((Weekdays, index) => {
-            if (Weekdays.day === day) {
-              Weekdays.empty = false;
-              Data.splice(index, 1, { ...Weekdays, ...doc.data() });
-            }
-          });
-        });
-        resolve(Data);
-        reject([
-          { day: "Mandag", empty: true },
-          { day: "Tirsdag", empty: true },
-          { day: "Onsdag", empty: true },
-          { day: "Torsdag", empty: true },
-          { day: "Fredag", empty: true },
-          { day: "Lørdag", empty: true },
-          { day: "Søndag", empty: true },
-        ]);
-      });
-      collectAndSort.then((array) => {
-        dispatch({
-          type: GET_CUSTOM_LIST,
-          CustomRecipesList: array,
-        });
-      });
-    };
-    query.onSnapshot(onCollection);
-  };
+  return (dispatch) => {};
 };
 
 // Deletes a Recipe from your own list

@@ -8,11 +8,8 @@ import {
 } from "react-native";
 import { theme } from "../../core/theme";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import {
-  connect,
-  bindActionCreators,
-  GetAllRecipes,
-} from "../../redux/actions";
+import { connect, bindActionCreators } from "../../redux/actions";
+import CustomImage from "./CustomImage";
 
 interface RecipeCardInterface {
   navigation: any;
@@ -20,7 +17,6 @@ interface RecipeCardInterface {
   children?: any;
   setVisible?: (boolean: boolean) => void;
   setToDay?: any;
-  GetAllRecipes?: any;
 }
 
 const FeedCard: FC<RecipeCardInterface> = ({
@@ -29,10 +25,8 @@ const FeedCard: FC<RecipeCardInterface> = ({
   children,
   setVisible,
   setToDay,
-  GetAllRecipes,
 }) => {
   const getAllRecipesPopUp = () => {
-    GetAllRecipes();
     setVisible(true);
     setToDay(data.day);
   };
@@ -45,28 +39,18 @@ const FeedCard: FC<RecipeCardInterface> = ({
         onPress={() => navigation.navigate("RecipeDetails", data)}
       >
         <View style={styles.Content}>
-          <Image
-            style={styles.RecipeImage}
-            source={
-              data.downloadUrl
-                ? { uri: data.downloadUrl }
-                : require("../../assets/photo-1512621776951-a57141f2eefd.png")
-            }
-          />
+          <CustomImage style={styles.RecipeImage} url={data.downloadUrl} />
         </View>
       </TouchableHighlight>
     </View>
-  )
+  );
 };
 
 const mapStateToProps = (store) => ({
   AllRecipes: store.recepiesState.AllRecipes,
 });
 
-const mapDispatchProps = (dispatch) =>
-  bindActionCreators({ GetAllRecipes }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchProps)(FeedCard);
+export default connect(mapStateToProps, null)(FeedCard);
 
 const styles = StyleSheet.create({
   Container: {
@@ -93,8 +77,7 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 5,
   },
-  Content: {
-  },
+  Content: {},
 
   Title: {
     top: 5,

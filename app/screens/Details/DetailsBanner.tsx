@@ -1,11 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, ImageBackground } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { connect } from "react-redux";
+import { cacheDirectory, getInfoAsync } from "expo-file-system";
+import shorthash from "shorthash";
+import { getCacheImage } from "../../functions";
 
 const DetailsBanner = ({ Data }) => {
+  const [image, setImage] = useState();
+
+  useEffect(() => {
+    getCacheImage(Data.downloadUrl).then((image) => {
+      setImage(image);
+    });
+  }, []);
+
   return (
-    <ImageBackground source={{ uri: Data.downloadUrl }} style={styles.image}>
+    <ImageBackground
+      source={
+        image
+          ? { uri: image }
+          : require("../../assets/photo-1512621776951-a57141f2eefd.png")
+      }
+      style={styles.image}
+    >
       <LinearGradient
         style={styles.gradient}
         colors={["rgba(0,0,0,0.8)", "transparent"]}

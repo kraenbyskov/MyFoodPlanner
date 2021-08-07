@@ -1,17 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-  Image,
-  LogBox,
-} from "react-native";
+import { StyleSheet, Text, View, Image, LogBox } from "react-native";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import AppLoading from "expo-app-loading";
 import { Provider as PaperProvider } from "react-native-paper";
+
+import { ActivityIndicator, Colors } from "react-native-paper";
 
 import firebase from "firebase";
 
@@ -132,7 +127,12 @@ const App = () => {
   if (!Loaded) {
     return (
       <View style={{ flex: 1, justifyContent: "center" }}>
-        <ActivityIndicator size="large" color="#00ff00" />
+        <ActivityIndicator
+          size="large"
+          animating={true}
+          hidesWhenStopped={true}
+          color={theme.colors.primary}
+        />
       </View>
     );
   }

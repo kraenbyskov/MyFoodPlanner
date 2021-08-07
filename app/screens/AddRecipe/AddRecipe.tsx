@@ -35,7 +35,6 @@ const AddFoodToListScreen = (props) => {
 
     const response = await fetch(uri);
     const blob = await response.blob();
-
     const task = firebase.storage().ref().child(childPath).put(blob);
 
     const taskProgress = (snapshot) => {
@@ -46,23 +45,22 @@ const AddFoodToListScreen = (props) => {
     const taskCompleted = () => {
       task.snapshot.ref.getDownloadURL().then((snapshot) => {
         const db = firebase.firestore().collection("Allrecipes");
+        const object = {
+          Id: `${firebase.auth().currentUser.uid}_${title.value}`,
+          Name: title.value,
+          downloadUrl: snapshot,
+          Date: firebase.firestore.FieldValue.serverTimestamp(),
+          Owner: {
+            User: props.currentUser.name,
+            UserID: firebase.auth().currentUser.uid,
+          },
+          CookingTime: "",
+          Calories: "",
+        };
         db.doc(`${firebase.auth().currentUser.uid}_${title.value}`)
-          .set({
-            Id: `${firebase.auth().currentUser.uid}_${title.value}`,
-            Name: title.value,
-            downloadUrl: snapshot,
-            Date: firebase.firestore.FieldValue.serverTimestamp(),
-            Owner: {
-              User: props.currentUser.name,
-              UserID: firebase.auth().currentUser.uid,
-            },
-            CookingTime: "",
-            Calories: "",
-          })
+          .set(object)
           .then(function () {
-            props.navigation.navigate("RecipeDetails", {
-              Id: `${firebase.auth().currentUser.uid}_${title.value}`,
-            });
+            props.navigation.navigate("RecipeDetails", object);
           });
         setTitle({ value: "", error: "" });
         props.AddToListMessage({ title: title.value });

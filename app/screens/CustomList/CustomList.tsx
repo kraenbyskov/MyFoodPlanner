@@ -5,29 +5,73 @@ import { View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 
 import { clearFoodList } from "../../functions";
 
-import {
-  connect,
-  bindActionCreators,
-  deleteFromstCustomList,
-  GetCustomList,
-} from "../../redux/actions";
+import firebase from "firebase";
 
 import Portal from "./CustomListPortal";
 import TopButtons from "./CustomListTopButtons";
 
-function CustomList({ navigation, CustomRecipesList, GetCustomList }) {
+function CustomList({ navigation }) {
   const [refreshing, setRefreshing] = React.useState(false);
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    GetCustomList();
-    setRefreshing(false);
-  }, []);
+  const [list, setList] = React.useState(null);
+
   const [visible, setVisible] = React.useState(false);
   const [toDay, setToDay] = React.useState("");
   const hideDialog = () => setVisible(false);
+  const query = firebase
+    .firestore()
+    .collection("AddToCustomList")
+    .doc(firebase.auth().currentUser.uid)
+    .collection("CustomList");
+
+  const onCollection = async (querySnapshot) => {
+    const collectAndSort = new Promise((resolve, reject) => {
+      const Data = [
+        { day: "Mandag", empty: true },
+        { day: "Tirsdag", empty: true },
+        { day: "Onsdag", empty: true },
+        { day: "Torsdag", empty: true },
+        { day: "Fredag", empty: true },
+        { day: "Lørdag", empty: true },
+        { day: "Søndag", empty: true },
+      ];
+      querySnapshot.forEach((doc) => {
+        const { day } = doc.data();
+
+        Data.map((Weekdays, index) => {
+          if (Weekdays.day === day) {
+            Weekdays.empty = false;
+            Data.splice(index, 1, { ...Weekdays, ...doc.data() });
+          }
+        });
+      });
+      resolve(Data);
+      reject([
+        { day: "Mandag", empty: true },
+        { day: "Tirsdag", empty: true },
+        { day: "Onsdag", empty: true },
+        { day: "Torsdag", empty: true },
+        { day: "Fredag", empty: true },
+        { day: "Lørdag", empty: true },
+        { day: "Søndag", empty: true },
+      ]);
+    });
+    collectAndSort
+      .then((array) => {
+        setList(array);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    query.onSnapshot(onCollection);
+    setRefreshing(false);
+  }, []);
 
   React.useEffect(() => {
-    GetCustomList();
+    query.onSnapshot(onCollection);
   }, []);
 
   return (
@@ -42,20 +86,20 @@ function CustomList({ navigation, CustomRecipesList, GetCustomList }) {
       >
         <View style={styles.content}>
           <Text>7 Dags Plan</Text>
-          {CustomRecipesList
-            ? CustomRecipesList.map((data, index) => {
-              return (
-                <View key={index}>
-                  <Text style={{ marginBottom: 5 }}>{data.day}</Text>
-                  <RecipeCard
-                    setVisible={setVisible}
-                    setToDay={setToDay}
-                    navigation={navigation}
-                    data={data}
-                  />
-                </View>
-              );
-            })
+          {list
+            ? list.map((data, index) => {
+                return (
+                  <View key={index}>
+                    <Text style={{ marginBottom: 5 }}>{data.day}</Text>
+                    <RecipeCard
+                      setVisible={setVisible}
+                      setToDay={setToDay}
+                      navigation={navigation}
+                      data={data}
+                    />
+                  </View>
+                );
+              })
             : null}
 
           {/* <Text>ekstra</Text>
@@ -78,15 +122,7 @@ function CustomList({ navigation, CustomRecipesList, GetCustomList }) {
   );
 }
 
-const mapStateToProps = (store) => ({
-  currentUser: store.userState.currentUser,
-  CustomRecipesList: store.recepiesState.CustomRecipesList,
-});
-
-const mapDispatchProps = (dispatch) =>
-  bindActionCreators({ deleteFromstCustomList, GetCustomList }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchProps)(CustomList);
+export default CustomList;
 
 const styles = StyleSheet.create({
   container: {

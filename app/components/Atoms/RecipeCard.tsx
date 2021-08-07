@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -8,11 +8,7 @@ import {
 } from "react-native";
 import { theme } from "../../core/theme";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import {
-  connect,
-  bindActionCreators,
-  GetAllRecipes,
-} from "../../redux/actions";
+import { getCacheImage } from "../../functions";
 
 interface RecipeCardInterface {
   navigation: any;
@@ -29,13 +25,19 @@ const RecipeCard: FC<RecipeCardInterface> = ({
   children,
   setVisible,
   setToDay,
-  GetAllRecipes,
 }) => {
   const getAllRecipesPopUp = () => {
-    GetAllRecipes()
     setVisible(true);
     setToDay(data.day);
   };
+  const [CacheImage, setCacheImage] = useState(null);
+
+  useEffect(() => {
+    getCacheImage(data.downloadUrl).then((data) => {
+      setCacheImage(data);
+    });
+  }, []);
+
   return !data.empty ? (
     <TouchableHighlight
       style={styles.Card}
@@ -43,14 +45,7 @@ const RecipeCard: FC<RecipeCardInterface> = ({
       onPress={() => navigation.navigate("RecipeDetails", data)}
     >
       <View style={styles.Content}>
-        <Image
-          style={styles.RecipeImage}
-          source={
-            data.downloadUrl
-              ? { uri: data.downloadUrl }
-              : require("../../assets/photo-1512621776951-a57141f2eefd.png")
-          }
-        />
+        <Image style={styles.RecipeImage} source={{ uri: CacheImage }} />
         <Text style={styles.Title}>{data.Name}</Text>
         <View style={styles.Icons}>{children}</View>
       </View>
@@ -72,14 +67,7 @@ const RecipeCard: FC<RecipeCardInterface> = ({
   );
 };
 
-const mapStateToProps = (store) => ({
-  AllRecipes: store.recepiesState.AllRecipes,
-});
-
-const mapDispatchProps = (dispatch) =>
-  bindActionCreators({ GetAllRecipes }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchProps)(RecipeCard);
+export default RecipeCard;
 
 const styles = StyleSheet.create({
   Card: {

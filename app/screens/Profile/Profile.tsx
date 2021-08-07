@@ -11,24 +11,16 @@ import {
 } from "react-native";
 import { Title, Text, Appbar } from "react-native-paper";
 
-import {
-  AppBar as TopAppBar,
-  Button,
-  LogOutButton,
-  TextInput,
-} from "../../components";
-import { connect } from "react-redux";
-import firebase from "firebase";
-import { MaterialBottomTabView } from "@react-navigation/material-bottom-tabs";
+import { AppBar as TopAppBar, Button } from "../../components";
+
 const MORE_ICON = Platform.OS === "ios" ? "dots-horizontal" : "dots-vertical";
+
+import { connect } from "../../redux/actions";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Feed from "./ProfileFeed";
 
-const Profile = ({ currentUser, navigation, route }) => {
-  const [userValue, setuserValue] = useState({ value: "", error: "" });
-  const [active, setActive] = React.useState('');
-
+const Profile = ({ currentUser, navigation }) => {
   const destination = "ProfileImage";
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -79,21 +71,23 @@ const Profile = ({ currentUser, navigation, route }) => {
           <View style={{ paddingLeft: 20 }}>
             <Text>{currentUser && currentUser.name}</Text>
             <Text>{currentUser && currentUser.email}</Text>
-            <Button size={"small"} mode={"outlined"} onPress={() => navigation.navigate("EditProfile")}>Edit Profile</Button>
+            <Button
+              size={"small"}
+              mode={"outlined"}
+              onPress={() => navigation.navigate("EditProfile")}
+            >
+              Edit Profile
+            </Button>
           </View>
         </View>
 
         <Feed navigation={navigation} />
-
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-const mapStateToProps = (store) => ({
-  currentUser: store.userState.currentUser,
-});
-export default connect(mapStateToProps, null)(Profile);
+export default Profile;
 
 const styles = StyleSheet.create({
   RecipeImage: {

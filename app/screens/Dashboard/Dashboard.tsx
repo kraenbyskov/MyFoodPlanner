@@ -12,7 +12,6 @@ import {
   Animated,
 } from "react-native";
 
-import { connect } from "../../redux/actions";
 import { AppBar, ParallaxScrollView } from "../../components";
 import Feed from "./DashboardFeed";
 
@@ -31,11 +30,12 @@ const RenderStickyHeader = (value) => {
   );
 };
 
-const Dashboard = ({ navigation }) => {
+const Dashboard = () => {
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+
     setRefreshing(false);
   }, []);
 
@@ -58,7 +58,7 @@ const Dashboard = ({ navigation }) => {
   );
 };
 
-export default connect()(Dashboard);
+export default Dashboard;
 
 const Styles = StyleSheet.create({
   stickyHeader: {

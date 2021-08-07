@@ -37,11 +37,9 @@ const RenderStickyHeader = (value) => {
   );
 };
 
-export default function Details({ route, navigation }) {
-  const [GetData, setGetData]: any = React.useState(null);
-
+export default function Details({ route }) {
+  const [GetData, setGetData]: any = React.useState(route.params);
   const db = firebase.firestore().collection("Allrecipes");
-
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
@@ -52,14 +50,6 @@ export default function Details({ route, navigation }) {
         setGetData(snapshot.data());
       });
     setRefreshing(false);
-  }, []);
-
-  React.useEffect(() => {
-    db.doc(route.params.Id)
-      .get()
-      .then((snapshot) => {
-        setGetData(snapshot.data());
-      });
   }, []);
 
   if (GetData) {

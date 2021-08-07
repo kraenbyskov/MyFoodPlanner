@@ -12,7 +12,7 @@ import { theme } from "../core/theme";
 
 import DasbhoardScreen from "./Dashboard/Dashboard";
 import ProfileScreen from "./Profile/Profile";
-import RecipesScreen from "./Recipes/Recipes";
+import RecipesScreen from "./RecipesFeed/RecipesFeed";
 import CustomListScreen from "./CustomList/CustomList";
 import { View } from "react-native";
 
@@ -123,7 +123,7 @@ const Main = (props) => {
       />
 
       <Tab.Screen
-        name="Recipes"
+        name="RecipesFeed"
         component={RecipesScreen}
         options={{
           tabBarIcon: ({ color }) => (

@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { Dialog, Portal } from "react-native-paper";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { theme } from "../../core/theme";
@@ -10,13 +10,14 @@ import {
   Image,
   Text,
 } from "react-native";
+import firebase from "firebase";
 
 import {
   bindActionCreators,
   connect,
-
   addToCustomList,
 } from "../../redux/actions";
+import { CustomImage } from "../../components";
 
 interface CustomListPortalInterface {
   visible: any;
@@ -34,17 +35,26 @@ const CustomListPortal: FC<CustomListPortalInterface> = ({
   toDay,
   AllRecipes,
 }) => {
-  const [GetData, setGetData]: any = React.useState(null);
-  const [Recipes]: any = useCollectionData(AllRecipes);
-
-  React.useEffect(() => {
-    setGetData(Recipes);
-  }, [Recipes]);
-
   const addToCustomListButton = (data, day) => {
     addToCustomList(data, day);
     hideDialog();
   };
+
+  const [recipes, setRecipes] = useState(null);
+  const db = firebase
+    .firestore()
+    .collection("Allrecipes")
+    .where("Owner.UserID", "==", firebase.auth().currentUser.uid);
+
+  useEffect(() => {
+    db.get().then((snapshot) => {
+      const array = [];
+      snapshot.forEach((doc) => {
+        array.push(doc.data());
+      });
+      setRecipes(array);
+    });
+  }, []);
 
   return (
     <Portal>
@@ -55,8 +65,8 @@ const CustomListPortal: FC<CustomListPortalInterface> = ({
       >
         <Dialog.Content>
           <ScrollView style={styles.Container}>
-            {GetData &&
-              GetData.map((data, index) => (
+            {recipes &&
+              recipes.map((data, index) => (
                 <TouchableHighlight
                   key={index}
                   style={styles.Card}
@@ -64,13 +74,9 @@ const CustomListPortal: FC<CustomListPortalInterface> = ({
                   onPress={() => addToCustomListButton(data, toDay)}
                 >
                   <View style={styles.Content}>
-                    <Image
+                    <CustomImage
                       style={styles.RecipeImage}
-                      source={
-                        data.downloadUrl
-                          ? { uri: data.downloadUrl }
-                          : require("../../assets/photo-1512621776951-a57141f2eefd.png")
-                      }
+                      url={data.downloadUrl}
                     />
                     <Text style={styles.Title}>{data.Name}</Text>
                   </View>
@@ -78,9 +84,6 @@ const CustomListPortal: FC<CustomListPortalInterface> = ({
               ))}
           </ScrollView>
         </Dialog.Content>
-        <Dialog.Actions>
-          <Text>hello</Text>
-        </Dialog.Actions>
       </Dialog>
     </Portal>
   );
