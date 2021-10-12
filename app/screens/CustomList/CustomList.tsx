@@ -88,33 +88,19 @@ function CustomList({ navigation }) {
           <Text>7 Dags Plan</Text>
           {list
             ? list.map((data, index) => {
-                return (
-                  <View key={index}>
-                    <Text style={{ marginBottom: 5 }}>{data.day}</Text>
-                    <RecipeCard
-                      setVisible={setVisible}
-                      setToDay={setToDay}
-                      navigation={navigation}
-                      data={data}
-                    />
-                  </View>
-                );
-              })
-            : null}
-
-          {/* <Text>ekstra</Text>
-          {GetEkstra &&
-            GetEkstra.map((data, index) => {
               return (
                 <View key={index}>
+                  <Text style={{ marginBottom: 5 }}>{data.day}</Text>
                   <RecipeCard
                     setVisible={setVisible}
+                    setToDay={setToDay}
                     navigation={navigation}
                     data={data}
                   />
                 </View>
               );
-            })} */}
+            })
+            : null}
         </View>
       </ScrollView>
       <Portal visible={visible} toDay={toDay} hideDialog={hideDialog} />

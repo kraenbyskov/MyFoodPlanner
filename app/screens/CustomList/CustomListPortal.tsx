@@ -17,7 +17,7 @@ import {
   connect,
   addToCustomList,
 } from "../../redux/actions";
-import { CustomImage } from "../../components";
+import CachedImage from 'expo-cached-image'
 
 interface CustomListPortalInterface {
   visible: any;
@@ -56,6 +56,7 @@ const CustomListPortal: FC<CustomListPortalInterface> = ({
     });
   }, []);
 
+
   return (
     <Portal>
       <Dialog
@@ -74,10 +75,14 @@ const CustomListPortal: FC<CustomListPortalInterface> = ({
                   onPress={() => addToCustomListButton(data, toDay)}
                 >
                   <View style={styles.Content}>
-                    <CustomImage
-                      style={styles.RecipeImage}
-                      url={data.downloadUrl}
-                    />
+                    {data.downloadUrl === "" ?
+                      <Image style={styles.RecipeImage} source={require("../../assets/photo-1512621776951-a57141f2eefd.png")} />
+                      :
+                      <CachedImage source={{ uri: `${data.downloadUrl}` }}
+                        cacheKey={`${data.Id}-thumb`} style={styles.RecipeImage} />
+                    }
+
+
                     <Text style={styles.Title}>{data.Name}</Text>
                   </View>
                 </TouchableHighlight>

@@ -1,16 +1,15 @@
 import React, { FC, useState, useEffect } from "react";
 import { View, StyleSheet, TouchableHighlight, Text } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { CustomImage as Image } from "../../../components";
-
+import CachedImage from 'expo-cached-image'
 import { theme } from "../../../core/theme";
-import { getCacheImage } from "../../../functions";
 
 interface RecipeCardInterface {
   data: {
     downloadUrl: string;
     Name: string;
     Owner: { User: string };
+    Id: string
   };
   index: Number;
   navigation: any;
@@ -25,7 +24,8 @@ const RecipeCard: FC<RecipeCardInterface> = ({ data, index, navigation }) => {
     >
       <View style={styles.Content}>
         <View>
-          <Image style={styles.RecipeImage} url={data.downloadUrl} />
+          <CachedImage source={{ uri: `${data.downloadUrl}` }}
+            cacheKey={`${data.Id}-thumb`} style={styles.RecipeImage} />
           <View
             style={{
               paddingHorizontal: 10,
@@ -69,15 +69,14 @@ const RecipeCard: FC<RecipeCardInterface> = ({ data, index, navigation }) => {
             alignItems: "center",
           }}
         >
-          <Image
-            url={require("images/Profile.jpg")}
-            style={{
+
+          <CachedImage source={{ uri: `${data.downloadUrl}` }}
+            cacheKey={`${data.Id}-thumb`} style={{
               aspectRatio: 1 / 1,
               borderRadius: 5,
               width: 40,
               height: 40,
-            }}
-          />
+            }} />
           <View style={{ paddingLeft: 5 }}>
             <Text style={styles.Title}>{data.Owner.User}</Text>
             <Text style={[styles.Title, { color: theme.colors.secondary }]}>

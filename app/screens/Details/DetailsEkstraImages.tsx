@@ -3,7 +3,9 @@ import { StyleSheet } from "react-native";
 import { View, Text, ScrollView } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { theme } from "../../core/theme";
-import { CustomCard as Card, CustomImage as Image } from "../../components";
+import CachedImage from 'expo-cached-image'
+
+import { CustomCard as Card } from "../../components";
 
 const array = [1, 23];
 
@@ -12,7 +14,8 @@ const RecipeEkstraImages = ({ Data }) => {
     <Card>
       <ScrollView horizontal={true}>
         {array.map((index) => (
-          <Image key={index} url={Data.downloadUrl} style={styles.Image} />
+          <CachedImage key={index} source={{ uri: `${Data.downloadUrl}` }}
+            cacheKey={`${Data.Id}-thumb`} style={styles.Image} />
         ))}
         <View style={styles.AddImage}>
           <MaterialCommunityIcons

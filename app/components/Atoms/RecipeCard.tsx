@@ -8,11 +8,12 @@ import {
 } from "react-native";
 import { theme } from "../../core/theme";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { getCacheImage } from "../../functions";
+import CachedImage from 'expo-cached-image'
+
 
 interface RecipeCardInterface {
   navigation: any;
-  data: { downloadUrl?: string; Name?: string; empty?: boolean; day: string };
+  data: { downloadUrl?: string; Name?: string; empty?: boolean; day: string, Id?: string };
   children?: any;
   setVisible?: (boolean: boolean) => void;
   setToDay?: any;
@@ -30,13 +31,8 @@ const RecipeCard: FC<RecipeCardInterface> = ({
     setVisible(true);
     setToDay(data.day);
   };
-  const [CacheImage, setCacheImage] = useState(null);
 
-  useEffect(() => {
-    getCacheImage(data.downloadUrl).then((data) => {
-      setCacheImage(data);
-    });
-  }, []);
+
 
   return !data.empty ? (
     <TouchableHighlight
@@ -45,7 +41,14 @@ const RecipeCard: FC<RecipeCardInterface> = ({
       onPress={() => navigation.navigate("RecipeDetails", data)}
     >
       <View style={styles.Content}>
-        <Image style={styles.RecipeImage} source={{ uri: CacheImage }} />
+        {data.downloadUrl === "" ?
+          <Image style={styles.RecipeImage} source={require("../../assets/photo-1512621776951-a57141f2eefd.png")} />
+          :
+          <CachedImage source={{ uri: `${data.downloadUrl}` }}
+            cacheKey={`${data.Id}-thumb`} style={styles.RecipeImage} />
+        }
+
+
         <Text style={styles.Title}>{data.Name}</Text>
         <View style={styles.Icons}>{children}</View>
       </View>

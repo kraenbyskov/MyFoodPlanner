@@ -3,18 +3,18 @@ import { View } from "react-native";
 
 import { theme } from "../../core/theme";
 import NewRecipes from "./Feed/Recipes";
+import TodaysRecipes from "./Feed/TodaysRecipes";
 
-const Feed = () => {
+const Feed = ({ todaysRecipe }) => {
   return (
     <View
       style={{
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
         top: -50,
         backgroundColor: theme.colors.background,
       }}
     >
-      <NewRecipes />
+      <TodaysRecipes data={todaysRecipe} />
+      {/* <NewRecipes /> */}
     </View>
   );
 };

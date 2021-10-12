@@ -4,40 +4,34 @@ import { View, StyleSheet, Text, ImageBackground } from "react-native";
 import { AppBar } from "../../components";
 import { theme } from "../../core/theme";
 
-export const DashboardHeader = ({ currentUser }) => {
+import firebase from "firebase";
+
+
+export const DashboardHeader = ({ data }) => {
+
+
   return (
     <View style={styles.TopDashboard}>
-      <ImageBackground
-        source={require("../../assets/background.jpg")}
-        style={{ width: "100%", height: 330, paddingTop: 150 }}
-      >
-        <Text
-          style={{
-            fontSize: 40,
-            fontFamily: "Lato_900Black",
-            color: "white",
-            textAlign: "center",
-          }}
+      {data ?
+        <ImageBackground
+          source={{ uri: data.downloadUrl }}
+          style={{ width: "100%", height: 530, paddingTop: 150 }}
         >
-          Hej {currentUser && currentUser.name}!
-        </Text>
-      </ImageBackground>
+
+        </ImageBackground>
+        : null}
     </View>
   );
 };
 
-const mapStateToProps = (store) => ({
-  currentUser: store.userState.currentUser,
-});
 
-const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardHeader);
+export default DashboardHeader;
 
 const styles = StyleSheet.create({
   TopDashboard: {
     top: -50,
     backgroundColor: theme.colors.primary,
-    height: 300,
+    height: 500,
   },
 });

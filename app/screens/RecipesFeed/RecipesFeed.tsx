@@ -12,7 +12,6 @@ import {
   CustomPortal as Portal,
   AddToCustomList,
 } from "../../components";
-import { cacheImages } from "../../functions";
 
 const RecipesFeed = ({ navigation }) => {
   const [recipes, setRecipes] = useState(null);
@@ -34,7 +33,6 @@ const RecipesFeed = ({ navigation }) => {
     db.get().then((snapshot) => {
       const array = [];
       snapshot.forEach((doc) => {
-        cacheImages(doc.data().downloadUrl);
         array.push(doc.data());
       });
       setRecipes(array);
@@ -47,15 +45,15 @@ const RecipesFeed = ({ navigation }) => {
         <View style={{ flex: 1, width: "100%" }}>
           {recipes
             ? recipes.map((data, index) => (
-                <RecipeCard key={index} navigation={navigation} data={data}>
-                  <IconButton
-                    color={theme.colors.secondary}
-                    size={25}
-                    icon="check"
-                    onPress={() => addToCustomListDialog(data)}
-                  />
-                </RecipeCard>
-              ))
+              <RecipeCard key={index} navigation={navigation} data={data}>
+                <IconButton
+                  color={theme.colors.secondary}
+                  size={25}
+                  icon="check"
+                  onPress={() => addToCustomListDialog(data)}
+                />
+              </RecipeCard>
+            ))
             : null}
 
           <AddToCustomList

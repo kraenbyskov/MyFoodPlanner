@@ -18,7 +18,7 @@ import { View } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
-interface EmptyScreeenInterface {}
+interface EmptyScreeenInterface { }
 
 const EmptyScreen: FC<EmptyScreeenInterface> = () => {
   return <View />;
@@ -149,10 +149,8 @@ const Main = (props) => {
   );
 };
 
-const mapStateToProps = (store) => ({
-  currentUser: store.userState.currentUser,
-});
+
 const mapDispatchProps = (dispatch) =>
   bindActionCreators({ fetchUser, clearData }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchProps)(Main);
+export default connect(null, mapDispatchProps)(Main);

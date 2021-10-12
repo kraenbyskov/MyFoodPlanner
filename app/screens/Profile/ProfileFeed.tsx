@@ -27,7 +27,7 @@ const ProfileFeed: FC<ProfileFeedInterface> = ({ navigation }) => {
     React.useEffect(() => {
         setGetData(Food);
     }, [Food]);
-
+    console.log(GetData)
     return (
         <View>
             <Text>Recipes</Text>

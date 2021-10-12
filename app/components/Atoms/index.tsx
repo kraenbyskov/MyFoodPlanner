@@ -13,7 +13,6 @@ import CustomInput from "./Input";
 import PickerComponent from "./PickerComponent";
 import ParallaxScrollView from "./ParallaxScrollView";
 import FeedCard from "./FeedCard";
-import CustomImage from "./CustomImage";
 
 export {
   SnackBar,
@@ -31,5 +30,4 @@ export {
   PickerComponent,
   ParallaxScrollView,
   FeedCard,
-  CustomImage,
 };

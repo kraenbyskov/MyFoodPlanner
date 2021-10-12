@@ -11,6 +11,8 @@ import {
   StyleSheet,
   Animated,
 } from "react-native";
+import firebase from "firebase";
+
 
 import { AppBar, ParallaxScrollView } from "../../components";
 import Feed from "./DashboardFeed";
@@ -39,20 +41,55 @@ const Dashboard = () => {
     setRefreshing(false);
   }, []);
 
+  const [Today, setToday] = React.useState(null);
+  var getDate = new Date();
+  var Day = getDate.getDay();
+
+  var weekday = new Array(7);
+  weekday[0] = "Søndag";
+  weekday[1] = "Mandag";
+  weekday[2] = "Tirsdag";
+  weekday[3] = "Onsdag";
+  weekday[4] = "Torsdag";
+  weekday[5] = "Fredag";
+  weekday[6] = "Lørdag";
+
+  React.useEffect(() => {
+    const Today = firebase
+      .firestore()
+      .collection("AddToCustomList")
+      .doc(firebase.auth().currentUser.uid)
+      .collection("CustomList").doc(weekday[Day]);
+
+    Today.get().then((doc) => {
+      if (doc.exists) {
+        setToday(doc.data())
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
+    }).catch((error) => {
+      console.log("Error getting document:", error);
+    });
+  }, []);
+
+
+
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ParallaxScrollView
         style={{ top: -50 }}
-        parallaxHeaderHeight={300}
+        parallaxHeaderHeight={500}
         stickyHeaderHeight={50}
-        parallaxHeader={() => <Header />}
+        parallaxHeader={() => <Header data={Today} />}
         fixedHeader={() => <AppBar mainColor={"white"} />}
         stickyHeader={RenderStickyHeader}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <Feed />
+        <Feed todaysRecipe={Today} />
       </ParallaxScrollView>
     </SafeAreaView>
   );

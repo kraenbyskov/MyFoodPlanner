@@ -9,11 +9,11 @@ import {
 import { theme } from "../../core/theme";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { connect, bindActionCreators } from "../../redux/actions";
-import CustomImage from "./CustomImage";
+import CachedImage from 'expo-cached-image'
 
 interface RecipeCardInterface {
   navigation: any;
-  data: { downloadUrl?: string; Name?: string; empty?: boolean; day: string };
+  data: { downloadUrl?: string; Name?: string; empty?: boolean; day: string, Id: string };
   children?: any;
   setVisible?: (boolean: boolean) => void;
   setToDay?: any;
@@ -30,7 +30,6 @@ const FeedCard: FC<RecipeCardInterface> = ({
     setVisible(true);
     setToDay(data.day);
   };
-
   return (
     <View style={styles.Container}>
       <TouchableHighlight
@@ -39,13 +38,20 @@ const FeedCard: FC<RecipeCardInterface> = ({
         onPress={() => navigation.navigate("RecipeDetails", data)}
       >
         <View style={styles.Content}>
-          <CustomImage style={styles.RecipeImage} url={data.downloadUrl} />
+          {data.downloadUrl === "" ?
+            <Image style={styles.RecipeImage} source={require("../../assets/photo-1512621776951-a57141f2eefd.png")} />
+            :
+            <CachedImage source={{ uri: `${data.downloadUrl}` }}
+              cacheKey={`${data.Id}-thumb`} style={styles.RecipeImage} />
+          }
         </View>
       </TouchableHighlight>
     </View>
   );
 };
 
+
+require("../../assets/photo-1512621776951-a57141f2eefd.png")
 const mapStateToProps = (store) => ({
   AllRecipes: store.recepiesState.AllRecipes,
 });
