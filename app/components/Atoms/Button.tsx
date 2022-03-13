@@ -29,7 +29,7 @@ const Button: FC<ButtonInterface> = ({
       style,
     ]}
     color={mode === "outlined" && "#135d4b"}
-    labelStyle={[styles.text, { fontSize: size === "small" ? 10 : 15, },]}
+    labelStyle={[styles.text, { fontSize: size === "small" ? 10 : 15, lineHeight: size === "small" ? 18 : 26, },]}
     mode={mode}
     icon={icon}
     {...props}
@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontWeight: "bold",
-    lineHeight: 26,
   },
 });
 

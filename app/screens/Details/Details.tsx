@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import {
   SafeAreaView,
   StatusBar,
@@ -19,7 +19,7 @@ import { ParallaxScrollView } from "../../components";
 import { theme } from "../../core/theme";
 import TopNav from "./DetailsTopNav";
 
-const RenderStickyHeader = (value) => {
+const RenderStickyHeader = (value: { interpolate: (arg0: { inputRange: number[]; outputRange: number[]; extrapolate: string; }) => any; }) => {
   const opacity = value.interpolate({
     inputRange: [0, 0, 1],
     outputRange: [0, 150, 200],
@@ -37,7 +37,11 @@ const RenderStickyHeader = (value) => {
   );
 };
 
-export default function Details({ route }) {
+interface DetailsInterface {
+  route: { params: { Id: string } }
+}
+
+const Details: FC<DetailsInterface> = ({ route }) => {
   const [GetData, setGetData]: any = React.useState(route.params);
   const db = firebase.firestore().collection("Allrecipes");
   const [refreshing, setRefreshing] = React.useState(false);
@@ -63,6 +67,7 @@ export default function Details({ route }) {
           style={{ marginTop: -50, marginBottom: -30 }}
           parallaxHeaderHeight={350}
           stickyHeaderHeight={50}
+
           stickyHeader={RenderStickyHeader}
           parallaxHeader={() => <Banner Data={GetData} />}
           fixedHeader={() => <TopNav Data={GetData} />}
@@ -87,3 +92,5 @@ export default function Details({ route }) {
     return <Title>No data</Title>;
   }
 }
+
+export default Details

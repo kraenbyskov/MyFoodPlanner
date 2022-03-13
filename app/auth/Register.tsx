@@ -8,9 +8,9 @@ import { theme } from '../core/theme';
 import { emailValidator, passwordValidator, nameValidator } from '../core/utils';
 
 const Register = ({ navigation }) => {
-	const [ name, setName ] = useState({ value: '', error: '' });
-	const [ email, setEmail ] = useState({ value: '', error: '' });
-	const [ password, setPassword ] = useState({ value: '', error: '' });
+	const [name, setName] = useState({ value: '', error: '' });
+	const [email, setEmail] = useState({ value: '', error: '' });
+	const [password, setPassword] = useState({ value: '', error: '' });
 
 	const _onSignUpPressed = () => {
 		const nameError = nameValidator(name.value);
@@ -103,7 +103,7 @@ const Register = ({ navigation }) => {
 
 const styles = StyleSheet.create({
 	label: {
-		color: theme.colors.secondary
+		color: theme.colors.primary
 	},
 	button: {
 		marginTop: 24

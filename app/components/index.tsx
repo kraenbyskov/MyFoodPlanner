@@ -14,6 +14,8 @@ import {
   PickerComponent,
   ParallaxScrollView,
   FeedCard,
+  ProgressBar,
+  TabSwitch
 } from "./Atoms";
 // Atoms
 
@@ -38,6 +40,7 @@ export {
   BackButton,
   Background,
   Button,
+  ProgressBar,
   Header,
   CustomCard,
   CustomPortal,
@@ -46,4 +49,5 @@ export {
   AddToCustomList,
   FeedCard,
   ParallaxScrollView,
+  TabSwitch
 };

@@ -1,6 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
 import { Dialog, Portal } from "react-native-paper";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 import { theme } from "../../core/theme";
 import {
   View,
@@ -17,7 +16,7 @@ import {
   connect,
   addToCustomList,
 } from "../../redux/actions";
-import CachedImage from 'expo-cached-image'
+import { Dispatch, AnyAction } from "redux";
 
 interface CustomListPortalInterface {
   visible: any;
@@ -35,23 +34,22 @@ const CustomListPortal: FC<CustomListPortalInterface> = ({
   toDay,
   AllRecipes,
 }) => {
-  const addToCustomListButton = (data, day) => {
+  const addToCustomListButton = (data: any, day: string) => {
     addToCustomList(data, day);
     hideDialog();
   };
 
-  const [recipes, setRecipes] = useState(null);
+  const [recipes, setRecipes] = useState([]);
+  const FirebaseAuth: { currentUser: any } = firebase.auth()
   const db = firebase
     .firestore()
     .collection("Allrecipes")
-    .where("Owner.UserID", "==", firebase.auth().currentUser.uid);
+    .where("Owner.UserID", "==", FirebaseAuth.currentUser.uid);
 
   useEffect(() => {
     db.get().then((snapshot) => {
-      const array = [];
-      snapshot.forEach((doc) => {
-        array.push(doc.data());
-      });
+      const array: any = [];
+      snapshot.forEach((doc) => array.push(doc.data()));
       setRecipes(array);
     });
   }, []);
@@ -67,7 +65,7 @@ const CustomListPortal: FC<CustomListPortalInterface> = ({
         <Dialog.Content>
           <ScrollView style={styles.Container}>
             {recipes &&
-              recipes.map((data, index) => (
+              recipes.map((data: { downloadUrl: string, Name: string }, index) => (
                 <TouchableHighlight
                   key={index}
                   style={styles.Card}
@@ -78,8 +76,8 @@ const CustomListPortal: FC<CustomListPortalInterface> = ({
                     {data.downloadUrl === "" ?
                       <Image style={styles.RecipeImage} source={require("../../assets/photo-1512621776951-a57141f2eefd.png")} />
                       :
-                      <CachedImage source={{ uri: `${data.downloadUrl}` }}
-                        cacheKey={`${data.Id}-thumb`} style={styles.RecipeImage} />
+                      <Image source={{ uri: `${data.downloadUrl}` }}
+                        style={styles.RecipeImage} />
                     }
 
 
@@ -94,11 +92,11 @@ const CustomListPortal: FC<CustomListPortalInterface> = ({
   );
 };
 
-const mapStateToProps = (store) => ({
+const mapStateToProps = (store: { recepiesState: { AllRecipes: any; }; }) => ({
   AllRecipes: store.recepiesState.AllRecipes,
 });
 
-const mapDispatchProps = (dispatch) =>
+const mapDispatchProps = (dispatch: Dispatch<AnyAction>) =>
   bindActionCreators({ addToCustomList }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchProps)(CustomListPortal);

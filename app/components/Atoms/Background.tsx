@@ -1,7 +1,12 @@
-import React, { memo } from 'react';
+import React, { memo, FC } from 'react';
 import { ImageBackground, StyleSheet, KeyboardAvoidingView } from 'react-native';
 
-const Background = ({ children }) => (
+
+interface BackgroundInterface {
+	children: any
+}
+
+const Background: FC<BackgroundInterface> = ({ children }) => (
 	<ImageBackground source={require('images/background.png')} style={styles.background}>
 		<KeyboardAvoidingView style={styles.container} behavior="padding">
 			{children}

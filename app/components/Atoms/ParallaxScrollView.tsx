@@ -77,7 +77,7 @@ class ParallaxScrollView extends React.Component<ParallaxScrollViewInterface> {
 
     let animationStyle = null;
     if (scaleParallaxHeader) {
-      const scaleValue = 5;
+      const scaleValue = 2;
       const scale = this._animatedValue.interpolate({
         inputRange: [-parallaxHeaderHeight, 0],
         outputRange: [scaleValue * 1.5, 1],

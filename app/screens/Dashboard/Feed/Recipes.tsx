@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { theme } from "../../../core/theme";
 import RecipeCard from "./RecipeCard";
 
-interface NewRecipesInterface {}
+interface NewRecipesInterface { }
 
 const NewRecipes: FC<NewRecipesInterface> = () => {
   const navigation = useNavigation();
@@ -48,7 +48,7 @@ const NewRecipes: FC<NewRecipesInterface> = () => {
           style={{
             fontSize: 20,
             fontFamily: "Lato_400Regular",
-            color: theme.colors.secondary,
+            color: theme.colors.primary,
           }}
         >
           See all {">"}

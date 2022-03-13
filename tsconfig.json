@@ -2,12 +2,16 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "jsx": "react-native",
-    "lib": ["dom", "esnext"],
-    "esModuleInterop": true, // Disables namespace imports (import * as fs from "fs") and enables CJS/AMD/UMD style imports (import fs from "fs")
+    "lib": [
+      "dom",
+      "esnext"
+    ],
+    "esModuleInterop": true,
     "moduleResolution": "node",
     "noEmit": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "strict": false,
-  }
+    "strict": false
+  },
+  "extends": "expo/tsconfig.base"
 }

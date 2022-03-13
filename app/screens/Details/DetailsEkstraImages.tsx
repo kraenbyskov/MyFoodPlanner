@@ -1,21 +1,28 @@
-import React from "react";
+import React, { FC } from "react";
 import { StyleSheet } from "react-native";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Image } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { theme } from "../../core/theme";
-import CachedImage from 'expo-cached-image'
 
 import { CustomCard as Card } from "../../components";
 
 const array = [1, 23];
 
-const RecipeEkstraImages = ({ Data }) => {
+interface RecipeEkstraImagesInterface {
+  Data: { downloadUrl: string }
+}
+
+const RecipeEkstraImages: FC<RecipeEkstraImagesInterface> = ({ Data }) => {
   return (
     <Card>
       <ScrollView horizontal={true}>
         {array.map((index) => (
-          <CachedImage key={index} source={{ uri: `${Data.downloadUrl}` }}
-            cacheKey={`${Data.Id}-thumb`} style={styles.Image} />
+          <Image key={index} source={
+            Data.downloadUrl
+              ? { uri: Data.downloadUrl }
+              : require("../../assets/photo-1512621776951-a57141f2eefd.png")
+          }
+            style={styles.Image} />
         ))}
         <View style={styles.AddImage}>
           <MaterialCommunityIcons

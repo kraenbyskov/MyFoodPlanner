@@ -8,7 +8,9 @@ import {
 } from "react-native";
 import { theme } from "../../core/theme";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import CachedImage from 'expo-cached-image'
+import { LinearGradient } from "expo-linear-gradient";
+import { Colors } from "react-native/Libraries/NewAppScreen";
+
 
 
 interface RecipeCardInterface {
@@ -18,6 +20,7 @@ interface RecipeCardInterface {
   setVisible?: (boolean: boolean) => void;
   setToDay?: any;
   GetAllRecipes?: any;
+  switchState: boolean
 }
 
 const RecipeCard: FC<RecipeCardInterface> = ({
@@ -26,6 +29,7 @@ const RecipeCard: FC<RecipeCardInterface> = ({
   children,
   setVisible,
   setToDay,
+  switchState
 }) => {
   const getAllRecipesPopUp = () => {
     setVisible(true);
@@ -36,27 +40,26 @@ const RecipeCard: FC<RecipeCardInterface> = ({
 
   return !data.empty ? (
     <TouchableHighlight
-      style={styles.Card}
+      style={switchState ? styles.Card : styles.CardSmall}
       underlayColor={theme.colors.primary}
       onPress={() => navigation.navigate("RecipeDetails", data)}
     >
       <View style={styles.Content}>
-        {data.downloadUrl === "" ?
-          <Image style={styles.RecipeImage} source={require("../../assets/photo-1512621776951-a57141f2eefd.png")} />
-          :
-          <CachedImage source={{ uri: `${data.downloadUrl}` }}
-            cacheKey={`${data.Id}-thumb`} style={styles.RecipeImage} />
+        {switchState ?
+          <LinearGradient
+            style={styles.overlay}
+            colors={["rgba(0,0,0,0.2)", "rgba(0,0,0,0.8)"]}
+          /> : null
         }
-
-
-        <Text style={styles.Title}>{data.Name}</Text>
+        <Image style={switchState ? styles.RecipeImage : styles.RecipeImageSmall} source={data.downloadUrl === "" ? require("../../assets/photo-1512621776951-a57141f2eefd.png") : { uri: `${data.downloadUrl}` }} />
+        <Text style={switchState ? styles.Title : styles.TitleSmall}>{data.Name}</Text>
         <View style={styles.Icons}>{children}</View>
       </View>
     </TouchableHighlight>
   ) : (
     <TouchableHighlight
-      style={[styles.Card, styles.CardEmpty]}
-      underlayColor={theme.colors.primary}
+      style={[switchState ? styles.Card : styles.CardSmall, styles.CardEmpty, { borderColor: theme.colors.primary, }]}
+      underlayColor={"white"}
       onPress={() => getAllRecipesPopUp()}
     >
       <View style={[styles.Content, styles.ContentEmpty]}>
@@ -76,7 +79,21 @@ const styles = StyleSheet.create({
   Card: {
     flex: 1,
     width: "100%",
-    height: 50,
+    height: 140,
+    borderRadius: 10,
+    marginBottom: 15,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.06,
+    shadowRadius: 3.68,
+  },
+  CardSmall: {
+    flex: 1,
+    width: "100%",
+    height: 40,
     backgroundColor: "white",
     borderRadius: 10,
     marginBottom: 15,
@@ -88,16 +105,30 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.06,
     shadowRadius: 3.68,
   },
+  overlay: {
+    position: "absolute",
+    zIndex: 10,
+    left: 0,
+    top: 0,
+    width: "100%",
+    borderRadius: 10,
+    height: 140,
+  },
   CardEmpty: {
     borderWidth: 2,
-    borderColor: "lightgray",
     borderStyle: "dashed",
-    backgroundColor: null,
+    backgroundColor: undefined,
   },
   RecipeImage: {
-    marginLeft: 5,
-    width: 30,
-    height: 30,
+    marginLeft: 0,
+    width: "100%",
+    height: 140,
+    borderRadius: 10,
+  },
+  RecipeImageSmall: {
+    marginLeft: 0,
+    width: 40,
+    height: 40,
     borderRadius: 10,
   },
   Content: {
@@ -112,6 +143,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   Title: {
+    position: "absolute",
+    bottom: 10,
+    left: 10,
+    zIndex: 20,
+    color: "white",
+    marginLeft: 0,
+    fontSize: 18,
+  },
+  TitleSmall: {
     marginLeft: 10,
     fontSize: 18,
   },

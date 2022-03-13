@@ -15,15 +15,25 @@ const CustomListTopButtons: FC<CustomListTopButtonsInterface> = ({
     <View style={styles.ButtonView}>
       <Button
         icon="delete"
-        style={{ width: "40%" }}
+        style={{ width: "28%" }}
         onPress={() => clearFoodList()}
+        size="small"
+      >
+        Clear List
+      </Button>
+      <Button
+        icon="delete"
+        style={{ width: "28%" }}
+        onPress={() => clearFoodList()}
+        size="small"
       >
         Clear List
       </Button>
       <Button
         icon="plus"
-        style={{ width: "50%" }}
+        style={{ width: "28%" }}
         onPress={() => navigation.navigate("Recipes")}
+        size="small"
       >
         Tilføj flere
       </Button>

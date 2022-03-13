@@ -1,29 +1,37 @@
-import React from "react";
-import { RefreshControl, Text } from "react-native";
-import { AppBar, RecipeCard } from "../../components";
+import React, { FC } from "react";
+import { Pressable, RefreshControl, Text } from "react-native";
+import { AppBar, RecipeCard, TabSwitch } from "../../components";
 import { View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 
 import { clearFoodList } from "../../functions";
 
 import firebase from "firebase";
-
+import { theme } from "../../core/theme";
 import Portal from "./CustomListPortal";
 import TopButtons from "./CustomListTopButtons";
 
-function CustomList({ navigation }) {
+
+interface CustomListInterface {
+  navigation: () => void
+}
+
+const CustomList: FC<CustomListInterface> = ({ navigation }) => {
   const [refreshing, setRefreshing] = React.useState(false);
-  const [list, setList] = React.useState(null);
+  const [list, setList] = React.useState([]);
+  const [switchState, setSwitchState] = React.useState(false);
 
   const [visible, setVisible] = React.useState(false);
   const [toDay, setToDay] = React.useState("");
   const hideDialog = () => setVisible(false);
+
+  const FirebaseAuth: { currentUser: any } = firebase.auth()
   const query = firebase
     .firestore()
     .collection("AddToCustomList")
-    .doc(firebase.auth().currentUser.uid)
+    .doc(FirebaseAuth.currentUser.uid)
     .collection("CustomList");
 
-  const onCollection = async (querySnapshot) => {
+  const onCollection = async (querySnapshot: any[]) => {
     const collectAndSort = new Promise((resolve, reject) => {
       const Data = [
         { day: "Mandag", empty: true },
@@ -56,7 +64,7 @@ function CustomList({ navigation }) {
       ]);
     });
     collectAndSort
-      .then((array) => {
+      .then((array: any) => {
         setList(array);
       })
       .catch((error) => {
@@ -66,18 +74,18 @@ function CustomList({ navigation }) {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    query.onSnapshot(onCollection);
+    query.onSnapshot(() => onCollection);
     setRefreshing(false);
   }, []);
 
   React.useEffect(() => {
-    query.onSnapshot(onCollection);
+    query.onSnapshot(() => onCollection);
   }, []);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <AppBar />
       <TopButtons navigation={navigation} clearFoodList={clearFoodList} />
+      <TabSwitch setSwitchState={setSwitchState} switchState={switchState} />
       <ScrollView
         style={styles.container}
         refreshControl={
@@ -85,13 +93,13 @@ function CustomList({ navigation }) {
         }
       >
         <View style={styles.content}>
-          <Text>7 Dags Plan</Text>
           {list
-            ? list.map((data, index) => {
+            ? list.map((data: { day: string }, index) => {
               return (
                 <View key={index}>
                   <Text style={{ marginBottom: 5 }}>{data.day}</Text>
                   <RecipeCard
+                    switchState={switchState}
                     setVisible={setVisible}
                     setToDay={setToDay}
                     navigation={navigation}

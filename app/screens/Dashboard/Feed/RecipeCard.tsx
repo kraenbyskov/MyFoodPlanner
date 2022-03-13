@@ -1,7 +1,6 @@
 import React, { FC, useState, useEffect } from "react";
-import { View, StyleSheet, TouchableHighlight, Text } from "react-native";
+import { View, StyleSheet, TouchableHighlight, Text, Image } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import CachedImage from 'expo-cached-image'
 import { theme } from "../../../core/theme";
 
 interface RecipeCardInterface {
@@ -24,8 +23,8 @@ const RecipeCard: FC<RecipeCardInterface> = ({ data, index, navigation }) => {
     >
       <View style={styles.Content}>
         <View>
-          <CachedImage source={{ uri: `${data.downloadUrl}` }}
-            cacheKey={`${data.Id}-thumb`} style={styles.RecipeImage} />
+          <Image source={{ uri: `${data.downloadUrl}` }}
+            style={styles.RecipeImage} />
           <View
             style={{
               paddingHorizontal: 10,
@@ -70,8 +69,8 @@ const RecipeCard: FC<RecipeCardInterface> = ({ data, index, navigation }) => {
           }}
         >
 
-          <CachedImage source={{ uri: `${data.downloadUrl}` }}
-            cacheKey={`${data.Id}-thumb`} style={{
+          <Image source={{ uri: `${data.downloadUrl}` }}
+            style={{
               aspectRatio: 1 / 1,
               borderRadius: 5,
               width: 40,
@@ -79,7 +78,7 @@ const RecipeCard: FC<RecipeCardInterface> = ({ data, index, navigation }) => {
             }} />
           <View style={{ paddingLeft: 5 }}>
             <Text style={styles.Title}>{data.Owner.User}</Text>
-            <Text style={[styles.Title, { color: theme.colors.secondary }]}>
+            <Text style={[styles.Title, { color: theme.colors.primary }]}>
               {"Rock and roller"}
             </Text>
           </View>

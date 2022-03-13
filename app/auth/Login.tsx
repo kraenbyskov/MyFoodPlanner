@@ -7,9 +7,9 @@ import { emailValidator, passwordValidator } from '../core/utils';
 import firebase from 'firebase';
 
 const Login = ({ navigation }) => {
-	const [ email, setEmail ] = useState({ value: '', error: '' });
-	const [ password, setPassword ] = useState({ value: '', error: '' });
-	const [ loginError, setloginError ] = useState('');
+	const [email, setEmail] = useState({ value: '', error: '' });
+	const [password, setPassword] = useState({ value: '', error: '' });
+	const [loginError, setloginError] = useState('');
 
 	const _onLoginPressed = () => {
 		const emailError = emailValidator(email.value);
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
 		marginTop: 4
 	},
 	label: {
-		color: theme.colors.secondary
+		color: theme.colors.primary
 	},
 	link: {
 		fontWeight: 'bold',

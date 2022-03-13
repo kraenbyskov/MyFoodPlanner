@@ -1,31 +1,40 @@
-import React from "react";
+import React, { FC } from "react";
 import { View, StyleSheet } from "react-native";
 import firebase from "firebase";
 import { Picker } from "@react-native-picker/picker";
 import {
-  Dialog,
   TextInput as Input,
-  List,
   DataTable,
 } from "react-native-paper";
 import { Button } from "../../components";
 import { theme } from "../../core/theme";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 import { CustomCard as Card, CustomPortal as Portal } from "../../components";
 
 const label = ["", "g", "kg", "dl", "spsk", "l"];
 
-const RecipeIngredients = ({ data }) => {
-  const query = firebase
+interface RecipeIngredientsInterface {
+  data: { Id: string, }
+}
+
+const RecipeIngredients: FC<RecipeIngredientsInterface> = ({ data }) => {
+
+  const db = firebase
     .firestore()
     .collection("Allrecipes")
     .doc(data.Id)
     .collection("ingredients");
-  const [Ingredients]: any = useCollectionData(query);
 
   React.useEffect(() => {
-    setingredients(Ingredients);
-  }, [Ingredients]);
+    db.get().then((snapshot) => {
+      const array: any = [];
+      snapshot.forEach((doc) => {
+        array.push(doc.data());
+      });
+      setingredients(array);
+    });
+  }, []);
+
+
 
   const [ingredients, setingredients] = React.useState([]);
   const [title, setTitle] = React.useState({ value: "", error: "" });
@@ -66,7 +75,7 @@ const RecipeIngredients = ({ data }) => {
             <DataTable.Title numeric>{""}</DataTable.Title>
           </DataTable.Header>
           {ingredients &&
-            ingredients.map((ingredient, index) => (
+            ingredients.map((ingredient: { amount: string, type: string, navn: string }, index) => (
               <DataTable.Row key={index}>
                 <DataTable.Cell>{ingredient.navn}</DataTable.Cell>
                 <DataTable.Cell numeric>{ingredient.amount}</DataTable.Cell>
@@ -89,6 +98,7 @@ const RecipeIngredients = ({ data }) => {
         <View style={styles.inputfields}>
           <View style={styles.input}>
             <Input
+              autoComplete={false}
               style={{ backgroundColor: theme.colors.surface }}
               underlineColor="transparent"
               theme={{ colors: { primary: theme.colors.primary } }}
@@ -102,6 +112,7 @@ const RecipeIngredients = ({ data }) => {
           </View>
           <View style={styles.input}>
             <Input
+              autoComplete={false}
               style={{ backgroundColor: theme.colors.surface }}
               // underlineColor="transparent"
               theme={{ colors: { primary: theme.colors.primary } }}

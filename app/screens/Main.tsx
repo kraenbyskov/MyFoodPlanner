@@ -8,13 +8,15 @@ import {
 } from "../redux/actions/index";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon from "react-native-vector-icons/FontAwesome";
 import { theme } from "../core/theme";
 
 import DasbhoardScreen from "./Dashboard/Dashboard";
 import ProfileScreen from "./Profile/Profile";
-import RecipesScreen from "./RecipesFeed/RecipesFeed";
+import RecipesScreen from "./SearchRecipe/SearchRecipe";
 import CustomListScreen from "./CustomList/CustomList";
 import { View } from "react-native";
+import { Dispatch, AnyAction } from "redux";
 
 const Tab = createBottomTabNavigator();
 
@@ -24,7 +26,7 @@ const EmptyScreen: FC<EmptyScreeenInterface> = () => {
   return <View />;
 };
 
-const Main = (props) => {
+const Main = (props: { clearData: () => void; fetchUser: () => void; }) => {
   useEffect(() => {
     props.clearData();
     props.fetchUser();
@@ -32,18 +34,19 @@ const Main = (props) => {
 
   return (
     <Tab.Navigator
-      tabBarOptions={{
-        showLabel: false,
-        style: {
+
+
+      screenOptions={{
+        tabBarStyle: {
           position: "absolute",
-          bottom: 25,
+          bottom: 20,
           left: 20,
           right: 20,
           paddingTop: 20,
           elevation: 4,
-          backgroundColor: "#FFFFFF",
+          backgroundColor: "white",
           borderRadius: 15,
-          height: 75,
+          height: 65,
           borderTopWidth: 0,
           shadowColor: "#000",
           shadowOffset: {
@@ -53,12 +56,25 @@ const Main = (props) => {
           shadowOpacity: 0.06,
           shadowRadius: 3.68,
         },
+        tabBarItemStyle: {
+          height: 65,
+          top: -20,
+
+        },
+        tabBarIconStyle: {
+          color: "blue"
+        },
+        tabBarShowLabel: false
       }}
+
+
+
     >
       <Tab.Screen
         name="Dasbhoard"
         component={DasbhoardScreen}
         options={{
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
           ),
@@ -68,6 +84,7 @@ const Main = (props) => {
         name="CustomList"
         component={CustomListScreen}
         options={{
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="playlist-check"
@@ -88,6 +105,7 @@ const Main = (props) => {
           },
         })}
         options={{
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <View
               style={{
@@ -104,9 +122,9 @@ const Main = (props) => {
                 alignItems: "center",
                 width: 70,
                 height: 70,
-                top: -50,
+                top: -30,
                 borderRadius: 100,
-                backgroundColor: theme.colors.secondary,
+                backgroundColor: theme.colors.primary,
               }}
             >
               <MaterialCommunityIcons
@@ -123,12 +141,13 @@ const Main = (props) => {
       />
 
       <Tab.Screen
-        name="RecipesFeed"
+        name="SearchRecipe"
         component={RecipesScreen}
         options={{
+          headerShown: false,
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name="format-list-checkbox"
+            <Icon
+              name="search"
               color={color}
               size={26}
             />
@@ -140,6 +159,7 @@ const Main = (props) => {
         name="Profile"
         component={ProfileScreen}
         options={{
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="account" color={color} size={26} />
           ),
@@ -150,7 +170,7 @@ const Main = (props) => {
 };
 
 
-const mapDispatchProps = (dispatch) =>
+const mapDispatchProps = (dispatch: Dispatch<AnyAction>) =>
   bindActionCreators({ fetchUser, clearData }, dispatch);
 
 export default connect(null, mapDispatchProps)(Main);

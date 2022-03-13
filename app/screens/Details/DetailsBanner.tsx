@@ -1,20 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { StyleSheet, ImageBackground } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { connect } from "react-redux";
-import { CacheManager } from 'expo-cached-image'
 
-const DetailsBanner = ({ Data }) => {
-  const getCachedImage = async () => {
-    const uri = await CacheManager.getCachedUri({ key: `${Data.Id}` })
-    return uri
-  }
-  const [state, setstate] = useState()
-  useEffect(() => {
-    getCachedImage().then((image) => {
-      setstate(image)
-    })
-  }, [])
+
+interface DetailsBannerInterface {
+  Data: { downloadUrl: string }
+}
+
+
+const DetailsBanner: FC<DetailsBannerInterface> = ({ Data }) => {
+
   return (
     <ImageBackground
       source={

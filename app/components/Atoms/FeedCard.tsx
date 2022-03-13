@@ -9,12 +9,10 @@ import {
 import { theme } from "../../core/theme";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { connect, bindActionCreators } from "../../redux/actions";
-import CachedImage from 'expo-cached-image'
 
 interface RecipeCardInterface {
   navigation: any;
   data: { downloadUrl?: string; Name?: string; empty?: boolean; day: string, Id: string };
-  children?: any;
   setVisible?: (boolean: boolean) => void;
   setToDay?: any;
 }
@@ -22,7 +20,6 @@ interface RecipeCardInterface {
 const FeedCard: FC<RecipeCardInterface> = ({
   navigation,
   data,
-  children,
   setVisible,
   setToDay,
 }) => {
@@ -41,8 +38,8 @@ const FeedCard: FC<RecipeCardInterface> = ({
           {data.downloadUrl === "" ?
             <Image style={styles.RecipeImage} source={require("../../assets/photo-1512621776951-a57141f2eefd.png")} />
             :
-            <CachedImage source={{ uri: `${data.downloadUrl}` }}
-              cacheKey={`${data.Id}-thumb`} style={styles.RecipeImage} />
+            <Image source={{ uri: `${data.downloadUrl}` }}
+              style={styles.RecipeImage} />
           }
         </View>
       </TouchableHighlight>

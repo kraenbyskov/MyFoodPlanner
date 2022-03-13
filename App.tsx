@@ -1,18 +1,15 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View, Image, LogBox } from "react-native";
+import { View, LogBox } from "react-native";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import AppLoading from "expo-app-loading";
 import { Provider as PaperProvider } from "react-native-paper";
 
-import { ActivityIndicator, Colors } from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 
 import firebase from "firebase";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
-import { Asset } from "expo-asset";
 import { Provider } from "react-redux";
 import LandingScreen from "./app/auth/Landing";
 import RegisterScreen from "./app/auth/Register";
@@ -79,12 +76,10 @@ const App = () => {
   const navTheme = DefaultTheme;
   navTheme.colors.background = theme.colors.background;
 
-  const onDismissSnackBar = () => setVisible(false);
 
   const [LoggedIn, setLoggedIn] = React.useState(false);
   const [Loaded, setLoaded] = React.useState(false);
-  const [visible, setVisible] = React.useState(true);
-  const [state, setState] = React.useState({ isReady: false });
+
   React.useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
@@ -97,24 +92,7 @@ const App = () => {
     });
   }, []);
 
-  const _cacheResourcesAsync: any = async () => {
-    const images = [require("./app/assets/background.png")];
 
-    const cacheImages = images.map((image) => {
-      return Asset.fromModule(image).downloadAsync();
-    });
-    return Promise.all(cacheImages);
-  };
-
-  if (!state.isReady) {
-    return (
-      <AppLoading
-        startAsync={_cacheResourcesAsync}
-        onFinish={() => setState({ isReady: true })}
-        onError={console.warn}
-      />
-    );
-  }
 
   if (!fontsLoaded) {
     return (
@@ -174,6 +152,7 @@ const App = () => {
             <Stack.Screen
               name="Add"
               component={AddScreen}
+
               options={{
                 headerShown: false,
               }}

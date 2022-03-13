@@ -1,7 +1,6 @@
 import React, { FC } from 'react'
 import { View, Text } from 'react-native'
 import firebase from "firebase"
-import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { FeedCard, } from '../../components';
 import { IconButton } from 'react-native-paper';
 import { theme } from '../../core/theme';
@@ -14,20 +13,24 @@ const ProfileFeed: FC<ProfileFeedInterface> = ({ navigation }) => {
     const [GetData, setGetData]: any = React.useState(null);
 
 
-    const query = firebase
+
+
+    const db = firebase
         .firestore()
         .collection("Allrecipes")
-        .where(
-            "Owner.UserID",
-            "==",
-            firebase.auth().currentUser.uid
-        );
-    const [Food]: any = useCollectionData(query);
+        .where("Owner.UserID", "==", firebase.auth().currentUser.uid);
 
     React.useEffect(() => {
-        setGetData(Food);
-    }, [Food]);
-    console.log(GetData)
+        db.get().then((snapshot) => {
+            const array = [];
+            snapshot.forEach((doc) => {
+                array.push(doc.data());
+            });
+            setGetData(array);
+        });
+    }, []);
+
+
     return (
         <View>
             <Text>Recipes</Text>
@@ -41,7 +44,7 @@ const ProfileFeed: FC<ProfileFeedInterface> = ({ navigation }) => {
                     GetData.map((data, index) => (
                         <FeedCard key={index} navigation={navigation} data={data}>
                             <IconButton
-                                color={theme.colors.secondary}
+                                color={theme.colors.primary}
                                 size={25}
                                 icon="check"
                             />
