@@ -9,11 +9,13 @@ import { ActivityIndicator } from "react-native-paper";
 import firebase from "firebase";
 
 LogBox.ignoreLogs(["Setting a timer"]);
+LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
+LogBox.ignoreAllLogs(); //Ignore all log notifications
 
 import { Provider } from "react-redux";
-import LandingScreen from "./app/auth/Landing";
-import RegisterScreen from "./app/auth/Register";
-import LoginScreen from "./app/auth/Login";
+import LandingScreen from "./app/screens/auth/Landing";
+import RegisterScreen from "./app/screens/auth/Register";
+import LoginScreen from "./app/screens/auth/Login";
 import { createStore, applyMiddleware } from "redux";
 import rootReducer from "./app/redux/reducers/index";
 import thunk from "redux-thunk";
@@ -76,7 +78,6 @@ const App = () => {
   const navTheme = DefaultTheme;
   navTheme.colors.background = theme.colors.background;
 
-
   const [LoggedIn, setLoggedIn] = React.useState(false);
   const [Loaded, setLoaded] = React.useState(false);
 
@@ -91,8 +92,6 @@ const App = () => {
       }
     });
   }, []);
-
-
 
   if (!fontsLoaded) {
     return (
@@ -120,18 +119,13 @@ const App = () => {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Lading">
           <Stack.Screen
-            name="Landing"
-            component={LandingScreen}
+            name="Login"
+            component={LoginScreen}
             options={{ headerShown: false }}
           />
           <Stack.Screen
             name="Register"
             component={RegisterScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
@@ -152,7 +146,6 @@ const App = () => {
             <Stack.Screen
               name="Add"
               component={AddScreen}
-
               options={{
                 headerShown: false,
               }}

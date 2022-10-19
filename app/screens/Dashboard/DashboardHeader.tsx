@@ -6,25 +6,23 @@ import { theme } from "../../core/theme";
 
 import firebase from "firebase";
 
-
 export const DashboardHeader = ({ data }) => {
-
-
   return (
     <View style={styles.TopDashboard}>
-      {data ?
-        <ImageBackground
-          source={{ uri: data.downloadUrl }}
-          style={{ width: "100%", height: 530, paddingTop: 150 }}
-        >
-
-        </ImageBackground>
-        : null}
+      <Text
+        style={{
+          marginTop: 70,
+          paddingHorizontal: 25,
+          color: "white",
+          fontSize: 16,
+          fontWeight: "600",
+        }}
+      >
+        Dagens opskrifter
+      </Text>
     </View>
   );
 };
-
-
 
 export default DashboardHeader;
 
@@ -32,6 +30,6 @@ const styles = StyleSheet.create({
   TopDashboard: {
     top: -50,
     backgroundColor: theme.colors.primary,
-    height: 500,
+    height: 100,
   },
 });

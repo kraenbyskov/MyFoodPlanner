@@ -10,7 +10,7 @@ interface ButtonInterface {
   onPress?: any;
   icon?: string;
   size?: "small" | "medium" | "large";
-  mode?: "contained" | "text" | "outlined"
+  mode?: "contained" | "text" | "outlined";
 }
 
 const Button: FC<ButtonInterface> = ({
@@ -29,7 +29,13 @@ const Button: FC<ButtonInterface> = ({
       style,
     ]}
     color={mode === "outlined" && "#135d4b"}
-    labelStyle={[styles.text, { fontSize: size === "small" ? 10 : 15, lineHeight: size === "small" ? 18 : 26, },]}
+    labelStyle={[
+      styles.text,
+      {
+        fontSize: size === "small" ? 10 : 15,
+        lineHeight: size === "small" ? 18 : 26,
+      },
+    ]}
     mode={mode}
     icon={icon}
     {...props}
@@ -41,8 +47,9 @@ const Button: FC<ButtonInterface> = ({
 const styles = StyleSheet.create({
   button: {
     width: "100%",
-    marginVertical: 25,
     backgroundColor: theme.colors.primary,
+    paddingVertical: 4,
+    borderRadius: 8,
   },
   text: {
     fontWeight: "bold",

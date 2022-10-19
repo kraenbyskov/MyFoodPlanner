@@ -4,43 +4,28 @@ import { theme } from "../../core/theme";
 import {
   SafeAreaView,
   StatusBar,
-  Image,
   Text,
-  RefreshControl,
   View,
   StyleSheet,
-  Animated,
+  Dimensions,
 } from "react-native";
 import firebase from "firebase";
 
-
-import { AppBar, ParallaxScrollView } from "../../components";
-import Feed from "./DashboardFeed";
-
 import Header from "./DashboardHeader";
+import Carousel from "react-native-snap-carousel";
 
-const RenderStickyHeader = (value) => {
-  const opacity = value.interpolate({
-    inputRange: [0, 0, 1],
-    outputRange: [0, 150, 200],
-    extrapolate: "clamp",
-  });
-  return (
-    <View style={Styles.stickyHeader}>
-      <Animated.View style={[Styles.stickyHeaderBackground, { opacity }]} />
-    </View>
-  );
-};
+const data = [
+  { weekday: "Mandag" },
+  { weekday: "Tirsdag" },
+  { weekday: "Onsdag" },
+  { weekday: "Torsdag" },
+  { weekday: "Fredag" },
+  { weekday: "Lørdag" },
+  { weekday: "Søndag" },
+];
 
 const Dashboard = () => {
-  const [refreshing, setRefreshing] = React.useState(false);
-
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-
-    setRefreshing(false);
-  }, []);
-
+  const screenWidth = Dimensions.get("screen").width;
   const [Today, setToday] = React.useState(null);
   var getDate = new Date();
   var Day = getDate.getDay();
@@ -59,43 +44,59 @@ const Dashboard = () => {
       .firestore()
       .collection("AddToCustomList")
       .doc(firebase.auth().currentUser.uid)
-      .collection("CustomList").doc(weekday[Day]);
+      .collection("CustomList")
+      .doc(weekday[Day]);
 
-    Today.get().then((doc) => {
-      if (doc.exists) {
-        setToday(doc.data())
-      } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-      }
-    }).catch((error) => {
-      console.log("Error getting document:", error);
-    });
+    Today.get()
+      .then((doc) => {
+        if (doc.exists) {
+          setToday(doc.data());
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+        }
+      })
+      .catch((error) => {
+        console.log("Error getting document:", error);
+      });
   }, []);
-
-
-
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ParallaxScrollView
-        style={{ top: -50 }}
-        parallaxHeaderHeight={500}
-        stickyHeaderHeight={50}
-        parallaxHeader={() => <Header data={Today} />}
-        fixedHeader={() => <AppBar mainColor={"white"} />}
-        stickyHeader={RenderStickyHeader}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-        <Feed todaysRecipe={Today} />
-      </ParallaxScrollView>
+      <StatusBar
+        animated={true}
+        backgroundColor="#61dafb"
+        barStyle={"light-content"}
+      />
+      <Header data={Today} />
+
+      <Carousel
+        layout={"default"}
+        data={data}
+        showsHorizontalScrollIndicator={false}
+        renderItem={({ item }) => <RenderRecipeCard item={item} />}
+        sliderWidth={screenWidth}
+        itemWidth={250}
+      />
     </SafeAreaView>
   );
 };
 
 export default Dashboard;
+
+const RenderRecipeCard = ({ item }) => {
+  console.log(item);
+  return (
+    <View
+      style={{
+        backgroundColor: "orange",
+        height: 400,
+      }}
+    >
+      <Text>{item.weekday}</Text>
+    </View>
+  );
+};
 
 const Styles = StyleSheet.create({
   stickyHeader: {

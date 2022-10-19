@@ -8,7 +8,10 @@ const TextInput = ({ errorText, ...props }) => (
     <Input
       style={styles.input}
       underlineColor="transparent"
-      theme={{ colors: { primary: theme.colors.primary } }}
+      theme={{
+        colors: { primary: theme.colors.primary },
+        roundness: 8,
+      }}
       mode="flat"
       {...props}
     />
@@ -19,11 +22,12 @@ const TextInput = ({ errorText, ...props }) => (
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    marginVertical: 25,
-    height: 30,
   },
   input: {
     backgroundColor: theme.colors.surface,
+    borderRadius: 8,
+    fontSize: 16,
+    paddingVertical: 0,
   },
   error: {
     fontSize: 14,
