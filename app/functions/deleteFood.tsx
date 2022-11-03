@@ -1,7 +1,7 @@
-import firebase from 'firebase';
+import firebase from "firebase"
 
 const deleteFood = ({ id, collection }) => {
-	firebase.firestore().collection(collection).doc(id).delete();
-};
+    firebase.firestore().collection(collection).doc(id).delete()
+}
 
-export default deleteFood;
+export default deleteFood

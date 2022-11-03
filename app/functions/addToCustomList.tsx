@@ -1,17 +1,17 @@
-import firebase from 'firebase';
+import firebase from "firebase"
 
 const addToCustomList = (data) => {
-	firebase
-		.firestore()
-		.collection('AddToCustomList')
-		.doc(firebase.auth().currentUser.uid)
-		.collection('recipes')
-		.doc(data.Name)
-		.set({
-			Name: data.Name,
-			downloadUrl: data.downloadUrl,
-			Owner: data.Owner,
-		});
-};
+    firebase
+        .firestore()
+        .collection("AddToCustomList")
+        .doc(firebase.auth().currentUser.uid)
+        .collection("recipes")
+        .doc(data.Name)
+        .set({
+            Name: data.Name,
+            downloadUrl: data.downloadUrl,
+            Owner: data.Owner,
+        })
+}
 
-export default addToCustomList;
+export default addToCustomList

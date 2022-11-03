@@ -1,4 +1,4 @@
-import AddImage from './AddImage';
-import MainContainer from './MainContainer';
+import AddImage from "./AddImage"
+import MainContainer from "./MainContainer"
 
-export { AddImage, MainContainer };
+export { AddImage, MainContainer }

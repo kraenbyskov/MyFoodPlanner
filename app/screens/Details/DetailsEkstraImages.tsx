@@ -1,53 +1,45 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import { View, Text, Image, ScrollView } from "react-native";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { theme } from "../../core/theme";
-import { CustomCard as Card } from "../../components";
+import React from "react"
+import { StyleSheet } from "react-native"
+import { View, Text, Image, ScrollView } from "react-native"
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
+import { theme } from "../../core/theme"
+import { CustomCard as Card } from "../../components"
 
-const array = [1, 23];
+const array = [1, 23]
 
 const RecipeEkstraImages = ({ Data }) => {
-  return (
-    <Card>
-      <ScrollView horizontal={true}>
-        {array.map((index) => (
-          <Image
-            key={index}
-            source={{ uri: Data.downloadUrl }}
-            style={styles.Image}
-          />
-        ))}
-        <View style={styles.AddImage}>
-          <MaterialCommunityIcons
-            name="camera"
-            color={theme.colors.primary}
-            size={50}
-          />
-        </View>
-      </ScrollView>
-    </Card>
-  );
-};
+    return (
+        <Card>
+            <ScrollView horizontal={true}>
+                {array.map((index) => (
+                    <Image key={index} source={{ uri: Data.downloadUrl }} style={styles.Image} />
+                ))}
+                <View style={styles.AddImage}>
+                    <MaterialCommunityIcons name="camera" color={theme.colors.primary} size={50} />
+                </View>
+            </ScrollView>
+        </Card>
+    )
+}
 
-export default RecipeEkstraImages;
+export default RecipeEkstraImages
 
 const styles = StyleSheet.create({
-  Image: {
-    width: 100,
-    height: 100,
-    marginRight: 5,
-    borderRadius: 10,
-  },
-  AddImage: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    width: 100,
-    height: 100,
-    marginRight: 5,
-    borderRadius: 10,
-    borderColor: theme.colors.primary,
-    borderWidth: 4,
-  },
-});
+    Image: {
+        width: 100,
+        height: 100,
+        marginRight: 5,
+        borderRadius: 10,
+    },
+    AddImage: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        width: 100,
+        height: 100,
+        marginRight: 5,
+        borderRadius: 10,
+        borderColor: theme.colors.primary,
+        borderWidth: 4,
+    },
+})
